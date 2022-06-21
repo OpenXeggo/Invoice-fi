@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import CreateInvoice from './Pages/CreateInvoice';
+import CancelInvoice from './Pages/CancelInvoice';
 
 import { initContract, initWeb3 } from './utils/init';
 
@@ -26,6 +27,7 @@ function App() {
   return (
     <div className="App text-3xl">
       <CreateInvoice contract={contract} account={account} />
+      <CancelInvoice contract={contract} account={account} />
     </div>
   );
 }
