@@ -1,0 +1,278 @@
+[
+  { "type": "constructor", "stateMutability": "nonpayable", "inputs": [] },
+  {
+    "type": "event",
+    "name": "InvoiceCancelled",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "invoiceID",
+        "internalType": "uint256",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "InvoiceCreated",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "invoiceID",
+        "internalType": "uint256",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "invoiceCreator",
+        "internalType": "address",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "tokenAddress",
+        "internalType": "address",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "tokenAmountInWei",
+        "internalType": "uint256",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "receiver",
+        "internalType": "address",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "InvoicePaid",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "invoiceID",
+        "internalType": "uint256",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "isPaidBy",
+        "internalType": "address",
+        "indexed": false
+      },
+      {
+        "type": "bool",
+        "name": "byReceiver",
+        "internalType": "bool",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OwnerSet",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "oldOwner",
+        "internalType": "address",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "newOwner",
+        "internalType": "address",
+        "indexed": true
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Paused",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account",
+        "internalType": "address",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Unpaused",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account",
+        "internalType": "address",
+        "indexed": false
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+    "name": "canCancelInvoice",
+    "inputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+    "name": "canIPayTheInvoice",
+    "inputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+    "name": "cancelInvoice",
+    "inputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [],
+    "name": "changeOwner",
+    "inputs": [
+      { "type": "address", "name": "newOwner", "internalType": "address" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ],
+    "name": "createInvoice",
+    "inputs": [
+      { "type": "address", "name": "tokenAddress", "internalType": "address" },
+      {
+        "type": "uint256",
+        "name": "tokenAmountInWei",
+        "internalType": "uint256"
+      },
+      { "type": "address", "name": "receiver", "internalType": "address" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ],
+    "name": "createInvoice",
+    "inputs": [
+      { "type": "address", "name": "tokenAddress", "internalType": "address" },
+      {
+        "type": "uint256",
+        "name": "tokenAmountInWei",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [
+      {
+        "type": "address",
+        "name": "invoiceCreator",
+        "internalType": "address"
+      },
+      { "type": "address", "name": "tokenAddress", "internalType": "address" },
+      {
+        "type": "uint256",
+        "name": "tokenAmountInWei",
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "receiver",
+        "internalType": "address payable"
+      },
+      { "type": "address", "name": "isPaidBy", "internalType": "address" },
+      { "type": "bool", "name": "isCancelled", "internalType": "bool" }
+    ],
+    "name": "getInvoice",
+    "inputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [
+      { "type": "uint256", "name": "nextInvoiceID", "internalType": "uint256" }
+    ],
+    "name": "getNextInvoiceID",
+    "inputs": []
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
+    "name": "getOwner",
+    "inputs": []
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [
+      {
+        "type": "address",
+        "name": "_invoiceCreator",
+        "internalType": "address"
+      },
+      { "type": "address", "name": "_tokenAddress", "internalType": "address" },
+      {
+        "type": "uint256",
+        "name": "_tokenAmountInWei",
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "_receiver",
+        "internalType": "address payable"
+      },
+      { "type": "address", "name": "_isPaidBy", "internalType": "address" },
+      { "type": "bool", "name": "_isCancelled", "internalType": "bool" }
+    ],
+    "name": "invoices",
+    "inputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }]
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+    "name": "paused",
+    "inputs": []
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+    "name": "payInvoice",
+    "inputs": [
+      { "type": "uint256", "name": "invoiceID", "internalType": "uint256" }
+    ]
+  }
+]
