@@ -1,15 +1,15 @@
 import React,{useState} from 'react'
 import { initWeb3 } from '../utils/init'
+import { useNavigate } from 'react-router-dom'
 
 const CreateInvoice = ({contract,account}) => {
-    const [getInvoiceId, setGetInvoiceId] = useState()
-    const [isSuccess, setIsSuccsee] = useState(false)
-    const [isValidAccAddress, setIsValidAccAddree] = useState(false)
     const [invoiceData, setinvoiceData] = useState({
         tokenAddress:"",
         tokenAmount:0,
         receiverAddress:"",
     })
+
+    const navigate = useNavigate();
     
     const onChangeHandler=(e)=>{
         const {id,value} = e.target
@@ -17,6 +17,7 @@ const CreateInvoice = ({contract,account}) => {
     }
 
     const onSubmitHandler=async(e)=>{
+        try{
             e.preventDefault();
     
             let tokAddress = initWeb3().utils.isAddress(invoiceData.tokenAddress)
@@ -47,40 +48,39 @@ const CreateInvoice = ({contract,account}) => {
             let str = invoiceData.tokenAmount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            let currentInvoiceId = await contract.methods.getNextInvoiceID().call()
-            setGetInvoiceId(currentInvoiceId)
-            await contract.methods.createInvoice(invoiceData.tokenAddress,convertToWei,invoiceData.receiverAddress).send({from:account})
-            setIsSuccsee(true)
-    }        
+            await contract.methods.createInvoice(invoiceData.tokenAddress,convertToWei,invoiceData.receiverAddress).send({from:account})   
+            navigate('/');
+        } catch(err) {
+            alert("Could not create invoice!");
+        }
+    }
     return (
-        <div className="p-4 border-4 border-blue-300">
-            <h1>Create Invoice</h1>
-            <form onSubmit={onSubmitHandler}>
-                <div>
-                    <label htmlFor="tokenAddress">Token Address</label>
-                    <input type="text" onChange={(e)=>onChangeHandler(e)} id="tokenAddress" value={invoiceData.tokenAddress}  />
+    <div className="body-container">
+        <span className="page-title">Create Invoice</span>
+        <div className="page-content">
+            <div className="p-4 border-4 border-blue-300">
+                <form onSubmit={onSubmitHandler} className="form">
+                    <div className="form-container">
+                        <div>
+                            <label htmlFor="tokenAddress">Token Address: </label>
+                            <input type="text" onChange={(e)=>onChangeHandler(e)} id="tokenAddress" value={invoiceData.tokenAddress}  />
+                        </div>
+                        <div>
+                            <label htmlFor="tokenAmount">Token Amount: </label>
+                            <input type="number" id="tokenAmount" value={invoiceData.tokenAmount} onChange={(e)=>onChangeHandler(e)} />
+                        </div>
+                        <div>
+                            <label htmlFor="receiverAddress">Receiver Address: </label>
+                            <input type="text" id="receiverAddress" value={invoiceData.receiverAddress} onChange={(e)=>onChangeHandler(e)} />
+                        </div>
+                        <div>
+                            <button type="submit" className='xeggo-button'>Create Invoice</button>
+                        </div>
                     </div>
-                <div>
-                    <label htmlFor="tokenAmount">Token Amount</label>
-                    <input type="number" id="tokenAmount" value={invoiceData.tokenAmount} onChange={(e)=>onChangeHandler(e)} />
-                    </div>
-                <div>
-                    <label htmlFor="receiverAddress">Receiver Address</label>
-                    <input type="text" id="receiverAddress" value={invoiceData.receiverAddress} onChange={(e)=>onChangeHandler(e)} />
-                    </div>
-                <button type="submit">Create Invoice</button>
-                {isSuccess && (
-                    <button>
-                        <a href={`http://localhost:3000/invoices/${getInvoiceId}`}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            share
-                        </a>
-                </button>
-                )}
-            </form>
+                </form>
+            </div>
         </div>
+    </div>
     )
 }
 

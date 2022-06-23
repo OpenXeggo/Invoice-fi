@@ -1,6 +1,6 @@
 export const getInvoices = `
     query{
-        invoices(first: 15) {
+        invoices {
             id
             invoiceID
             invoiceCreator
