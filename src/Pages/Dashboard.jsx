@@ -24,7 +24,7 @@ const Dashboard = ({ invoices, account }) => {
         return {tokenSymbol};
       }
       catch (err) {
-        return {tokenSymbol: "null"}
+        return {tokenSymbol: "invalid"}
       }
     }
 
