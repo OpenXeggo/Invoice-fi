@@ -12,12 +12,14 @@ const InvoiceButton = ({invoice, account}) => {
         const allowanceAmount = await token.methods
           .allowance(account, '0x38399AC5E7d8b75531AC676D649a6451C7a22599')
           .call();
+
+          console.log(allowanceAmount)
     
         if (bigNumber(allowanceAmount).lt(tokenAmountInWei)) {
           let tx = await token.methods
             .approve(
               '0x38399AC5E7d8b75531AC676D649a6451C7a22599',
-              bigNumber(tokenAmountInWei)
+             tokenAmountInWei
             )
             .send({ from: account, gasLimit: 280000 });
     
