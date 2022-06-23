@@ -10,6 +10,8 @@ const CreateInvoice = ({contract,account}) => {
         receiverAddress:"",
     })
     
+    const [invoiceId,setInvoiceId]=useState(null)
+
     const onChangeHandler=(e)=>{
         const {id,value} = e.target
         setinvoiceData({...invoiceData,[id]:value})
@@ -19,8 +21,13 @@ const CreateInvoice = ({contract,account}) => {
         try{
             e.preventDefault();
             await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).send({from:account});
-            navigate('/');
+
+            const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
+            setInvoiceId(id-1);
+            alert(`https://silent-moon-2368.on.fleek.co/invoices/${id-1}`);
+            // navigate('/');
         } catch(err) {
+            console.log(err)
             alert("Could not create invoice!");
         }
     }
