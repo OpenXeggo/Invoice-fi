@@ -24,7 +24,7 @@ const CreateInvoice = ({contract,account}) => {
 
             const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
             setInvoiceId(id-1);
-            alert(`https://invoice-fi.vercel.app/invoices/${id-1}`);
+            alert(`invoice-8hdpza7f6-xeggo.vercel.app/invoices/${id-1}`);
             // navigate('/');
         } catch(err) {
             console.log(err)
