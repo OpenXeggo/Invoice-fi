@@ -51,7 +51,7 @@ const InvoiceButton = ({invoice, account}) => {
     return (
         <div>
             {invoice.invoiceCreator === account ? (
-            <div>
+            <div onClick={e=>e.stopPropagation()}>
                 {invoice.isCancelled ? (
                 'Cancelled'
                 ) : invoice.isPaid ? (
@@ -61,7 +61,7 @@ const InvoiceButton = ({invoice, account}) => {
                 )}
             </div>
             ) : (
-            <div>
+            <div onClick={e=>e.stopPropagation()}>
                 {invoice.isPaid ? (
                 'Paid'
                 ) : invoice.isCancelled ? (
