@@ -20,24 +20,28 @@ const InvoicePage = ({invoices, account, web3}) => {
     }
   
     return (
-        <>
-            {invoice ? 
-                (<ul>
-                    <li><b>Invoice Id:</b><span>{invoice.invoiceID}</span></li>
-                    <li><b>Invoice Creator:</b><span>{invoice.invoiceCreator}</span></li>
-                    <li><b>Invoice Receiver:</b><span>{invoice.receiver}</span></li>
-                    <li><b>Token Address:</b><span>{invoice.tokenAddress}</span></li>
-                    <li><b>Amount in Wei:</b><span>{invoice.tokenAmountInWei}</span></li>
-                    <li><b>Invoice Paid:</b><span>{invoice.isPaid ? "Yes": "No"}</span></li>
-                    <li><b>Invoice Cancelled:</b><span>{invoice.isCancelled ? "Yes" : "No"}</span></li>
-                    <li><b>Date Created:</b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
-                    <li><b>Date Paid:</b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
-                    <li><InvoiceButton invoice={invoice} web3={web3} account={account} /></li>
-                </ul>) : 
-                (<h1>You cannot view this Invoice</h1>)
-            }
-            {invoice.error && <h1>{invoice.error}</h1>}
-        </>
+        <div className="body-container">
+
+            <span className="page-title">Invoice Details</span>
+
+            <div className="page-content">
+                {invoice ? 
+                    (<ul className="invoice-details">
+                        <li><b>Invoice Id: </b><span>{invoice.invoiceID}</span></li>
+                        <li><b>Invoice Creator: </b><span>{invoice.invoiceCreator}</span></li>
+                        <li><b>Invoice Receiver: </b><span>{invoice.receiver}</span></li>
+                        <li><b>Token Address: </b><span>{invoice.tokenAddress}</span></li>
+                        <li><b>Amount in Wei: </b><span>{invoice.tokenAmountInWei}</span></li>
+                        <li><b>Invoice Paid: </b><span>{invoice.isPaid ? "Yes": "No"}</span></li>
+                        <li><b>Invoice Cancelled: </b><span>{invoice.isCancelled ? "Yes" : "No"}</span></li>
+                        <li><b>Date Created: </b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
+                        <li><b>Date Paid: </b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
+                        <li><InvoiceButton invoice={invoice} web3={web3} account={account} /></li>
+                    </ul>) : 
+                    (<h3>You cannot view this Invoice</h3>)
+                }
+            </div>
+        </div>
     )
 }
  

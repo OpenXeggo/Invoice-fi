@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --background: #24292E;
+    --content-background:#4D4D4D;
+    --input-background:#858585;
+    --navbar-height: 65px;
+    --xeggo-gradient:linear-gradient(96.2deg, #FF512F 0%, #DD2476 100%);
+    --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
+
+}
+
+
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding:0;
+    color: #ffffff;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 1440px;
+    background: var(--background);
+    font-family: 'Inter', sans-serif;
+}
+
+.body-container{
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+input {
+    background: var(--input-background);
+}
+
+.navbar{
+    height:var(--navbar-height);
+    width: 100%;
+    background: var(--content-background);
+}
+
+.navbar-container{
+    width:90%;
+    height:100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-left{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+.nav-link{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    padding: 0 20px;
+
+
+}
+
+.active{
+    border: 3px solid;
+    border-image: var(--xeggo-gradient)
+    1 /           
+    0 0 3px 0 /    
+    18px 14px 9px 4px      
+    round;  
+    border-image-outset: 0;   
+    border-radius: 30px;            
+}
+
+.nav-link-icon {
+    display: inline-flex;
+}
+
+.nav-link-text {
+    display: inline-block;
+}
+
+.xeggo-button{
+    background: var(--xeggo-gradient);
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+}
+
+.page-title {
+    display: inline-block;
+    font-size: 14px;
+    margin: 30px 0;
+}
+
+.page-content {
+    background: var(--content-background);
+    border-radius: 10px;
+    padding: 50px;
+}
+
+.invoice-details{
+    list-style-type: none;
+}
+
+.invoice-details li{
+    margin:10px;
+}
+
+.pointer {
+    cursor: pointer;
+}

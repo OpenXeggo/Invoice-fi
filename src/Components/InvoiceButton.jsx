@@ -57,7 +57,7 @@ const InvoiceButton = ({invoice, account}) => {
                 ) : invoice.isPaid ? (
                 'Paid'
                 ) : (
-                <button onClick={() => cancelHandler(invoice)}>Cancel</button>
+                <button className='xeggo-button' onClick={() => cancelHandler(invoice)}>Cancel</button>
                 )}
             </div>
             ) : (
@@ -67,7 +67,7 @@ const InvoiceButton = ({invoice, account}) => {
                 ) : invoice.isCancelled ? (
                 'Cancelled'
                 ) : (
-                <button onClick={() => payHandler(invoice)}>Pay</button>
+                <button className='xeggo-button' onClick={() => payHandler(invoice)}>Pay</button>
                 )}
             </div>
             )}

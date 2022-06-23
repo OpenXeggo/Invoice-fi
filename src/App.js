@@ -8,6 +8,9 @@ import Dashboard from './Pages/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
 
+import "./App.css";
+import Navbar from './Components/Navbar';
+
 
 
 function App() {
@@ -47,13 +50,12 @@ function App() {
 
   return (
     <div>
-      <h1 className="text-red-700">Xeggo Invoice</h1>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
         <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
-
     </div>
   );
 }
