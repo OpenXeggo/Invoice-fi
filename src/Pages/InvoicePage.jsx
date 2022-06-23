@@ -24,6 +24,8 @@ const InvoicePage = ({invoices, account, web3}) => {
         }
     }
   
+
+    
     return (
         <div className="body-container">
 
