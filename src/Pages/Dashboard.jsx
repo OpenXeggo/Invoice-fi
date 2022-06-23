@@ -18,9 +18,14 @@ const Dashboard = ({ invoices, account }) => {
     }
 
     const getTokenSymbol = async (tokenAddress) => {
-      const token = new web3.eth.Contract(Token, tokenAddress);
-      const tokenSymbol = await token.methods.symbol().call();
-      return {tokenSymbol};
+      try{
+        const token = new web3.eth.Contract(Token, tokenAddress);
+        const tokenSymbol = await token.methods.symbol().call();
+        return {tokenSymbol};
+      }
+      catch (err) {
+        return {tokenSymbol: "null"}
+      }
     }
 
     const handleRedirect = (id) => {
