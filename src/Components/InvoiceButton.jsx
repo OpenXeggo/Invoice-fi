@@ -6,7 +6,7 @@ const InvoiceButton = ({invoice, account}) => {
     const web3 = initWeb3();
     const contract = initContract();
 
-    const payHandler = async ({ tokenAddress, tokenAmountInWei, invoiceID }) => {
+    const payHandler = async (e, { tokenAddress, tokenAmountInWei, invoiceID }) => {
         const token = new web3.eth.Contract(Token, tokenAddress);
     
         const allowanceAmount = await token.methods
@@ -37,8 +37,9 @@ const InvoiceButton = ({invoice, account}) => {
       };
     
     
-      const cancelHandler = async ({ invoiceID }) => {
+      const cancelHandler = async (e, { invoiceID }) => {
         try {
+          e.stopPropagation();
           await contract.methods
             .cancelInvoice(invoiceID)
             .send({ from: account, gasLimit: 210000 });
@@ -57,7 +58,7 @@ const InvoiceButton = ({invoice, account}) => {
                 ) : invoice.isPaid ? (
                 'Paid'
                 ) : (
-                <button className='xeggo-button' onClick={() => cancelHandler(invoice)}>Cancel</button>
+                <button className='xeggo-button' onClick={(e) => cancelHandler(e,invoice)}>Cancel</button>
                 )}
             </div>
             ) : (
@@ -67,7 +68,7 @@ const InvoiceButton = ({invoice, account}) => {
                 ) : invoice.isCancelled ? (
                 'Cancelled'
                 ) : (
-                <button className='xeggo-button' onClick={() => payHandler(invoice)}>Pay</button>
+                <button className='xeggo-button' onClick={(e) => payHandler(e,invoice)}>Pay</button>
                 )}
             </div>
             )}
