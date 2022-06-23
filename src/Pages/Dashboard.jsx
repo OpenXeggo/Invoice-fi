@@ -17,21 +17,10 @@ const Dashboard = ({ invoices, account }) => {
       });
     }
 
-  
     const getTokenSymbol = async (tokenAddress) => {
       const token = new web3.eth.Contract(Token, tokenAddress);
       const tokenSymbol = await token.methods.symbol().call();
       return {tokenSymbol};
-    }
-
-    const parseInvoices = (invoiceList) => {
-      if(invoiceList.length){
-        invoiceList = invoiceList.map(async invoice => {
-          const {tokenSymbol} = await getTokenSymbol(invoice.tokenAddress);
-          invoice = {...invoice, tokenSymbol}
-          setAccountInvoices(invoices=>[...invoices, invoice])
-        })
-      }
     }
 
     const handleRedirect = (id) => {
@@ -41,7 +30,24 @@ const Dashboard = ({ invoices, account }) => {
     useEffect(()=>{
       if(invoices.length) {
         const filteredInvoices = filterAccountInvoices(invoices);
-        parseInvoices(filteredInvoices);
+
+        const parseInvoices = async (invoiceList) => {
+          if(invoiceList.length){
+            for (let i = 0; i < invoiceList.length; i++){
+              let { tokenSymbol } = await getTokenSymbol(invoiceList[i].tokenAddress);
+              invoiceList[i] = {...invoiceList[i],tokenSymbol };
+            }
+            return invoiceList;
+          }
+        }
+
+        const setInvoices = async () => {
+          const parsedInvoice = await parseInvoices(filteredInvoices);
+          setAccountInvoices(parsedInvoice);
+        }
+
+        setInvoices();
+        
       }
     },[invoices])
     
@@ -60,12 +66,6 @@ const Dashboard = ({ invoices, account }) => {
                     <th>Pay / Cancel</th>
                   </tr>
                   {accountInvoices.length > 0 && accountInvoices.map((invoice) => {
-                    console.log(
-                      invoice.invoiceCreator === account
-                        ? invoice.receiver
-                        : invoice.invoiceCreator,
-                      invoice.invoiceID
-                    );
                     return (
                       <tr className="table-data" key={invoice.invoiceID} onClick={()=>handleRedirect(invoice.invoiceID)}>
                         <td>{invoice.invoiceID}</td>
@@ -74,7 +74,7 @@ const Dashboard = ({ invoices, account }) => {
                             ? invoice.receiver
                             : invoice.invoiceCreator}
                         </td>
-                        <td>{invoice.tokenSymbol}</td>
+                        <td className='text-center'>{invoice.tokenSymbol}</td>
                         <td>{invoice.tokenAmountInWei}</td>
                         <td> <InvoiceButton invoice={invoice} account={account} /> </td>
                       </tr>

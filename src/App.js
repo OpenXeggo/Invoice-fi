@@ -34,7 +34,7 @@ function App() {
   const fetchQuery = async () => {
     const { data } = await Client.query({ query: gql(getInvoices) });
     const { invoices } = data;
-    console.log(invoices);
+    console.log({invoices}, "This is the result gotten from graphql");
     setInvoices(invoices);
   };
 
