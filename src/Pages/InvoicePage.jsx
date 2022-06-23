@@ -13,6 +13,11 @@ const InvoicePage = ({invoices, account, web3}) => {
         });
         if (accountInvoice) setInvoice({...accountInvoice});
     }, [invoices]);
+
+    const parseDate = (timestamp) => {
+        const d = new Date(timestamp);
+        return d.toDateString();
+    }
   
     return (
         <>
@@ -25,8 +30,8 @@ const InvoicePage = ({invoices, account, web3}) => {
                     <li><b>Amount in Wei:</b><span>{invoice.tokenAmountInWei}</span></li>
                     <li><b>Invoice Paid:</b><span>{invoice.isPaid ? "Yes": "No"}</span></li>
                     <li><b>Invoice Cancelled:</b><span>{invoice.isCancelled ? "Yes" : "No"}</span></li>
-                    <li><b>Date Created:</b><span>{invoice.createdAt}</span></li>
-                    <li><b>Date Paid:</b><span>{invoice.PaidAt}</span></li>
+                    <li><b>Date Created:</b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
+                    <li><b>Date Paid:</b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
                     <li><InvoiceButton invoice={invoice} web3={web3} account={account} /></li>
                 </ul>) : 
                 (<h1>You cannot view this Invoice</h1>)

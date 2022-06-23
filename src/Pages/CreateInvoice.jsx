@@ -1,6 +1,9 @@
 import React,{useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const CreateInvoice = ({contract,account}) => {
+    const navigate = useNavigate();
+
     const [invoiceData, setinvoiceData] = useState({
         tokenAddress:"",
         tokenAmount:0,
@@ -13,8 +16,13 @@ const CreateInvoice = ({contract,account}) => {
     }
 
     const onSubmitHandler=async(e)=>{
+        try{
             e.preventDefault();
-            await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).send({from:account})
+            await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).send({from:account});
+            navigate('/');
+        } catch(err) {
+            alert("Could not create invoice!");
+        }
     }
   return (
     <div className="p-4 border-4 border-blue-300">
