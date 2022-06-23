@@ -23,9 +23,8 @@ const InvoicePage = ({invoices, account, web3}) => {
             return "None";
         }
     }
-  
 
-    
+
     return (
         <div className="body-container">
 
