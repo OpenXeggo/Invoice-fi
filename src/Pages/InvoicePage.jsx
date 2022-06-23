@@ -31,7 +31,8 @@ const InvoicePage = ({invoices, account, web3}) => {
 
             <div className="page-content">
                 {invoice ? 
-                    (<ul className="invoice-details">
+                    <div>
+                    <ul className="invoice-details">
                         <li><b>Invoice Id: </b><span>{invoice.invoiceID}</span></li>
                         <li><b>Invoice Creator: </b><span>{invoice.invoiceCreator}</span></li>
                         <li><b>Invoice Receiver: </b><span>{invoice.receiver}</span></li>
@@ -42,7 +43,13 @@ const InvoicePage = ({invoices, account, web3}) => {
                         <li><b>Date Created: </b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
                         <li><b>Date Paid: </b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
                         <li><InvoiceButton invoice={invoice} web3={web3} account={account} /></li>
-                    </ul>) : 
+                    </ul>
+                    <button style={{marginLeft:"0.6rem"}} className="xeggo-button" onClick={()=>{
+                        
+                        navigator.clipboard.writeText(`https://silent-moon-2368.on.fleek.co/invoices/${id}`)
+                        alert("share link copied to clipboard")}
+                        }>Share</button>
+                    </div> : 
                     (<h3>You cannot view this Invoice</h3>)
                 }
             </div>
