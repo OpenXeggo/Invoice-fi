@@ -11,6 +11,8 @@ const CreateInvoice = ({contract,account}) => {
 
     const navigate = useNavigate();
     
+    const [invoiceId,setInvoiceId]=useState(null)
+
     const onChangeHandler=(e)=>{
         const {id,value} = e.target
         setinvoiceData({...invoiceData,[id]:value})
@@ -49,8 +51,11 @@ const CreateInvoice = ({contract,account}) => {
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
             await contract.methods.createInvoice(invoiceData.tokenAddress,convertToWei,invoiceData.receiverAddress).send({from:account})   
-            navigate('/');
+            const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
+            setInvoiceId(id-1);
+            alert(`https://silent-moon-2368.on.fleek.co/invoices/${id-1}`);
         } catch(err) {
+            console.log(err)
             alert("Could not create invoice!");
         }
     }
