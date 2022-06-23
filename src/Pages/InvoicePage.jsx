@@ -15,8 +15,13 @@ const InvoicePage = ({invoices, account, web3}) => {
     }, [invoices]);
 
     const parseDate = (timestamp) => {
-        const d = new Date(timestamp);
-        return d.toDateString();
+        if (timestamp){
+            const d = new Date(timestamp);
+            return d.toDateString();
+        }
+        else {
+            return "None";
+        }
     }
   
     return (

@@ -2,9 +2,10 @@ import { NavLink } from "react-router-dom";
 import XeggoLogo from '../assets/Xeggo.png';
 import DashboardIcon from "../assets/dashboard.png";
 import LetterIcon from "../assets/letter.png"
+import { modifyAddress } from "../utils/modifyAddress";
 
+const Navbar = ({account}) => {
 
-const Navbar = () => {
     return ( 
         <div className="navbar">
             <div className="navbar-container">
@@ -22,7 +23,11 @@ const Navbar = () => {
                     </NavLink>
                 </div>
                 <div className="navbar-right">
-                    <button className="xeggo-button">Connect Wallet</button>
+                    {account.length ? (
+                        <button className="xeggo-button">{modifyAddress(account, 9)}</button>
+                        
+                    )
+                    :(<button className="xeggo-button">Connect Wallet</button>)}
                 </div>
             </div>
         </div>

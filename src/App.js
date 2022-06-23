@@ -50,7 +50,7 @@ function App() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar account={account} />
       <Routes>
         <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
         <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
