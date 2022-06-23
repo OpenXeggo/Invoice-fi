@@ -26,6 +26,11 @@ const Dashboard = ({ invoices, account }) => {
     const handleRedirect = (id) => {
         navigate(`/invoices/${id}`);
     }
+
+    const checkAddress = (address) => {
+      const isAddress = web3.utils.isAddress(address);
+      return isAddress;
+    }
   
     useEffect(()=>{
       if(invoices.length) {
@@ -34,8 +39,15 @@ const Dashboard = ({ invoices, account }) => {
         const parseInvoices = async (invoiceList) => {
           if(invoiceList.length){
             for (let i = 0; i < invoiceList.length; i++){
-              let { tokenSymbol } = await getTokenSymbol(invoiceList[i].tokenAddress);
-              invoiceList[i] = {...invoiceList[i],tokenSymbol };
+              if(checkAddress(invoiceList[i].tokenAddress)) {
+                let { tokenSymbol } = await getTokenSymbol(invoiceList[i].tokenAddress);
+                invoiceList[i] = {...invoiceList[i],tokenSymbol };
+              }
+              else{
+                let  tokenSymbol  = "invalid";
+                invoiceList[i] = {...invoiceList[i],tokenSymbol };
+              }
+              
             }
             return invoiceList;
           }
