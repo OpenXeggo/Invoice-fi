@@ -82,7 +82,8 @@ const Dashboard = ({ invoices, account }) => {
                     <th>Token Amount</th>
                     <th>Pay / Cancel</th>
                   </tr>
-                  {accountInvoices.length > 0 && accountInvoices.map((invoice) => {
+                  {accountInvoices && accountInvoices.length > 0 && accountInvoices.map((invoice) => {
+
                     return (
                       <tr className="table-data" key={invoice.invoiceID} onClick={()=>handleRedirect(invoice.invoiceID)}>
                         <td>{invoice.invoiceID}</td>

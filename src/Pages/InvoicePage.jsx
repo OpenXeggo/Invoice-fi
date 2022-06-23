@@ -46,7 +46,7 @@ const InvoicePage = ({invoices, account, web3}) => {
                     </ul>
                     <button style={{marginLeft:"0.6rem"}} className="xeggo-button" onClick={()=>{
                         
-                        navigator.clipboard.writeText(`https://silent-moon-2368.on.fleek.co/invoices/${id}`)
+                        navigator.clipboard.writeText(`https://invoice-fi.vercel.app/invoices/${id}`)
                         alert("share link copied to clipboard")}
                         }>Share</button>
                     </div> : 

@@ -24,7 +24,7 @@ const CreateInvoice = ({contract,account}) => {
 
             const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
             setInvoiceId(id-1);
-            alert(`https://silent-moon-2368.on.fleek.co/invoices/${id-1}`);
+            alert(`https://invoice-fi.vercel.app/invoices/${id-1}`);
             // navigate('/');
         } catch(err) {
             console.log(err)
