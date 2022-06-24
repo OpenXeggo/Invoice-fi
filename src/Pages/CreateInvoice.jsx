@@ -1,14 +1,15 @@
 import React,{useState} from 'react'
+import { initWeb3 } from '../utils/init'
 import { useNavigate } from 'react-router-dom'
 
 const CreateInvoice = ({contract,account}) => {
-    const navigate = useNavigate();
-
     const [invoiceData, setinvoiceData] = useState({
         tokenAddress:"",
         tokenAmount:0,
         receiverAddress:"",
     })
+
+    const navigate = useNavigate();
     
     const [invoiceId,setInvoiceId]=useState(null)
 
@@ -20,8 +21,36 @@ const CreateInvoice = ({contract,account}) => {
     const onSubmitHandler=async(e)=>{
         try{
             e.preventDefault();
-            await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).send({from:account});
+    
+            let tokAddress = initWeb3().utils.isAddress(invoiceData.tokenAddress)
 
+            if(!tokAddress){
+                alert('Please enter valid token Address!')
+                return
+            }
+
+            if(invoiceData.tokenAmount === 0){
+                alert('Please enter a valid token amount!')
+                return
+            }
+
+            try{
+                let recAddress = await initWeb3().eth.getCode(invoiceData.receiverAddress)
+                if(recAddress !== '0x'){
+                    alert('Please enter valid receiver Address!')
+                    return
+                }
+            }catch(err){
+                if(err){
+                    alert('Please enter valid receiver Address!')
+                    return
+                }
+            }
+
+            let str = invoiceData.tokenAmount.toString()
+
+            let convertToWei = initWeb3().utils.toWei(str, "ether");
+            await contract.methods.createInvoice(invoiceData.tokenAddress,convertToWei,invoiceData.receiverAddress).send({from:account})   
             const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
             setInvoiceId(id-1);
             alert(`https://invoice-fi.vercel.app/invoices/${id-1}`);
@@ -31,7 +60,7 @@ const CreateInvoice = ({contract,account}) => {
             alert("Could not create invoice!");
         }
     }
-  return (
+    return (
     <div className="body-container">
         <span className="page-title">Create Invoice</span>
         <div className="page-content">
@@ -58,7 +87,7 @@ const CreateInvoice = ({contract,account}) => {
             </div>
         </div>
     </div>
-  )
+    )
 }
 
 export default CreateInvoice
