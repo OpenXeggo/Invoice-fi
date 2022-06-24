@@ -1,0 +1,1 @@
+This contract is for xeggo invoice which allows users to create an invoice as well as pay for it.
