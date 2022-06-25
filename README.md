@@ -15,4 +15,5 @@ There are a number of benefits of doing so like:
 
 Celo Testnet deployed address: 0x38399AC5E7d8b75531AC676D649a6451C7a22599
 
-GraphQL Deployed Link:  https://thegraph.com/hosted-service/subgraph/aman-webdev/invoicetest
+GraphQL Deployed Link:  https://api.thegraph.com/subgraphs/name/aman-webdev/invoicetestn
+
