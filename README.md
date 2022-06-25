@@ -10,6 +10,11 @@ There are a number of benefits of doing so like:
 * Automation can be done at max when invoices are generated onchain like partial/stream payment.
 * It can be easily used for the next step of invoice factoring
 
+### Figma: 
+https://www.figma.com/file/kUx5TaiJwMlTRsorabDk5i/Invoice-App?node-id=0%3A1
+
+### Video Demo
+https://www.loom.com/share/9d3f53a9b25b45b0b5f3df4287804f03
 
 ## Dev Notes
 
