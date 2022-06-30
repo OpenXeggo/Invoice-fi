@@ -7,6 +7,8 @@ import { getInvoices } from './utils/queries';
 import Dashboard from './Pages/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
+import Sidebar from './Components/Sidebar';
+
 
 import "./App.css";
 import Navbar from './Components/Navbar';
@@ -51,6 +53,7 @@ function App() {
   return (
     <div>
       <Navbar account={account} />
+      <Sidebar />
       <Routes>
         <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
         <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
