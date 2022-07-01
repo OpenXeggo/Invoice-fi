@@ -2,6 +2,8 @@ import React,{useState} from 'react'
 import { initWeb3 } from '../utils/init'
 import { useNavigate } from 'react-router-dom'
 
+var BigNumber = require("big-number");
+
 const CreateInvoice = ({contract,account}) => {
     const [invoiceData, setinvoiceData] = useState({
         tokenAddress:"",

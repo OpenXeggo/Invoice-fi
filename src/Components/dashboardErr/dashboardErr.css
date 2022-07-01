@@ -1,0 +1,23 @@
+:root {
+    --content-background: #FAFAFA;
+}
+
+.error-img-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--content-background);
+    padding: 30px 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.error-img-wrapper p{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    color: #1E1E1E !important;
+}

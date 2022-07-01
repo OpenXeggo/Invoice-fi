@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --background: #24292E;
-    --content-background:#4D4D4D;
+    --background: #FFF;
+    --content-background: #FAFAFA;
     --input-background:#858585;
     --navbar-height: 65px;
     --xeggo-gradient:linear-gradient(96.2deg, #FF512F 0%, #DD2476 100%);
     --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
-
 }
 
 
@@ -23,6 +22,7 @@ body {
     max-width: 1440px;
     background: var(--background);
     font-family: 'Inter', sans-serif;
+    font-size: 14px;
 }
 
 .body-container{
@@ -106,11 +106,11 @@ input {
 
 .page-content {
     background: var(--content-background);
-    border-radius: 10px;
-    padding: 50px;
+    /* border-radius: 10px; */
+    /* padding: 50px; */
 }
 
-.table-container{
+/* .table-container{
     overflow:auto;
 }
 
@@ -126,7 +126,7 @@ input {
     cursor: pointer;
     background-color: #858585;
 
-}
+} */
 
 .form-container{
     display: flex;
@@ -159,6 +159,31 @@ input {
     cursor: pointer;
 }
 
-.text-center{
+/* .text-center{
     text-align: center;
+} */
+
+.display-flex-column{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.display-flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.display-flex-row-center{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.w-h{
+	width: 100%;
+	height: auto;
 }

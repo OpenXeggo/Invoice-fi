@@ -1,0 +1,22 @@
+.primary-btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 189px;
+    height: 54px;
+    border: none;
+    outline: none;
+    background: linear-gradient(94.97deg, #FF512F 0%, #DD2476 100%);
+    border-radius: 5px;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.primary-btn img{
+    padding-bottom: 3px;
+}

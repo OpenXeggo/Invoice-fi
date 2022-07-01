@@ -1,0 +1,28 @@
+:root {
+    --heading-text-color: #000000;
+}
+
+.hello-welcome-wrapper{
+    width: 100%;
+    height: auto;
+    padding: 30px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.greeting h1{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    color: var(--heading-text-color);
+}
+
+.greeting p{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--heading-text-color);
+}

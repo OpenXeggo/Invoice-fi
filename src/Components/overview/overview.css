@@ -1,0 +1,26 @@
+:root {
+    --overview-text-color: #BABABA;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.w-100 p{
+    color: var(--overview-text-color);
+}
+
+.days-lasted p{
+    margin: 0px 5px;
+    font-size: 12px;
+}
+
+.days-lasted img{
+    width: 15px;
+    height: 16px;
+}
+
+.metrics-container{
+    width: 100%;
+    padding: 35px 0px;
+}
