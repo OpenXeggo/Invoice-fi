@@ -13,7 +13,6 @@
     --sidebar-width: 200px;
 }
 
-
 *, *::after, *::before {
     box-sizing: border-box;
     margin: 0;
@@ -33,7 +32,6 @@ body {
     margin: 0 auto;
 }
 
-
 button {
     cursor: pointer;
 }
@@ -42,111 +40,10 @@ input {
     background: var(--input-background);
 }
 
-.navbar{
-    height:var(--navbar-height);
-    width: 100%;
-    border-bottom: 1px solid var(--border-color);
-    position: fixed;
-    top:0;
-    left:0;
-    z-index: 3;
-}
-
-.navbar-container{
-    width:100%;
-    height:100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.sidebar-container {
-    width: var(--sidebar-width);
-    height:100vh;
-    position: fixed;
-    left:0;
-    top:0;
-    border-right: 1px solid var(--border-color) ;
-}
-
-.sidebar-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: var(--navbar-height);
-    height: calc(100vh - var(--navbar-height));
-}
-
-.sidebar-top {
-    padding: 35px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.sidebar-bottom {
-    padding: 35px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
 .body-container {
     width: calc(100% - var(--sidebar-width));
     margin-top:var(--navbar-height);
     margin-left: var(--sidebar-width);
-}
-
-.navbar-left{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    height: 100%;
-}
-
-.logo-container {
-    width: var(--sidebar-width);
-    height: 100%;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-}
-
-.nav-link {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    padding: 5px 0 5px 35px;
-    gap: 15px;
-}
-
-.nav-link.active{
-    border: 3px solid;
-    border-image: var(--xeggo-gradient)
-    1 /           
-    0 0 0 4px /    
-    18px 14px 9px 4px      
-    round;  
-    border-image-outset: 0;   
-    border-radius: 30px;            
-}
-
-.nav-link-text {
-    color:var(--nav-font);
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-}
-
-.active .nav-link-text {
-    font-weight: 600;
-    background: var(--navbar-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
 }
 
 .xeggo-button{
@@ -184,42 +81,6 @@ input {
     cursor: pointer;
     background-color: #858585;
 
-}
-
-.header-container{
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    padding-left: 45px;
-    padding-right: 80px;
-}
-
-.search-container {
-    display: flex;
-    gap:12px;
-}
-
-.search-container input{
-    border:none;
-    background-color: var(--background);
-    outline: none;
-}
-
-.header-container {
-    display: flex;
-}
-
-.header-end {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-.gap{
-    font-weight: 100;
 }
 
 .form-container{
@@ -286,95 +147,3 @@ input {
     justify-content: center;
 }
 
-.nav-link-dropdown {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-}
-
-.nav-link-items {
-    margin-top: 10px;
-    text-decoration: none;
-    display: none;
-    flex-direction: column;
-    padding: 5px 0 5px 35px;
-    gap: 10px;
-}
-
-.show{
-    display: flex;
-}
-
-.drop-down-link{
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    /* identical to box height */
-    color: #4D4D4D;
-    text-decoration: none;
-}
-
-.drop-down-link.active {
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 18px;
-    /* identical to box height */
-    color: #FAFAFA;
-}
-
-svg .stroke{
-    stroke:var(--nav-font);
-}
-
-svg .fill{
-    fill:var(--nav-font);
-}
-
-.active .stroke {
-    stroke: url(#paint0_linear_145_371);
-}
-
-.active .fill {
-    fill:url(#paint0_linear_145_371);
-}
-
-.profile b{
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 18px;
-}
-
-.profile span {
-    font-size: 9px;
-    line-height: 13.5px;
-    color: #BABABA;
-}
-
-.switch {
-    display: flex;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 3px;
-    gap:3px;
-}
-
-.switch .active{
-    background: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
-    border-radius:5px;
-}
-
-.switch div{
-    padding: 5px;
-    width: 31px
-}
-
-
-.switch svg{
-    display: flex;
-}
-
-.switch .active svg path {
-    fill: var(--background);
-}

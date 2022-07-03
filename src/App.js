@@ -7,11 +7,11 @@ import { getInvoices } from './utils/queries';
 import Dashboard from './Pages/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
-import Sidebar from './Components/Sidebar';
+import Sidebar from './Components/Sidebar/Sidebar.jsx';
 
 
 import "./App.css";
-import Navbar from './Components/Navbar';
+import Navbar from './Components/Navbar/Navbar.jsx';
 
 
 

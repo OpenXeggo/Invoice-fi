@@ -1,0 +1,120 @@
+.sidebar-container {
+    width: var(--sidebar-width);
+    height:100vh;
+    position: fixed;
+    left:0;
+    top:0;
+    border-right: 1px solid var(--border-color) ;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
+}
+
+.sidebar-top {
+    padding: 35px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sidebar-bottom {
+    padding: 35px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.nav-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 5px 0 5px 35px;
+    gap: 15px;
+}
+
+.nav-link.active{
+    border: 3px solid;
+    border-image: var(--xeggo-gradient)
+    1 /           
+    0 0 0 4px /    
+    18px 14px 9px 4px      
+    round;  
+    border-image-outset: 0;   
+    border-radius: 30px;            
+}
+
+.nav-link-text {
+    color:var(--nav-font);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.active .nav-link-text {
+    font-weight: 600;
+    background: var(--navbar-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.nav-link-dropdown {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.nav-link-items {
+    margin-top: 10px;
+    text-decoration: none;
+    display: none;
+    flex-direction: column;
+    padding: 5px 0 5px 35px;
+    gap: 10px;
+}
+
+.show{
+    display: flex;
+}
+
+.drop-down-link{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    color: #4D4D4D;
+    text-decoration: none;
+}
+
+.drop-down-link.active {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    color: #FAFAFA;
+}
+
+svg .stroke{
+    stroke:var(--nav-font);
+}
+
+svg .fill{
+    fill:var(--nav-font);
+}
+
+.active .stroke {
+    stroke: url(#paint0_linear_145_371);
+}
+
+.active .fill {
+    fill:url(#paint0_linear_145_371);
+}

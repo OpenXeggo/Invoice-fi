@@ -3,15 +3,17 @@ import { useRef } from "react";
 import {  useLocation  } from "react-router-dom";
 
 
-import InvoiceIcon from "../assets/icons/InvoiceIcon";
+import InvoiceIcon from "../../assets/icons/InvoiceIcon";
 import { useEffect } from "react";
-import HomeIcon from "../assets/icons/HomeIcon";
-import ReportIcon from "../assets/icons/ReportIcon";
-import SettingsIcon from "../assets/icons/SettingsIcon";
-import InventoryIcon from "../assets/icons/InventoryIcon";
-import FaqIcon from "../assets/icons/FaqIcon";
-import LogoutIcon from "../assets/icons/LogoutIcon";
-import DownIcon from "../assets/icons/DownIcon";
+import HomeIcon from "../../assets/icons/HomeIcon";
+import ReportIcon from "../../assets/icons/ReportIcon";
+import SettingsIcon from "../../assets/icons/SettingsIcon";
+import InventoryIcon from "../../assets/icons/InventoryIcon";
+import FaqIcon from "../../assets/icons/FaqIcon";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
+import DownIcon from "../../assets/icons/DownIcon";
+
+import "./sidebar.css";
 
 const Sidebar = () => {
 

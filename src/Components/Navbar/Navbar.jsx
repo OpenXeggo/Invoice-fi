@@ -1,14 +1,11 @@
-import { NavLink } from "react-router-dom";
-import XeggoLogo from '../assets/Xeggo.png';
-import DashboardIcon from "../assets/dashboard.png";
-import LetterIcon from "../assets/letter.png"
-import { modifyAddress } from "../utils/modifyAddress";
-import BellIcon from "../assets/bell.svg"
-import ProfileIcon from "../assets/profile.svg"
-import MoonIcon from "../assets/icons/MoonIcon";
-import SunIcon from "../assets/icons/SunIcon"
+import XeggoLogo from '../../assets/Xeggo.png';
+import BellIcon from "../../assets/bell.svg"
+import ProfileIcon from "../../assets/profile.svg"
+import MoonIcon from "../../assets/icons/MoonIcon";
+import SunIcon from "../../assets/icons/SunIcon";
 
-import SearchIcon from "../assets/search.svg"
+import SearchIcon from "../../assets/search.svg";
+import "./navbar.css";
 
 const Navbar = ({account}) => {
 

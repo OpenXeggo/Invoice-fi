@@ -1,0 +1,107 @@
+.navbar{
+    height:var(--navbar-height);
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 3;
+}
+
+.navbar-container{
+    width:100%;
+    height:100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-left{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+}
+
+.header-container{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-left: 45px;
+    padding-right: 80px;
+}
+
+.search-container {
+    display: flex;
+    gap:12px;
+}
+
+.search-container input{
+    border:none;
+    background-color: var(--background);
+    outline: none;
+}
+
+.logo-container {
+    width: var(--sidebar-width);
+    height: 100%;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.header-container {
+    display: flex;
+}
+
+.header-end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.gap{
+    font-weight: 100;
+}
+
+.switch {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 3px;
+    gap:3px;
+}
+
+.switch .active{
+    background: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+    border-radius:5px;
+}
+
+.switch div{
+    padding: 5px;
+    width: 31px
+}
+
+.switch svg{
+    display: flex;
+}
+
+.switch .active svg path {
+    fill: var(--background);
+}
+
+.profile b{
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.profile span {
+    font-size: 9px;
+    line-height: 13.5px;
+    color: #BABABA;
+}
