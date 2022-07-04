@@ -3,7 +3,7 @@
 
 :root {
     --background:#1E1E1E;
-    --content-background:#4D4D4D;
+    --content-background: #222222;
     --nav-font: #4D4D4D;
     --input-background:#858585;
     --navbar-height: 65px;
@@ -97,6 +97,7 @@ input {
     width: calc(100% - var(--sidebar-width));
     margin-top:var(--navbar-height);
     margin-left: var(--sidebar-width);
+    padding: 0px 30px;
 }
 
 .navbar-left{
@@ -163,11 +164,11 @@ input {
 
 .page-content {
     background: var(--content-background);
-    border-radius: 10px;
-    padding: 50px;
+    /* border-radius: 10px; */
+    /* padding: 50px; */
 }
 
-.table-container{
+/* .table-container{
     overflow:auto;
 }
 
@@ -183,7 +184,7 @@ input {
     cursor: pointer;
     background-color: #858585;
 
-}
+} */
 
 .form-container{
     display: flex;
@@ -289,4 +290,29 @@ svg .fill{
 
 .active .fill {
     fill:url(#paint0_linear_145_371);
+}
+
+.display-flex-column{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.display-flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.display-flex-row-center{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.w-h{
+	width: 100%;
+	height: auto;
 }

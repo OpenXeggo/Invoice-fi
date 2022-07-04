@@ -4,7 +4,7 @@ import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import CreateInvoice from './Pages/CreateInvoice';
 import { initContract, initWeb3 } from './utils/init';
 import { getInvoices } from './utils/queries';
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/Dashboard/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
 import Sidebar from './Components/Sidebar';
