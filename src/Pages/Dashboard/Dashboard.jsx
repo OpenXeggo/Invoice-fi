@@ -77,7 +77,7 @@ const Dashboard = ({ invoices, account }) => {
       <div className="body-container">
         <WelcomeHello account={account}/>
         <div className='display-flex-row gap'>
-          <div className='width display-flex-column'>
+          <div className='width'>
             <Overview account={account}/>
             <span className="block">Recent Transactions</span>
             {account ? (

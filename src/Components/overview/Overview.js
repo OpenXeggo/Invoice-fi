@@ -7,7 +7,7 @@ import './overview.css'
 const Overview = ({account}) =>{
 
     return(
-        <div className='display-flex-column w-h'>
+        <div className='w-h'>
             <div className='w-100 display-flex-row'>
                 <p>Overview</p>
                 <div className='days-lasted display-flex-row'>
