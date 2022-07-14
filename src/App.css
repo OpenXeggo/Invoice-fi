@@ -3,9 +3,9 @@
 
 :root {
     --background:#1E1E1E;
-    --content-background:#4D4D4D;
+    --content-background: #222222;
     --nav-font: #4D4D4D;
-    --input-background:#858585;
+    --input-background:#1E1E1E;
     --navbar-height: 65px;
     --xeggo-gradient:linear-gradient(96.2deg, #FF512F 0%, #DD2476 100%);
     --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
@@ -44,6 +44,7 @@ input {
     width: calc(100% - var(--sidebar-width));
     margin-top:var(--navbar-height);
     margin-left: var(--sidebar-width);
+    padding: 30px;
 }
 
 .xeggo-button{
@@ -54,9 +55,19 @@ input {
 }
 
 .page-title {
-    display: inline-block;
+    display: block;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 48px;
+}
+
+.page-subtitle {
+    display: block;
     font-size: 14px;
-    margin: 30px 0;
+    font-weight: 500;
+    line-height: 21px;
+    color: #BABABA;
+    margin: 15px 0 30px 0;
 }
 
 .page-content {
@@ -118,8 +129,16 @@ input {
     text-align: center;
 }
 
+.text-end {
+    text-align: end;
+}
+
 .flex{
     display: flex;
+}
+
+.inline-flex{
+    display: inline-flex;
 }
 
 .flex-col{
@@ -142,8 +161,35 @@ input {
     gap:10px;
 }
 
+.gap-20 {
+    gap: 20px;
+}
+
+.gap-30 {
+    gap: 30px;
+}
+
+.pr-10{
+    padding-right: 20px;
+}
+
 .center{
     align-items: center;
     justify-content: center;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
+.body-container{
+    overflow-x: auto;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}

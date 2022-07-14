@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import CreateInvoice from './Pages/CreateInvoice';
+import CreateInvoice from './Pages/CreateInvoice/CreateInvoice.jsx';
 import { initContract, initWeb3 } from './utils/init';
 import { getInvoices } from './utils/queries';
 import Dashboard from './Pages/Dashboard';

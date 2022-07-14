@@ -65,7 +65,7 @@ const Sidebar = () => {
                         </div>
                     </div>
 
-                    <NavLink to={'/reports'} className="nav-link">     
+                    {/* <NavLink to={'/reports'} className="nav-link">     
                         <ReportIcon />
                         <span className="nav-link-text">Reports</span>
                     </NavLink>
@@ -73,7 +73,7 @@ const Sidebar = () => {
                     <NavLink to={'/inventory'} className="nav-link">     
                         <InventoryIcon />
                         <span className="nav-link-text">Inventory</span>
-                    </NavLink>
+                    </NavLink> */}
 
                     <NavLink to={'/settings'} className="nav-link">     
                         <SettingsIcon />
