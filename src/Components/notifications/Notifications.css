@@ -1,0 +1,69 @@
+:root {
+    --content-background: #24292E;
+}
+
+.notifications-wrapper{
+    width: 25%;
+    margin-top: 53px;
+}
+
+.notifications-wrapper .rectangle{
+    width: 100%;
+    height: 260px;
+    background: var(--content-background);
+    border-radius: 10px;
+}
+
+.notifications{
+    width: 100%;
+    background: var(--content-background);
+    border-radius: 10px;
+    margin-top: 30px;
+    padding-bottom: 40px;
+}
+
+.noti-heading{
+    width: 100%;
+    padding: 20px 15px;
+}
+
+.noti-heading .black{
+    font-style: normal;
+    font-weight: 500;
+    color:#FFFFFF;
+}
+
+.noti-heading .gray{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    color: #858585;
+} 
+
+.m-15{
+    width: 100%;
+    padding: 0px 15px; 
+    margin-bottom: 20px;
+}
+
+.m-15 .noti-text p{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    color: #FAFAFA;
+}
+
+.m-15 .noti-text .hours{
+    font-weight: 400;
+    color: #BABABA;
+    margin-top: 10px;
+}
+
+
+.noti-err p{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color:#FFFFFF;
+}

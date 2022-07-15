@@ -76,7 +76,7 @@ input {
     padding: 50px;
 }
 
-.table-container{
+/* .table-container{
     overflow:auto;
 }
 
@@ -91,8 +91,7 @@ input {
 .table-data:hover{
     cursor: pointer;
     background-color: #858585;
-
-}
+} */
 
 .form-container{
     display: flex;
@@ -192,4 +191,29 @@ input {
 
 .absolute {
     position: absolute;
+}
+
+.display-flex-column{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.display-flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.display-flex-row-center{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.w-h{
+	width: 100%;
+	height: auto;
 }
