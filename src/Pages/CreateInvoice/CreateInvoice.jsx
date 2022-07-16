@@ -1,4 +1,4 @@
-import React,{useState, useRef} from 'react'
+import React,{useState, useRef, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
 import { useNavigate } from 'react-router-dom';
 import './createinvoice.css';
@@ -6,6 +6,10 @@ import PencilIcon from "../../assets/pencil.svg"
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
 import InvoiceDetail from '../../Components/InvoiceDetail';
+import BinIcon from '../../assets/bin.svg';
+import DateDetail from '../../Components/DateDetail';
+import { useEffect } from 'react';
+import moment from 'moment';
 
 const CreateInvoice = ({contract,account}) => {
     const [invoiceData, setinvoiceData] = useState({
@@ -14,24 +18,32 @@ const CreateInvoice = ({contract,account}) => {
         receiverAddress:"",
     });
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [address, setAddress] = useState("");
     const [customerName, setCustomerName] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
-    const [issueNumber, setIssueNumber] = useState("issue #1");
-    const [issueDate, setIssueDate] = useState("Issued date 7th July 2022");
-    const [dueDate, setDueDate] = useState("Due date 7th July 2022");
+    const [dueDate, setDueDate] = useState("");
+
+    const date = moment();
+    const dateString = date.format("Do-MMMM-yy");
     
     const [rows, setRows] = useState([{
         item: "",
         quantity: 0,
         price: 0,
         vat_rate: 0,
+    }]);
+
+    const [amounts, setAmounts] = useState([{
+        net_amount: 0,
         vat_amount: 0,
         gross_amount: 0
-    }]);
+    }])
+
+    const [total, setTotal] = useState({
+        net_amount: 0,
+        vat_amount: 0,
+        gross_amount:0
+    })
 
 
     const navigate = useNavigate();
@@ -51,6 +63,33 @@ const CreateInvoice = ({contract,account}) => {
                     return {...row, [field]: e.target.value}
                 }
                 else return row;
+            })
+        })
+    }
+
+    const addRows = () => {
+        setRows(rows=>[...rows, {
+        item: "",
+        quantity: 0,
+        price: 0,
+        vat_rate: 0,
+        }]);
+        setAmounts(amounts=>[...amounts, {
+            net_amount: 0,
+            vat_amount: 0,
+            gross_amount: 0
+        }])
+    }
+
+    const removeRow = (index) => {
+        setRows((rows)=>{
+            return rows.filter((row, i)=>{
+                return i !== index
+            })
+        })
+        setAmounts((amounts)=>{
+            return amounts.filter((amount, i)=>{
+                return i !== index
             })
         })
     }
@@ -97,6 +136,41 @@ const CreateInvoice = ({contract,account}) => {
             alert("Could not create invoice!");
         }
     }
+
+
+    useEffect(()=>{
+        let d = moment();
+        setDueDate(d.format("YYYY-MM-D"));
+    },[])
+
+
+    useMemo(()=>{
+        setAmounts((amounts)=>
+            amounts.map((amount,i) => {
+            let net_amount = rows[i].quantity * rows[i].price;
+            let vat_amount = 0;
+            if (rows[i].vat_rate > 0) {
+                vat_amount = net_amount * rows[i].vat_rate / 100;
+            }
+            let gross_amount = vat_amount + net_amount;
+            return {net_amount, vat_amount, gross_amount};
+        }))
+    },[rows])
+
+    useMemo(()=>{
+        let total_net = 0, total_vat = 0, total_gross = 0;
+        amounts.forEach(amount=>{
+            total_net += amount.net_amount;
+            total_vat += amount.vat_amount;
+            total_gross += amount.gross_amount
+        })
+        setTotal({
+            net_amount: total_net,
+            vat_amount: total_vat,
+            gross_amount:total_gross
+        })
+    },[amounts])
+
     return (
     <div className="body-container create-container">
         <span className="page-title">Create new Invoice</span>
@@ -106,21 +180,15 @@ const CreateInvoice = ({contract,account}) => {
                 <div className="left-details flex flex-col">
                     <div className="left-top flex flex-col gap-10">
                         <span className='title'>From:</span>                      
-                        <InvoiceDetail 
-                        value={name}
-                        setValue={setName}
-                        placeholder="Enter your name"
-                        />
-                        <InvoiceDetail 
-                        value={email}
-                        setValue={setEmail}
-                        placeholder="Enter your email"
-                        />
-                        <InvoiceDetail
-                        value={address}
-                        setValue={setAddress}
-                        placeholder="Enter your Wallet Address"
-                        />
+                        <div>
+                            <span>Ayomide Odusanya</span> 
+                        </div>
+                        <div>
+                            <span>Odusanyamd@gmail.com</span>
+                        </div>
+                        <div>
+                            <span>0x80191032fB4d309501d2EBc09a1A7d7F2941C8C1</span>
+                        </div>
                     </div>
                     <div className="left-bottom flex flex-col gap-10">
                         <span>Billed to:</span>
@@ -142,15 +210,13 @@ const CreateInvoice = ({contract,account}) => {
                     </div>
                 </div>
                 <div className="right-details flex flex-col gap-10">
-                    <InvoiceDetail 
-                    value={issueNumber}
-                    setValue={setIssueNumber}
-                    />
-                    <InvoiceDetail 
-                    value={issueDate}
-                    setValue={setIssueDate}
-                    />
-                    <InvoiceDetail 
+                    <div>
+                        <span>issue #1</span>
+                    </div>
+                    <div>
+                        <span>Issued date: {dateString}</span>
+                    </div>
+                    <DateDetail 
                     value={dueDate}
                     setValue={setDueDate}
                     />
@@ -158,16 +224,19 @@ const CreateInvoice = ({contract,account}) => {
             </div>
             <div className="token-details">
                 <table className='items-table'>
-                    <tr>
+                    <thead>
+                        <tr>
                         <th style={{textAlign: "start", minWidth: "300px"}}>Item Description</th>
                         <th>Quantity</th>
                         <th>Unit Price</th>
                         <th>Vat Rate</th>
                         <th>Vat Amount</th>
                         <th>Gross Amount</th>
-                    </tr>
+                        </tr>
+                    </thead>
                     {rows.map((row,i) => (
-                        <tr key={i}>
+                        <tbody key={i}>
+                            <tr>
                             <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' /></td>
                             <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' /></td>
                             <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' /></td>
@@ -175,12 +244,14 @@ const CreateInvoice = ({contract,account}) => {
                                 <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
                                 <span className='vat' >%</span>
                             </td>
-                            <td><input type="number" value={row.vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
-                            <td><input type="number" value={row.gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
-                        </tr>
+                            <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
+                            <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
+                            {i > 0 && <td><span className='pointer' onClick={()=>removeRow(i)}><img src={BinIcon} alt="Delete" /></span></td>}
+                            </tr>
+                        </tbody>
                     ))}
                 </table>
-                <div className='add-item' onClick={()=>setRows(rows=>[...rows, 1])}> <span><img src={AddIcon} className="add-icon" /></span> <span>Add Item</span></div>
+                <div className='add-item' onClick={()=>addRows()}> <span><img src={AddIcon} className="add-icon" /></span> <span>Add Item</span></div>
             </div>
             <div className='invoice-summary flex space-between'>
                 <div className="notes-container flex flex-col">
@@ -191,17 +262,17 @@ const CreateInvoice = ({contract,account}) => {
                     <div className="invoice-total-item">
                         <span className='label'>Total Net Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.net_amount}</span>
                     </div>
                     <div className="invoice-total-item">
-                        <span className='label'>Total Net Amount</span>
+                        <span className='label'>Total VAT Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.vat_amount}</span>
                     </div>
                     <div className="invoice-total-item">
-                        <span className='label'>Total Net Amount</span>
+                        <span className='label'>Total Gross Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.gross_amount}</span>
                     </div>
                 </div>
             </div>
