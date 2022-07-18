@@ -8,6 +8,7 @@ import Dashboard from './Pages/Dashboard';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
 import Sidebar from './Components/Sidebar/Sidebar.jsx';
+import ProfileDetails from './Components/ProfileDetails/ProfileDetails.jsx';
 
 
 import "./App.css";
@@ -50,6 +51,10 @@ function App() {
     setAccount(account);
   };
 
+  const [modal, setModal] = useState(true);
+
+  const closeModal  = () => setModal(false);
+
   return (
     <div>
       <Navbar account={account} />
@@ -59,6 +64,7 @@ function App() {
         <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
+      {modal && <ProfileDetails closeModal={closeModal}/>}
     </div>
   );
 }

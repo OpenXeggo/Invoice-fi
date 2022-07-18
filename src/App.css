@@ -11,6 +11,10 @@
     --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
     --border-color: #4D4D4D;
     --sidebar-width: 200px;
+    --modal-background: #24292E66;
+    --modal-input-background: #1E1E1E;
+    --modal-content-background: #1E1E1E;
+    --modal-input-border:#4D4D4D;
 }
 
 *, *::after, *::before {
@@ -161,6 +165,10 @@ input {
     gap:10px;
 }
 
+.gap-15 {
+    gap: 15px;
+}
+
 .gap-20 {
     gap: 20px;
 }
@@ -192,4 +200,24 @@ input {
 
 .absolute {
     position: absolute;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+.line-21 {
+    line-height: 21px;
+}
+
+.line-30{
+    line-height: 30px;
+}
+
+.weight-600 {
+    font-weight: 600px;
 }

@@ -10,6 +10,7 @@ import BinIcon from '../../assets/bin.svg';
 import DateDetail from '../../Components/DateDetail';
 import { useEffect } from 'react';
 import moment from 'moment';
+import ProfileDetails from '../../Components/ProfileDetails/ProfileDetails';
 
 const CreateInvoice = ({contract,account}) => {
     const [invoiceData, setinvoiceData] = useState({
@@ -301,9 +302,6 @@ const CreateInvoice = ({contract,account}) => {
                     </div>
                 </div>
             </div>
-
-
-
             
             {/* <div className="p-4 border-4 border-blue-300">
                 <form onSubmit={onSubmitHandler} className="form">
