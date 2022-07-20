@@ -22,7 +22,7 @@ const Navbar = ({account}) => {
                     </div>
                     <div className="header-end">
                         <div className="flex"><img src={BellIcon} /></div>
-                            <span className="gap">|</span>
+                            <span className="navbar-gap">|</span>
                         <div className="flex gap-10">
                             <img src={ProfileIcon} />
                             <div className="profile flex flex-col justify-center">
@@ -30,7 +30,7 @@ const Navbar = ({account}) => {
                                 <span>03x...1919</span>
                             </div>
                         </div>
-                        <span className="gap">|</span>
+                        <span className="navbar-gap">|</span>
                         <div className="switch">
                             <div className="active">
                                 <SunIcon />
