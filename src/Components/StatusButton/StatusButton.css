@@ -1,0 +1,21 @@
+.btn {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.pending-btn {
+    color: #FAC407;
+    background-color: rgb(83, 73, 40);
+}
+
+.overdue-btn {
+    color: #DD0E0E;
+    background-color: rgb(76, 29, 29);
+}
+
+.paid-btn {
+    color: #04CB90;
+    background-color: rgb(27, 56, 48);
+}

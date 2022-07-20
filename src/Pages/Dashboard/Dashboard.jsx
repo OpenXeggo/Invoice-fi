@@ -9,6 +9,7 @@ import WelcomeHello from '../../Components/welcomeHello/WelcomeHello';
 import Overview from '../../Components/overview/Overview';
 import Notifications from '../../Components/notifications/Notifications';
 import './Dashboard.css'
+import StatusButton from '../../Components/StatusButton/StatusButton';
 
 
 const Dashboard = ({ invoices, account }) => {
@@ -91,8 +92,41 @@ const Dashboard = ({ invoices, account }) => {
                         <th>Token Symbol</th>
                         <th>Token Amount</th>
                         <th>Pay / Cancel</th>
+                        <th>Status</th>
                       </tr>
                       </thead>
+                      <tbody>
+                        <tr>
+                          <td>12345</td>
+                          <td>
+                            Some One
+                          </td>
+                          <td>$</td>
+                          <td>1234567890</td>
+                          <td> <StatusButton status='pending' /> </td>
+                          <td> <StatusButton status='pending' /> </td>
+                        </tr>
+                        <tr>
+                          <td>12345</td>
+                          <td>
+                            Some One
+                          </td>
+                          <td>$</td>
+                          <td>1234567890</td>
+                          <td> <StatusButton status='overdue' /> </td>
+                          <td> <StatusButton status='overdue' /> </td>
+                        </tr>
+                        <tr>
+                          <td>12345</td>
+                          <td>
+                            Some One
+                          </td>
+                          <td>$</td>
+                          <td>1234567890</td>
+                          <td> <StatusButton status='paid' /> </td>
+                          <td> <StatusButton status='paid' /> </td>
+                        </tr>
+                      </tbody>
                       {accountInvoices && accountInvoices.length > 0 && accountInvoices.map((invoice) => {
                         return (
                           <tbody>
