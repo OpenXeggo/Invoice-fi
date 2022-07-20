@@ -189,6 +189,10 @@ input {
     position: absolute;
 }
 
+.font-24 {
+    font-size: 24px;
+}
+
 .font-20 {
     font-size: 20px;
 }
@@ -203,6 +207,10 @@ input {
 
 .line-30{
     line-height: 30px;
+}
+
+.line-36 {
+    line-height: 36px;
 }
 
 .weight-500 {

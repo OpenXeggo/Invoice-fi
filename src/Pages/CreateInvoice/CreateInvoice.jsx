@@ -227,27 +227,27 @@ const CreateInvoice = ({contract,account}) => {
                 <table className='items-table'>
                     <thead>
                         <tr>
-                        <th style={{textAlign: "start", minWidth: "300px"}}>Item Description</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Vat Rate</th>
-                        <th>Vat Amount</th>
-                        <th>Gross Amount</th>
+                            <th style={{textAlign: "start", minWidth: "300px"}}>Item Description</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Vat Rate</th>
+                            <th>Vat Amount</th>
+                            <th>Gross Amount</th>
                         </tr>
                     </thead>
                     {rows.map((row,i) => (
                         <tbody key={i}>
                             <tr>
-                            <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' /></td>
-                            <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' /></td>
-                            <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' /></td>
-                            <td className='relative'>
-                                <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
-                                <span className='vat' >%</span>
-                            </td>
-                            <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
-                            <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
-                            {i > 0 && <td><span className='pointer' onClick={()=>removeRow(i)}><img src={BinIcon} alt="Delete" /></span></td>}
+                                <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' /></td>
+                                <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' /></td>
+                                <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' /></td>
+                                <td className='relative'>
+                                    <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
+                                    <span className='vat' >%</span>
+                                </td>
+                                <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
+                                <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
+                                {i > 0 && <td><span className='pointer' onClick={()=>removeRow(i)}><img src={BinIcon} alt="Delete" /></span></td>}
                             </tr>
                         </tbody>
                     ))}

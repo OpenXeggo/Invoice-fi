@@ -15,6 +15,8 @@ import ProfileDetails from './Components/ProfileDetails/ProfileDetails.jsx';
 import "./App.css";
 import Navbar from './Components/Navbar/Navbar.jsx';
 import WelcomeCard from './Components/WelcomeCard/WelcomeCard.jsx';
+import { checkIfUserExists, checkUserFirstTime } from './utils/checkUser.js';
+import SelectWallets from './Components/SelectWallets/SelectWallets.jsx';
 
 
 
@@ -43,11 +45,35 @@ function App() {
   };
 
 
-  const [welcomeModal, setWelcomeModal] = useState(true);
-  const [profileModal, setProfileModal] = useState(true);
+  const [welcomeModal, setWelcomeModal] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+  const [walletModal, setWalletModal] = useState(false)
+
+  const checkUser = () => {
+    if (!checkUserFirstTime()) {
+      setWelcomeModal(true);
+      return;
+    }
+    if (account.length < 1) {
+      setWalletModal(true);
+      return;
+    }
+    if (!checkIfUserExists()) {
+      setProfileModal(true);
+      return;
+    }
+  }
+
+  useEffect(()=>{
+    checkUser();
+  },[account]);
 
   const closeWelcomeModal  = () => setWelcomeModal(false);
   const closeProfileModal  = () => setProfileModal(false);
+  
+  const closeWalletModal = () => {
+    setWalletModal(false);
+  }
 
   return (
     <div className='App'>
@@ -60,6 +86,8 @@ function App() {
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
       {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} setAccount={setAccount} account={account} />}
+      {walletModal && <SelectWallets account={account} setAccount={setAccount} closeModal={closeWalletModal} />}
+      {profileModal && <ProfileDetails closeModal={closeProfileModal} account={account} /> }
     </div>
   );
 }
