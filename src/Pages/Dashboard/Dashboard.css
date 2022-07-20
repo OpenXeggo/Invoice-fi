@@ -1,0 +1,72 @@
+:root {
+    --content-background: #FAFAFA;
+    --table-fontsize: 12px;
+}
+
+.gap{
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.width{
+    width: 75%;
+}
+
+.block{
+    display: block;
+    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
+    color:#FFFFFF;
+    background-color: var(--content-background);
+    padding: 20px 0px 20px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.content{
+    width: 100%;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    padding: 0px !important;
+}
+
+.table-container{
+    margin: auto auto;
+}
+
+table {
+    width: 95%;
+    height: auto;
+    margin: auto auto;
+    border-collapse: collapse;
+    border: none;
+    overflow-x: auto;
+}
+  
+table thead {
+    width: 100%;
+    height: 60px;
+}
+
+table thead tr th {
+    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: var(--table-fontsize);
+    color: #858585;
+}
+ 
+table tbody tr {
+    width: 100%;
+    height: 50px;
+}
+ 
+table tbody tr td {
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: var(--table-fontsize);
+    color: #FAFAFA;
+}

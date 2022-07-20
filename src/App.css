@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+
 :root {
-    --background: #24292E;
-    --content-background:#4D4D4D;
-    --input-background:#858585;
+    --background:#1E1E1E;
+    --content-background: #222222;
+    --nav-font: #4D4D4D;
+    --input-background:#1E1E1E;
     --navbar-height: 65px;
     --xeggo-gradient:linear-gradient(96.2deg, #FF512F 0%, #DD2476 100%);
     --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
-
+    --border-color: #4D4D4D;
+    --sidebar-width: 200px;
 }
-
 
 *, *::after, *::before {
     box-sizing: border-box;
@@ -26,10 +28,9 @@ body {
 }
 
 .body-container{
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
 }
-
 
 button {
     cursor: pointer;
@@ -39,56 +40,11 @@ input {
     background: var(--input-background);
 }
 
-.navbar{
-    height:var(--navbar-height);
-    width: 100%;
-    background: var(--content-background);
-}
-
-.navbar-container{
-    width:90%;
-    height:100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.navbar-left{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    height: 100%;
-}
-
-.nav-link{
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 100%;
-    padding: 0 20px;
-
-
-}
-
-.active{
-    border: 3px solid;
-    border-image: var(--xeggo-gradient)
-    1 /           
-    0 0 3px 0 /    
-    18px 14px 9px 4px      
-    round;  
-    border-image-outset: 0;   
-    border-radius: 30px;            
-}
-
-.nav-link-icon {
-    display: inline-flex;
-}
-
-.nav-link-text {
-    display: inline-block;
+.body-container {
+    width: calc(100% - var(--sidebar-width));
+    margin-top:var(--navbar-height);
+    margin-left: var(--sidebar-width);
+    padding: 30px;
 }
 
 .xeggo-button{
@@ -99,9 +55,19 @@ input {
 }
 
 .page-title {
-    display: inline-block;
+    display: block;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 48px;
+}
+
+.page-subtitle {
+    display: block;
     font-size: 14px;
-    margin: 30px 0;
+    font-weight: 500;
+    line-height: 21px;
+    color: #BABABA;
+    margin: 15px 0 30px 0;
 }
 
 .page-content {
@@ -110,7 +76,7 @@ input {
     padding: 50px;
 }
 
-.table-container{
+/* .table-container{
     overflow:auto;
 }
 
@@ -125,8 +91,7 @@ input {
 .table-data:hover{
     cursor: pointer;
     background-color: #858585;
-
-}
+} */
 
 .form-container{
     display: flex;
@@ -161,4 +126,94 @@ input {
 
 .text-center{
     text-align: center;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.flex{
+    display: flex;
+}
+
+.inline-flex{
+    display: inline-flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.gap-5{
+    gap: 5px;
+}
+
+.gap-10{
+    gap:10px;
+}
+
+.gap-20 {
+    gap: 20px;
+}
+
+.gap-30 {
+    gap: 30px;
+}
+
+.pr-10{
+    padding-right: 20px;
+}
+
+.center{
+    align-items: center;
+    justify-content: center;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.body-container{
+    overflow-x: auto;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.display-flex-column{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.display-flex-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.display-flex-row-center{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.w-h{
+	width: 100%;
+	height: auto;
 }

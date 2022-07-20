@@ -1,0 +1,43 @@
+:root {
+    --content-background: #24292E;
+    --text-color:  #FFFFFF;
+}
+
+.metric{
+    width: 166px;
+    height: 141px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--content-background);
+    border-radius: 10px;
+    padding-left: 20px;
+}
+
+.metric p{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.metric .text{
+   padding: 13px 0px 8px 0px;
+}
+
+.metric .qty{
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 39px;
+    color:  var(--text-color);
+}
+
+.doc-icon-wrapper{
+    width: 40px;
+    height: 40px;
+    background: #50312e;
+    border-radius: 50px;
+}

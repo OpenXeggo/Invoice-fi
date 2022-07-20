@@ -1,0 +1,27 @@
+:root {
+    --heading-text-color: #FAFAFA;
+}
+
+.pt{
+    padding-top: 30px;
+}
+
+.pt p{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 30px;
+    color: #BABABA;
+}
+
+.m-t-b{
+    margin: 35px 0px;
+    border-radius: 10px !important;
+}
+
+.action-icon{
+    width: 16px;
+    height: 15px;
+    margin: 0px 8px;
+    cursor: pointer;
+}

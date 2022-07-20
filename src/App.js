@@ -1,15 +1,18 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import CreateInvoice from './Pages/CreateInvoice';
+import CreateInvoice from './Pages/CreateInvoice/CreateInvoice.jsx';
 import { initContract, initWeb3 } from './utils/init';
 import { getInvoices } from './utils/queries';
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/Dashboard/Dashboard';
+import ManageInvoice from './Pages/ManageInvoice/ManageInvoice.jsx';
 import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
+import Sidebar from './Components/Sidebar/Sidebar.jsx';
+
 
 import "./App.css";
-import Navbar from './Components/Navbar';
+import Navbar from './Components/Navbar/Navbar.jsx';
 
 
 
@@ -51,9 +54,11 @@ function App() {
   return (
     <div>
       <Navbar account={account} />
+      <Sidebar />
       <Routes>
         <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
         <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
+        <Route path='/invoices' element={<ManageInvoice invoices={invoices} account={account}/>}/>
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
     </div>

@@ -1,0 +1,184 @@
+.invoice-details {
+    padding-bottom: 30px;
+    justify-content: space-between;
+    border: 1px solid;
+    border-image: var(--xeggo-gradient)
+    1 /           
+    0 0 1px 0 /    
+    18px 14px 9px 4px      
+    round;  
+    border-image-outset: 0;
+}
+.invoice-details span{
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 500;
+}
+
+.invoice-details .title{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px
+}
+
+.left-details {
+    gap: 40px;
+}
+
+.right-details {
+    align-items: flex-end;
+}
+
+.token-details{
+    padding: 30px 0;
+    border: 1px solid;
+    border-image: var(--xeggo-gradient)
+    1 /           
+    0 0 1px 0 /    
+    18px 14px 9px 4px      
+    round;  
+    border-image-outset: 0;
+}
+
+.token-inputs {
+    justify-content: space-between;
+}
+
+.token-details span{
+    font-size: 14px;
+}
+
+input, textarea {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+    background: var(--input-background);
+}
+
+.w-100{
+    width:100px;
+}
+
+.pencil-icon {
+    width: 15px;
+    height: 15px;
+}
+.icon-container {
+    padding: 0 10px;
+}
+
+.invoice-summary {
+    gap: 100px;
+}
+
+.invoice-summary > div{
+    flex-basis: 50%;
+}
+
+.notes-container {
+    padding:10px;
+    gap:10px;
+}
+
+.notes-text {
+    resize: none;
+    width:90%;
+    height: 100px;
+}
+
+.invoice-total{
+    text-align: end;
+}
+
+.invoice-total-item{
+    display: flex;
+    gap: 30px;
+    justify-content: space-around;
+    width:100%;
+    padding: 20px 0;
+    align-items: center;
+    border: 1px solid;
+    border-image: var(--xeggo-gradient)
+    1 /           
+    0 0 1px 0 /    
+    18px 14px 9px 4px      
+    round;  
+    border-image-outset: 0;
+}
+
+.invoice-total-item .label {
+    font-size: 14px;
+}
+
+.payment-container {
+    display:flex;
+}
+
+.payment-container > div {
+    flex-basis: 50%;
+}
+
+.payment-container .label{
+    font-size: 14px;
+}
+
+.select {
+    cursor: pointer;
+    padding: 10px 25px;
+    background: linear-gradient(var(--content-background), var(--content-background)) padding-box,
+                var(--xeggo-gradient) border-box;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    display: flex;
+    gap:10px;
+}
+
+.invoice-buttons {
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+}
+
+.xeggo-btn {
+    padding: 15px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: var(--xeggo-gradient);
+    cursor: pointer;
+}
+
+.xeggo-btn-outline{
+    padding: 15px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 25px;
+    background: linear-gradient(var(--content-background), var(--content-background)) padding-box,
+                var(--xeggo-gradient) border-box;
+    border: 2px solid transparent;
+    border-radius: 10px;
+}
+
+.center-input {
+    text-align: center;
+}
+
+.vat {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.add-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.add-icon{
+    width: 24px;
+    height: 24px;
+}
