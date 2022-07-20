@@ -6,6 +6,7 @@ import SunIcon from "../../assets/icons/SunIcon";
 
 import SearchIcon from "../../assets/search.svg";
 import "./navbar.css";
+import { modifyAddress } from '../../utils/modifyAddress';
 
 const Navbar = ({account}) => {
 
@@ -27,7 +28,7 @@ const Navbar = ({account}) => {
                             <img src={ProfileIcon} />
                             <div className="profile flex flex-col justify-center">
                                 <b>Xeggo</b>
-                                <span>03x...1919</span>
+                                <span>{modifyAddress(account)}</span>
                             </div>
                         </div>
                         <span className="navbar-gap">|</span>

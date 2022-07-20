@@ -14,6 +14,7 @@ import ProfileDetails from './Components/ProfileDetails/ProfileDetails.jsx';
 
 import "./App.css";
 import Navbar from './Components/Navbar/Navbar.jsx';
+import WelcomeCard from './Components/WelcomeCard/WelcomeCard.jsx';
 
 
 
@@ -28,12 +29,11 @@ function App() {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    connectWallet();
     if (window.ethereum) {
       setContract(initContract());
       fetchQuery();
     }
-  }, []);
+  }, [account]);
 
   const fetchQuery = async () => {
     const { data } = await Client.query({ query: gql(getInvoices) });
@@ -42,19 +42,12 @@ function App() {
     setInvoices(invoices);
   };
 
-  const connectWallet = async () => {
-    const { ethereum } = window;
-    if (!ethereum) {
-      return alert('Please install metamask');
-    }
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    const account = accounts[0];
-    setAccount(account);
-  };
 
-  const [modal, setModal] = useState(true);
+  const [welcomeModal, setWelcomeModal] = useState(true);
+  const [profileModal, setProfileModal] = useState(true);
 
-  const closeModal  = () => setModal(false);
+  const closeWelcomeModal  = () => setWelcomeModal(false);
+  const closeProfileModal  = () => setProfileModal(false);
 
   return (
     <div>
@@ -66,7 +59,8 @@ function App() {
         <Route path='/invoices' element={<ManageInvoice invoices={invoices} account={account}/>}/>
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
-      {modal && <ProfileDetails closeModal={closeModal}/>}
+      {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} setAccount={setAccount} account={account} />}
+      {(account.length > 1  && profileModal && !welcomeModal) && <ProfileDetails closeModal={closeProfileModal} account={account} />}
     </div>
   );
 }

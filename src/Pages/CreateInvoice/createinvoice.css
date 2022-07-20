@@ -206,7 +206,6 @@ input, textarea {
 .items-table {
     width: 100%;
     border-spacing: 15px;
-
 }
 
 .items-table th {
@@ -219,6 +218,10 @@ input, textarea {
     height: 50px;
     font-size: 16px;
     width: 100%;
+}
+
+.items-table td{
+    padding: 0 5px;
 }
 
 .center-input {
