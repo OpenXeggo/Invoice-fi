@@ -9,7 +9,7 @@ import "./profiledetails.css";
 const ProfileDetails = ({closeModal, account}) => {
 
     return ( 
-        <Modal closeFunction={closeModal}>
+        <Modal>
             <div className="details-container flex flex-col justify-center gap-20">
                 
                 <div className="text-center" >
@@ -32,7 +32,7 @@ const ProfileDetails = ({closeModal, account}) => {
                     </div>
                 </div>
                 <div className="modal-button">
-                    <button className="flex items-center justify-center gap-15">Get Started <img src={SideIcon} /></button>
+                    <button className="flex items-center justify-center gap-15" onClick={closeModal}>Get Started <img src={SideIcon} /></button>
                 </div>
             </div>
         </Modal>

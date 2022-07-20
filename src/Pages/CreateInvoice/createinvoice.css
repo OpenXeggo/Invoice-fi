@@ -191,13 +191,6 @@ input, textarea {
     height: 24px;
 }
 
-.details-input {
-    position: absolute;
-    top:0;
-    left: 0;
-    display: none;
-}
-
 .invoice-detail {
     min-height:25px;
     min-width: 200px;

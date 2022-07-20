@@ -50,7 +50,7 @@ function App() {
   const closeProfileModal  = () => setProfileModal(false);
 
   return (
-    <div>
+    <div className='App'>
       <Navbar account={account} />
       <Sidebar />
       <Routes>
@@ -60,7 +60,6 @@ function App() {
         <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
       </Routes>
       {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} setAccount={setAccount} account={account} />}
-      {(account.length > 1  && profileModal && !welcomeModal) && <ProfileDetails closeModal={closeProfileModal} account={account} />}
     </div>
   );
 }

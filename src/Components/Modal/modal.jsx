@@ -8,7 +8,6 @@ const Modal = (props) => {
         <div className="modal">
             <div className="modal-container">
                 <div className="modal-content">
-                <span className="close-modal" ><img onClick={props.closeFunction} src={CloseIcon}/></span>
                     {props.children}
                 </div>
             </div>

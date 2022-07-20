@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
+import ProfileDetails from "../ProfileDetails/ProfileDetails";
 
 import BackButton from "../../assets/back.svg"
 
@@ -9,6 +10,7 @@ import "./welcomecard.css";
 const WelcomeCard = ({closeModal, setAccount, account}) => {
 
     const [card, setCard] = useState(1);
+    const [profile, setProfile] = useState(false);
 
     const connectWallet = async () => {
         const { ethereum } = window;
@@ -32,12 +34,11 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     }
 
     const handleConnectWallet = async () => {
-        if (account.length > 0) {
-            changeCard("next");
-            return;
+        if (account.length < 0) {
+            await connectWallet();
         }
-        await connectWallet();
-        changeCard("next");     
+        setProfile(true); 
+        changeCard("next");
     } 
 
     const returnCard = (num) => {
@@ -92,15 +93,21 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
 
 
     return ( 
-        <Modal closeFunction={closeModal}>
-            <div className="welcome-card-container flex flex-col items-center">
-                <div className="mb-20">
-                    <img src={ProfileIcon} alt="" width={"70px"} height="70px" />
+        <>
+        {profile ? (
+            <ProfileDetails closeModal={()=>setProfile(false)} account={account} />
+        ) : (
+            <Modal>
+                <div className="welcome-card-container flex flex-col items-center">
+                    <div className="mb-20">
+                        <img src={ProfileIcon} alt="" width={"70px"} height="70px" />
+                    </div>
+                    <span className="font-14 line-21 weight-600 faint-color mb-10" >{card} of 3</span> 
+                    {returnCard(card)}
                 </div>
-                <span className="font-14 line-21 weight-600 faint-color mb-10" >{card} of 3</span> 
-                {returnCard(card)}
-            </div>
-        </Modal>
+            </Modal>
+        )}
+        </>
     );
 }
  
