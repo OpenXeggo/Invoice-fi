@@ -12,16 +12,6 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     const [card, setCard] = useState(1);
     const [profile, setProfile] = useState(false);
 
-    const connectWallet = async () => {
-        const { ethereum } = window;
-        if (!ethereum) {
-          return alert('Please install metamask');
-        }
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        setAccount(account);
-    };
-
     const changeCard = (direction) => {
         if (direction === "prev") {
             if (card === 1) return;
@@ -34,9 +24,13 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     }
 
     const handleConnectWallet = async () => {
-        if (account.length < 0) {
-            await connectWallet();
+        const { ethereum } = window;
+        if (!ethereum) {
+        return alert('Please install metamask');
         }
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        setAccount(account);
         setProfile(true); 
         changeCard("next");
     } 
