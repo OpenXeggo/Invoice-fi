@@ -24,6 +24,13 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     }
 
     const handleConnectWallet = async () => {
+
+        if(account.length > 1) {
+            setProfile(true); 
+            changeCard("next");
+            return;
+        }
+
         const { ethereum } = window;
         if (!ethereum) {
         return alert('Please install metamask');
