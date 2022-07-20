@@ -1,0 +1,27 @@
+.welcome-card-container {
+    width: 550px;
+    padding: 20px 50px;
+}
+
+.faint-color {
+    color: #4D4D4D;
+}
+
+.xeggo-button.start-button{
+    padding: 15px 20px;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.basis-45 {
+    flex-grow: 1;
+}
+
+.back-btn {
+    padding: 15px 40px;
+}
+
+.xeggo-button.done-btn {
+    padding: 15px 75px;
+
+}

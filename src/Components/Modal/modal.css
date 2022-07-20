@@ -1,0 +1,23 @@
+.modal {
+    position:fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    height:100%;
+    background: var(--modal-background);
+    backdrop-filter: blur(15px);
+    z-index: 100;
+}
+
+.modal-container {
+    width:100%;
+    height:100%;
+    display:grid;
+    place-items: center;
+}
+
+.modal-content {
+    background: var(--modal-content-background);
+    border-radius: 20px;
+    position:relative;
+}
