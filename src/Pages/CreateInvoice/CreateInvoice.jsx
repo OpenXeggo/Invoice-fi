@@ -1,17 +1,51 @@
-import React,{useState} from 'react'
+import React,{useState, useRef, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
 import { useNavigate } from 'react-router-dom';
 import './createinvoice.css';
 import PencilIcon from "../../assets/pencil.svg"
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
+import InvoiceDetail from '../../Components/InvoiceDetail';
+import BinIcon from '../../assets/bin.svg';
+import DateDetail from '../../Components/DateDetail';
+import { useEffect } from 'react';
+import moment from 'moment';
+import ProfileDetails from '../../Components/ProfileDetails/ProfileDetails';
 
 const CreateInvoice = ({contract,account}) => {
     const [invoiceData, setinvoiceData] = useState({
         tokenAddress:"",
         tokenAmount:0,
         receiverAddress:"",
+    });
+
+    const [customerName, setCustomerName] = useState("");
+    const [customerEmail, setCustomerEmail] = useState("");
+    const [customerAddress, setCustomerAddress] = useState("");
+    const [dueDate, setDueDate] = useState("");
+
+    const date = moment();
+    const dateString = date.format("Do-MMMM-yy");
+    
+    const [rows, setRows] = useState([{
+        item: "",
+        quantity: 0,
+        price: 0,
+        vat_rate: 0,
+    }]);
+
+    const [amounts, setAmounts] = useState([{
+        net_amount: 0,
+        vat_amount: 0,
+        gross_amount: 0
+    }])
+
+    const [total, setTotal] = useState({
+        net_amount: 0,
+        vat_amount: 0,
+        gross_amount:0
     })
+
 
     const navigate = useNavigate();
     
@@ -20,6 +54,45 @@ const CreateInvoice = ({contract,account}) => {
     const onChangeHandler=(e)=>{
         const {id,value} = e.target
         setinvoiceData({...invoiceData,[id]:value})
+    }
+
+
+    const handleRow = (e, index, field) => {
+        setRows(rows=>{
+            return rows.map((row,i) => {
+                if (i === index) {
+                    return {...row, [field]: e.target.value}
+                }
+                else return row;
+            })
+        })
+    }
+
+    const addRows = () => {
+        setRows(rows=>[...rows, {
+        item: "",
+        quantity: 0,
+        price: 0,
+        vat_rate: 0,
+        }]);
+        setAmounts(amounts=>[...amounts, {
+            net_amount: 0,
+            vat_amount: 0,
+            gross_amount: 0
+        }])
+    }
+
+    const removeRow = (index) => {
+        setRows((rows)=>{
+            return rows.filter((row, i)=>{
+                return i !== index
+            })
+        })
+        setAmounts((amounts)=>{
+            return amounts.filter((amount, i)=>{
+                return i !== index
+            })
+        })
     }
 
     const onSubmitHandler=async(e)=>{
@@ -64,61 +137,122 @@ const CreateInvoice = ({contract,account}) => {
             alert("Could not create invoice!");
         }
     }
+
+
+    useEffect(()=>{
+        let d = moment();
+        setDueDate(d.format("YYYY-MM-D"));
+    },[])
+
+
+    useMemo(()=>{
+        setAmounts((amounts)=>
+            amounts.map((amount,i) => {
+            let net_amount = rows[i].quantity * rows[i].price;
+            let vat_amount = 0;
+            if (rows[i].vat_rate > 0) {
+                vat_amount = net_amount * rows[i].vat_rate / 100;
+            }
+            let gross_amount = vat_amount + net_amount;
+            return {net_amount, vat_amount, gross_amount};
+        }))
+    },[rows])
+
+    useMemo(()=>{
+        let total_net = 0, total_vat = 0, total_gross = 0;
+        amounts.forEach(amount=>{
+            total_net += amount.net_amount;
+            total_vat += amount.vat_amount;
+            total_gross += amount.gross_amount
+        })
+        setTotal({
+            net_amount: total_net,
+            vat_amount: total_vat,
+            gross_amount:total_gross
+        })
+    },[amounts])
+
     return (
-    <div className="body-container">
+    <div className="body-container create-container">
         <span className="page-title">Create new Invoice</span>
         <span className='page-subtitle'>Invoives/New Invoice</span>
         <div className="page-content">
             <div className="invoice-details flex">
                 <div className="left-details flex flex-col">
                     <div className="left-top flex flex-col gap-10">
-                        <span className='title'>From:</span>
-                        <span> Ayomide Odesanya <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
-                        <span>Odusanyamd@gmail.com <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
-                        <span>0x80191032fB4d309501d2EBc09a1A7d7F2941C8C1 <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
+                        <span className='title'>From:</span>                      
+                        <div>
+                            <span>Ayomide Odusanya</span> 
+                        </div>
+                        <div>
+                            <span>Odusanyamd@gmail.com</span>
+                        </div>
+                        <div>
+                            <span>0x80191032fB4d309501d2EBc09a1A7d7F2941C8C1</span>
+                        </div>
                     </div>
                     <div className="left-bottom flex flex-col gap-10">
                         <span>Billed to:</span>
-                        <span>Enter Customers name <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
-                        <span>Enter Customers Email <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
-                        <span>Customers wallet address <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> </span>
+                        <InvoiceDetail 
+                        value={customerName}
+                        setValue={setCustomerName}
+                        placeholder="Enter Customer Name"
+                        />
+                        <InvoiceDetail 
+                        value={customerEmail}
+                        setValue={setCustomerEmail}
+                        placeholder="Enter Customer Email"
+                        />
+                        <InvoiceDetail 
+                        value={customerAddress}
+                        setValue={setCustomerAddress}
+                        placeholder="Enter Customer Address"
+                        />
                     </div>
                 </div>
                 <div className="right-details flex flex-col gap-10">
-                    <span> <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> Issue #1</span>
-                    <span> <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> Issued date 7th July 2022</span>
-                    <span> <span className='icon-container'><img src={PencilIcon} alt="edit" className='pencil-icon' /></span> Due date 7th July 2022</span>
+                    <div>
+                        <span>issue #1</span>
+                    </div>
+                    <div>
+                        <span>Issued date: {dateString}</span>
+                    </div>
+                    <DateDetail 
+                    value={dueDate}
+                    setValue={setDueDate}
+                    />
                 </div>
             </div>
             <div className="token-details">
-                <div className='flex gap-20 token-inputs'>
-                    <div className='inline-flex flex-col gap-20'>
-                        <span>Item Description</span>
-                        <input type="text" placeholder='Enter Item Description' />
-                    </div>
-                    <div className='inline-flex flex-col gap-20 w-100 text-center'>
-                        <span>Quantity</span>
-                        <input type="number" placeholder='-' className='center-input' />
-                    </div>
-                    <div className='inline-flex flex-col gap-20 w-100 text-center'>
-                        <span>Unit Price</span>
-                        <input type="number" placeholder='-' className='center-input' />
-                    </div>
-                    <div className='inline-flex flex-col gap-20 w-100 text-center relative'>
-                        <span>Vat Rate</span>
-                        <input type="text" placeholder='-' className='center-input pr-10' />
-                        <span className='vat' >%</span>
-                    </div>
-                    <div className='inline-flex flex-col gap-20 w-100 text-center'>
-                        <span>Vat Amount</span>
-                        <input type="number" placeholder='-' className='center-input' />
-                    </div>
-                    <div className='inline-flex flex-col gap-20 w-100 text-center'>
-                        <span>Gross Amount</span>
-                        <input type="number" placeholder='-' className='center-input' />
-                    </div>
-                </div>
-                <div className='add-item'> <span><img src={AddIcon} className="add-icon" /></span> <span>Add Item</span></div>
+                <table className='items-table'>
+                    <thead>
+                        <tr>
+                        <th style={{textAlign: "start", minWidth: "300px"}}>Item Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Vat Rate</th>
+                        <th>Vat Amount</th>
+                        <th>Gross Amount</th>
+                        </tr>
+                    </thead>
+                    {rows.map((row,i) => (
+                        <tbody key={i}>
+                            <tr>
+                            <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' /></td>
+                            <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' /></td>
+                            <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' /></td>
+                            <td className='relative'>
+                                <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
+                                <span className='vat' >%</span>
+                            </td>
+                            <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
+                            <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
+                            {i > 0 && <td><span className='pointer' onClick={()=>removeRow(i)}><img src={BinIcon} alt="Delete" /></span></td>}
+                            </tr>
+                        </tbody>
+                    ))}
+                </table>
+                <div className='add-item' onClick={()=>addRows()}> <span><img src={AddIcon} className="add-icon" /></span> <span>Add Item</span></div>
             </div>
             <div className='invoice-summary flex space-between'>
                 <div className="notes-container flex flex-col">
@@ -129,17 +263,17 @@ const CreateInvoice = ({contract,account}) => {
                     <div className="invoice-total-item">
                         <span className='label'>Total Net Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.net_amount}</span>
                     </div>
                     <div className="invoice-total-item">
-                        <span className='label'>Total Net Amount</span>
+                        <span className='label'>Total VAT Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.vat_amount}</span>
                     </div>
                     <div className="invoice-total-item">
-                        <span className='label'>Total Net Amount</span>
+                        <span className='label'>Total Gross Amount</span>
                         <span>=</span>
-                        <span>0.6</span>
+                        <span>{total.gross_amount}</span>
                     </div>
                 </div>
             </div>
@@ -168,9 +302,6 @@ const CreateInvoice = ({contract,account}) => {
                     </div>
                 </div>
             </div>
-
-
-
             
             {/* <div className="p-4 border-4 border-blue-300">
                 <form onSubmit={onSubmitHandler} className="form">

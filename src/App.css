@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
 :root {
     --background:#1E1E1E;
@@ -11,6 +10,10 @@
     --navbar-gradient: linear-gradient(90deg, #FF512F 0%, #DD2476 100%);
     --border-color: #4D4D4D;
     --sidebar-width: 200px;
+    --modal-background: #24292E66;
+    --modal-input-background: #1E1E1E;
+    --modal-content-background: #1E1E1E;
+    --modal-input-border:#4D4D4D;
 }
 
 *, *::after, *::before {
@@ -18,13 +21,14 @@
     margin: 0;
     padding:0;
     color: #ffffff;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
     margin: 0 auto;
     max-width: 1440px;
     background: var(--background);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .body-container{
@@ -49,9 +53,10 @@ input {
 
 .xeggo-button{
     background: var(--xeggo-gradient);
-    padding: 10px 30px;
+    padding: 15px 35px;
     border: none;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .page-title {
@@ -75,23 +80,6 @@ input {
     border-radius: 10px;
     padding: 50px;
 }
-
-/* .table-container{
-    overflow:auto;
-}
-
-.table  {
-    font-size: 14px;
-}
-
-.table td, .table th {
-    padding: 15px 0;
-}
-
-.table-data:hover{
-    cursor: pointer;
-    background-color: #858585;
-} */
 
 .form-container{
     display: flex;
@@ -160,6 +148,10 @@ input {
     gap:10px;
 }
 
+.gap-15 {
+    gap: 15px;
+}
+
 .gap-20 {
     gap: 20px;
 }
@@ -169,7 +161,7 @@ input {
 }
 
 .pr-10{
-    padding-right: 20px;
+    padding-right: 30px;
 }
 
 .center{
@@ -179,6 +171,10 @@ input {
 
 .space-between {
     justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
 }
 
 .body-container{
@@ -192,6 +188,46 @@ input {
 .absolute {
     position: absolute;
 }
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+.line-21 {
+    line-height: 21px;
+}
+
+.line-30{
+    line-height: 30px;
+}
+
+.weight-500 {
+    font-weight: 500;
+}
+.weight-600 {
+    font-weight: 600;
+}
+
+.mb-5{
+    margin-bottom: 5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
 
 .display-flex-column{
 	display: flex;
@@ -216,4 +252,8 @@ input {
 .w-h{
 	width: 100%;
 	height: auto;
+}
+
+.w-full{
+    width: 100%
 }
