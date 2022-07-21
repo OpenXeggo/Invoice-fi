@@ -3,7 +3,7 @@ import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
 import ProfileDetails from "../ProfileDetails/ProfileDetails";
 // import { checkIfUserExists } from "../../utils/dbQueries";
-import Moralis from "Moralis";
+import Moralis from "moralis";
 import BackButton from "../../assets/back.svg";
 
 import "./welcomecard.css";
