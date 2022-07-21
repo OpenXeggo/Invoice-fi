@@ -7,6 +7,7 @@ export const initObject = (object) => {
 };
 
 export async function checkIfUserExists(address) {
+  console.log(address, "In db queries");
   const [Object, query] = initObject("user");
   query.equalTo("walletAddress", address);
   const results = await query.find();
