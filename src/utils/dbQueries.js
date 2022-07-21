@@ -6,12 +6,12 @@ export const initObject = (object) => {
   return [Object, query];
 };
 
-export const checkIfUserExists = async (address) => {
+export async function checkIfUserExists(address) {
   const [Object, query] = initObject("user");
   query.equalTo("walletAddress", address);
   const results = await query.find();
   return results;
-};
+}
 
 export const addUser = async (userData, setUser) => {
   console.log(userData);
