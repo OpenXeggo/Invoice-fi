@@ -53,6 +53,7 @@ function App() {
           setAccount("");
           localStorage.clear();
           setWelcomeModal(true);
+          setWelcomePage(1);
         } else {
           setAccount(accounts[0]);
           const result = await checkIfUserExists(accounts[0]);
@@ -64,6 +65,7 @@ function App() {
             setAccount(jsonResult.walletAddress);
           } else {
             setWelcomeModal(true);
+            setProfileModal(true);
             setWelcomePage(2);
           }
         }
