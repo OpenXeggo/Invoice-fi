@@ -10,7 +10,7 @@ import { Routes, Route } from 'react-router-dom';
 import InvoicePage from './Pages/InvoicePage';
 import Sidebar from './Components/Sidebar/Sidebar.jsx';
 import ProfileDetails from './Components/ProfileDetails/ProfileDetails.jsx';
-
+import { useSelector } from 'react-redux';
 
 import "./App.css";
 import Navbar from './Components/Navbar/Navbar.jsx';
