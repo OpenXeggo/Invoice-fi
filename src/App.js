@@ -32,6 +32,7 @@ function App() {
   const closeProfileModal = () => setProfileModal(false);
 
   const web3 = initWeb3();
+  console.log(checkIfUserExists);
 
   const Client = new ApolloClient({
     uri: "https://api.thegraph.com/subgraphs/name/aman-webdev/invoicetestn",
