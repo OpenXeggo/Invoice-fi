@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import CreateInvoice from "./Pages/CreateInvoice/CreateInvoice.jsx";
 import { initContract, initWeb3 } from "./utils/init";
 import { getInvoices } from "./utils/queries";
+import Moralis from "moralis";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import ManageInvoice from "./Pages/ManageInvoice/ManageInvoice.jsx";
 import InvoicePage from "./Pages/InvoicePage";
@@ -14,7 +15,7 @@ import ProfileDetails from "./Components/ProfileDetails/ProfileDetails.jsx";
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
-import { checkIfUserExists } from "./utils/dbQueries.js";
+// import { checkIfUserExists } from "./utils/dbQueries.js";
 
 function App() {
   const [contract, setContract] = useState({});
@@ -30,6 +31,20 @@ function App() {
 
   const closeWelcomeModal = () => setWelcomeModal(false);
   const closeProfileModal = () => setProfileModal(false);
+
+  const initObject = (object) => {
+    const Object = Moralis.Object.extend(object);
+    const query = new Moralis.Query(Object);
+    return [Object, query];
+  };
+
+  const checkIfUserExists = async (address) => {
+    console.log(address, "In db queries");
+    const [Object, query] = initObject("user");
+    query.equalTo("walletAddress", address);
+    const results = await query.find();
+    return results;
+  };
 
   const web3 = initWeb3();
   console.log(checkIfUserExists);
