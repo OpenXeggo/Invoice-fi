@@ -2,7 +2,8 @@ import { useState } from "react";
 import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
 import ProfileDetails from "../ProfileDetails/ProfileDetails";
-import { checkIfUserExists } from "../../utils/dbQueries";
+// import { checkIfUserExists } from "../../utils/dbQueries";
+import Moralis from "Moralis";
 import BackButton from "../../assets/back.svg";
 
 import "./welcomecard.css";
@@ -26,6 +27,20 @@ const WelcomeCard = ({
       if (card === 3) return;
       setCard((card) => card + 1);
     }
+  };
+
+  const initObject = (object) => {
+    const Object = Moralis.Object.extend(object);
+    const query = new Moralis.Query(Object);
+    return [Object, query];
+  };
+
+  const checkIfUserExists = async (address) => {
+    console.log(address, "In db queries");
+    const [Object, query] = initObject("user");
+    query.equalTo("walletAddress", address);
+    const results = await query.find();
+    return results;
   };
 
   const handleConnectWallet = async () => {
