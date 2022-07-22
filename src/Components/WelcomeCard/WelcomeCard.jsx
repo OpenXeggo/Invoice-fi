@@ -49,13 +49,7 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     const connectedAccount = accounts[0];
     setAccount(connectedAccount);
-    console.log("test");
-    const Object = Moralis.Object.extend("user");
-    const query = new Moralis.Query(Object);
     console.log(connectedAccount);
-    query.equalTo("walletAddress", connectedAccount);
-    const results = await query.find();
-    console.log("result", results);
     setProfile(true);
     changeCard("next");
   };
