@@ -10,7 +10,7 @@ import BinIcon from '../../assets/bin.svg';
 import DateDetail from '../../Components/DateDetail';
 import { useEffect } from 'react';
 import moment from 'moment';
-import ProfileDetails from '../../Components/ProfileDetails/ProfileDetails';
+import LinksModal from '../../Components/LinksModal/LinksModal';
 
 const CreateInvoice = ({contract,account}) => {
     const [invoiceData, setinvoiceData] = useState({
@@ -18,14 +18,19 @@ const CreateInvoice = ({contract,account}) => {
         tokenAmount:0,
         receiverAddress:"",
     });
+    const [invoiceId,setInvoiceId]=useState(null)
+
+    const onChangeHandler=(e)=>{
+        const {id,value} = e.target
+        setinvoiceData({...invoiceData,[id]:value})
+    }
+
+    const navigate = useNavigate();
 
     const [customerName, setCustomerName] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
     const [dueDate, setDueDate] = useState("");
-
-    const date = moment();
-    const dateString = date.format("Do-MMMM-yy");
     
     const [rows, setRows] = useState([{
         item: "",
@@ -46,15 +51,33 @@ const CreateInvoice = ({contract,account}) => {
         gross_amount:0
     })
 
+    const [link, setLink] = useState("");
 
-    const navigate = useNavigate();
+    const closeLinkModal = () => setLink("");
+
+    const Celo = [
+        {
+            name: "cEUR",
+            address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
+        },
+        {
+            name:"cUSD", 
+            address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+        },
+        {
+            name: "Celo",
+            address: ""
+        }
+    ]
+
+    const [token, setToken] = useState({
+            name: "cEUR",
+            address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
+    })
+
+    const date = moment();
+    const dateString = date.format("Do-MMMM-yy");
     
-    const [invoiceId,setInvoiceId]=useState(null)
-
-    const onChangeHandler=(e)=>{
-        const {id,value} = e.target
-        setinvoiceData({...invoiceData,[id]:value})
-    }
 
 
     const handleRow = (e, index, field) => {
@@ -84,7 +107,7 @@ const CreateInvoice = ({contract,account}) => {
 
     const removeRow = (index) => {
         setRows((rows)=>{
-            return rows.filter((row, i)=>{
+            return rows.filter((row,i)=>{
                 return i !== index
             })
         })
@@ -99,23 +122,28 @@ const CreateInvoice = ({contract,account}) => {
         try{
             e.preventDefault();
     
-            let tokAddress = initWeb3().utils.isAddress(invoiceData.tokenAddress)
+            let tokAddress = initWeb3().utils.isAddress(token.address);
 
             if(!tokAddress){
                 alert('Please enter valid token Address!')
-                return
+                return;
             }
 
-            if(invoiceData.tokenAmount === 0){
-                alert('Please enter a valid token amount!')
-                return
+            if(total.net_amount === 0) {
+                alert("Please enter a valid net amount!");
+                return;
+            }
+
+            if(total.gross_amount === 0){
+                alert('Please enter a valid gross amount!')
+                return;
             }
 
             try{
-                let recAddress = await initWeb3().eth.getCode(invoiceData.receiverAddress)
+                let recAddress = await initWeb3().eth.getCode(customerAddress)
                 if(recAddress !== '0x'){
-                    alert('Please enter valid receiver Address!')
-                    return
+                    alert('Please enter valid receiver Address!');
+                    return;
                 }
             }catch(err){
                 if(err){
@@ -124,16 +152,17 @@ const CreateInvoice = ({contract,account}) => {
                 }
             }
 
-            let str = invoiceData.tokenAmount.toString()
+            let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            await contract.methods.createInvoice(invoiceData.tokenAddress,convertToWei,invoiceData.receiverAddress).send({from:account})   
-            const id =  await contract.methods.createInvoice(invoiceData.tokenAddress,invoiceData.tokenAmount,invoiceData.receiverAddress).call()
+            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account})   
+            const id =  await contract.methods.createInvoice(token.address,total.gross_amount,customerAddress).call()
             setInvoiceId(id-1);
-            alert(`https://invoice-fi.vercel.app/invoices/${id-1}`);
-            // navigate('/');
+            let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
+            setLink(url);
+
         } catch(err) {
-            console.log(err)
+            console.log(err);
             alert("Could not create invoice!");
         }
     }
@@ -289,41 +318,23 @@ const CreateInvoice = ({contract,account}) => {
                     <div className='flex gap-30 items-center'>
                         <span className='label'>Currency:</span>
                         <div className='flex gap-10'>
-                            <div className='select'><span>cUSD</span></div>
-                            <div className='select'><span>cEURO</span></div>
-                            <div className='select'><span>CELO</span></div>    
+                            {Celo.map((celotoken, i)=>(
+                                <div key={i} className='select' onClick={()=>setToken({...celotoken})}>
+                                    <span>{celotoken.name}</span>
+                                    {celotoken.name === token.name && <span><img src={TickIcon}/></span>}
+                                </div>
+                            ))}
                         </div> 
                     </div>
                 </div>
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline'>Download as PDF</button>
-                        <button className='xeggo-btn'>Generate Payment Link</button>
+                        <button className='xeggo-btn' onClick={onSubmitHandler}>Generate Payment Link</button>
                     </div>
                 </div>
             </div>
-            
-            {/* <div className="p-4 border-4 border-blue-300">
-                <form onSubmit={onSubmitHandler} className="form">
-                    <div className="form-container">
-                        <div>
-                            <label htmlFor="tokenAddress">Token Address: </label>
-                            <input type="text" onChange={(e)=>onChangeHandler(e)} id="tokenAddress" value={invoiceData.tokenAddress}  />
-                        </div>
-                        <div>
-                            <label htmlFor="tokenAmount">Token Amount: </label>
-                            <input type="number" id="tokenAmount" value={invoiceData.tokenAmount} onChange={(e)=>onChangeHandler(e)} />
-                        </div>
-                        <div>
-                            <label htmlFor="receiverAddress">Receiver Address: </label>
-                            <input type="text" id="receiverAddress" value={invoiceData.receiverAddress} onChange={(e)=>onChangeHandler(e)} />
-                        </div>
-                        <div>
-                            <button type="submit" className='xeggo-button'>Create Invoice</button>
-                        </div>
-                    </div>
-                </form>
-            </div> */}
+            {link.length > 1 && <LinksModal link={link} closeModal={closeLinkModal} />}
         </div>
     </div>
     )
