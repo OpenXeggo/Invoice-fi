@@ -51,8 +51,11 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
     const connectedAccount = accounts[0];
     setAccount(connectedAccount);
     console.log("test");
-    const result = await checkIfUserExists(connectedAccount);
-    console.log("result", result);
+    const Object = Moralis.Object.extend("User");
+    const query = new Moralis.Query(Object);
+    query.equalTo("walletAddress", connectedAccount);
+    const results = await query.find();
+    console.log("result", results);
     setProfile(true);
     changeCard("next");
   };
