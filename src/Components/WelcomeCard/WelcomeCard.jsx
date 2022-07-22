@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { useMoralis } from "react-moralis";
 import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
 import ProfileDetails from "../ProfileDetails/ProfileDetails";
 import BackButton from "../../assets/back.svg";
-import Moralis from "moralis";
 
 import "./welcomecard.css";
 
 const WelcomeCard = ({ closeModal, setAccount, account }) => {
+  const { Moralis } = useMoralis();
   const [card, setCard] = useState(1);
   const [profile, setProfile] = useState(false);
 
@@ -20,6 +21,19 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
       if (card === 3) return;
       setCard((card) => card + 1);
     }
+  };
+
+  const initObject = (object) => {
+    const Object = Moralis.Object.extend(object);
+    const query = new Moralis.Query(Object);
+    return [Object, query];
+  };
+
+  const checkIfUserExists = async (address) => {
+    const [Object, query] = initObject("user");
+    query.equalTo("walletAddress", address);
+    const results = await query.find();
+    return results;
   };
 
   const handleConnectWallet = async () => {
@@ -36,31 +50,11 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
     const connectedAccount = accounts[0];
     setAccount(connectedAccount);
+    console.log("test");
     const result = await checkIfUserExists(connectedAccount);
-    console.log(result);
+    console.log("result", result);
     setProfile(true);
     changeCard("next");
-  };
-
-  const initObject = (object) => {
-    const Object = Moralis.Object.extend(object);
-    const query = new Moralis.Query(Object);
-    return [Object, query];
-  };
-
-  const checkIfUserExists = async (address) => {
-    const [Object, query] = initObject("user");
-    query.equalTo("walletAddress", address);
-    const results = await query.find();
-    return results;
-  };
-
-  const addUser = async (userData) => {
-    console.log(userData);
-    const [User] = initObject("user");
-    const user = new User();
-    await user.save(userData);
-    console.log("User added to database");
   };
 
   const returnCard = (num) => {
