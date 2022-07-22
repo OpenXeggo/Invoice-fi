@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMoralis } from "react-moralis";
+import Moralis from "moralis";
 import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
 import ProfileDetails from "../ProfileDetails/ProfileDetails";
@@ -8,7 +8,6 @@ import BackButton from "../../assets/back.svg";
 import "./welcomecard.css";
 
 const WelcomeCard = ({ closeModal, setAccount, account }) => {
-  const { Moralis } = useMoralis();
   const [card, setCard] = useState(1);
   const [profile, setProfile] = useState(false);
 
@@ -51,8 +50,9 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
     const connectedAccount = accounts[0];
     setAccount(connectedAccount);
     console.log("test");
-    const Object = Moralis.Object.extend("User");
+    const Object = Moralis.Object.extend("user");
     const query = new Moralis.Query(Object);
+    console.log(connectedAccount);
     query.equalTo("walletAddress", connectedAccount);
     const results = await query.find();
     console.log("result", results);
