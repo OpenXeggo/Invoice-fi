@@ -36,8 +36,8 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
         return alert('Please install metamask');
         }
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        setAccount(account);
+        const connectedAccount = accounts[0];
+        setAccount(connectedAccount);
         setProfile(true); 
         changeCard("next");
     } 
