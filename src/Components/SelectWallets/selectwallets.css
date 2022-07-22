@@ -1,0 +1,41 @@
+.wallet-container {
+    width: 370px;
+    border-radius: 20px;
+}
+
+.wallet-header {
+    padding: 30px;
+    border-bottom: 1px solid var(--modal-input-border);
+}
+
+.wallet-body{
+    padding:30px 47px;
+}
+
+.wallet-box{
+    width: 100%;
+    height:60px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid var(--modal-input-border);
+    gap: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.spinner {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: 17.5px;
+    right: 17.5px;
+    background: orange;
+}
+
+.mx-auto {
+    margin: 0 auto;
+}

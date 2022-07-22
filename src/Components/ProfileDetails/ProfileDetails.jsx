@@ -6,7 +6,7 @@ import Modal from "../Modal/modal";
 
 import "./profiledetails.css";
 
-const ProfileDetails = ({closeModal, account}) => {
+const ProfileDetails = ({closeModal, account }) => {
 
     return ( 
         <Modal>

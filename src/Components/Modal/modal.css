@@ -21,3 +21,10 @@
     border-radius: 20px;
     position:relative;
 }
+
+.close-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
