@@ -50,6 +50,8 @@ const WelcomeCard = ({ closeModal, setAccount, account }) => {
     const connectedAccount = accounts[0];
     setAccount(connectedAccount);
     console.log(connectedAccount);
+    const result = await checkIfUserExists(connectedAccount);
+    console.log(result);
     setProfile(true);
     changeCard("next");
   };
