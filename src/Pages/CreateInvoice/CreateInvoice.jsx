@@ -2,7 +2,6 @@ import React,{useState, useRef, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
 import { useNavigate } from 'react-router-dom';
 import './createinvoice.css';
-import PencilIcon from "../../assets/pencil.svg"
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
 import InvoiceDetail from '../../Components/InvoiceDetail';
@@ -83,8 +82,9 @@ const CreateInvoice = ({contract,account}) => {
     const handleRow = (e, index, field) => {
         setRows(rows=>{
             return rows.map((row,i) => {
+                let value = e.target.value;
                 if (i === index) {
-                    return {...row, [field]: e.target.value}
+                    return {...row, [field]: value}
                 }
                 else return row;
             })
@@ -155,8 +155,9 @@ const CreateInvoice = ({contract,account}) => {
             let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
+            console.log(convertToWei);
             await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account})   
-            const id =  await contract.methods.createInvoice(token.address,total.gross_amount,customerAddress).call()
+            const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
             setInvoiceId(id-1);
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
             setLink(url);
@@ -177,10 +178,12 @@ const CreateInvoice = ({contract,account}) => {
     useMemo(()=>{
         setAmounts((amounts)=>
             amounts.map((amount,i) => {
+            let vat_rate = Number(rows[i].vat_rate);
             let net_amount = rows[i].quantity * rows[i].price;
             let vat_amount = 0;
-            if (rows[i].vat_rate > 0) {
-                vat_amount = net_amount * rows[i].vat_rate / 100;
+            if (vat_rate > 0) {
+                vat_amount = net_amount * vat_rate / 100;
+                console.log({vat_amount,net_amount})
             }
             let gross_amount = vat_amount + net_amount;
             return {net_amount, vat_amount, gross_amount};
