@@ -6,11 +6,13 @@ import ProfileDetails from "../ProfileDetails/ProfileDetails";
 import BackButton from "../../assets/back.svg"
 
 import "./welcomecard.css";
+import SelectWallets from "../SelectWallets/SelectWallets";
 
 const WelcomeCard = ({closeModal, setAccount, account}) => {
 
     const [card, setCard] = useState(1);
     const [profile, setProfile] = useState(false);
+    const [openWallet, setOpenWallet] = useState(false);
 
     const changeCard = (direction) => {
         if (direction === "prev") {
@@ -21,26 +23,23 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
             if (card === 3) return;
             setCard (card => card + 1);
         }
+    } 
+
+    const handleCloseWelcomeCard = () => {
+        localStorage.setItem("first_time", true);
+        closeModal();
     }
 
-    const handleConnectWallet = async () => {
+    const handleOpenWallet = () => {
+        setOpenWallet(true);
+    }
 
-        if(account.length > 1) {
-            setProfile(true); 
-            changeCard("next");
-            return;
-        }
-
-        const { ethereum } = window;
-        if (!ethereum) {
-        return alert('Please install metamask');
-        }
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const connectedAccount = accounts[0];
-        setAccount(connectedAccount);
+    const handleCloseWallet = () =>{
         setProfile(true); 
         changeCard("next");
-    } 
+        setOpenWallet(false)
+    }
+
 
     const returnCard = (num) => {
         if (num === 1) {
@@ -69,10 +68,10 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
                     </div>
                     <div className="flex space-around items-center w-full">
                         <div className="flex items-center gap-15 back-btn" onClick={()=>changeCard("prev")} > <img src={BackButton}/> <span>Back</span></div>
-                        <button className="xeggo-button" onClick={()=>handleConnectWallet()}>Connect Wallet</button>
+                        <button className="xeggo-button" onClick={handleOpenWallet}>Connect Wallet</button>
                     </div>
                 </>
-                )
+            )
         }
         if (num === 3) {
             return (
@@ -85,18 +84,23 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
                     </div>
                     <div className="flex space-around items-center w-full">
                         <div className="flex items-center gap-15 back-btn" onClick={()=>changeCard("prev")}> <img src={BackButton}/> <span>Back</span></div>
-                        <button className="xeggo-button done-btn" onClick={closeModal}>Done</button>
+                        <button className="xeggo-button done-btn" onClick={()=>handleCloseWelcomeCard()}>Done</button>
                     </div>
                 </>
-                )
+            )
         }
     }
+
+
 
 
     return ( 
         <>
         {profile ? (
             <ProfileDetails closeModal={()=>setProfile(false)} account={account} />
+        ) 
+        : openWallet ? (
+            <SelectWallets account={account} setAccount={setAccount} closeModal={handleCloseWallet} />
         ) : (
             <Modal>
                 <div className="welcome-card-container flex flex-col items-center">

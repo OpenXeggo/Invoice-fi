@@ -128,6 +128,10 @@ input {
     display: inline-flex;
 }
 
+.inline-block{
+    display: inline-block;
+}
+
 .flex-col{
     flex-direction: column;
 }
@@ -189,6 +193,10 @@ input {
     position: absolute;
 }
 
+.font-24 {
+    font-size: 24px;
+}
+
 .font-20 {
     font-size: 20px;
 }
@@ -197,12 +205,37 @@ input {
     font-size: 14px;
 }
 
+.font-16 {
+    font-size: 16px;
+}
+
+.font-12 {
+    font-size: 12px;
+}
+
+.font-10 {
+    font-size:10px;
+}
+
+
+.line-18{
+    line-height: 18px;
+}
+
 .line-21 {
     line-height: 21px;
 }
 
 .line-30{
     line-height: 30px;
+}
+
+.line-36 {
+    line-height: 36px;
+}
+
+.line-15{
+    line-height: 15px;
 }
 
 .weight-500 {
@@ -226,6 +259,10 @@ input {
 
 .mb-20 {
     margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
 }
 
 
@@ -256,4 +293,9 @@ input {
 
 .w-full{
     width: 100%
+}
+
+
+.underline {
+    text-decoration: underline;
 }
