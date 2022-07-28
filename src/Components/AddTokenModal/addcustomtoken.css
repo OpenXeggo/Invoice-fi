@@ -1,0 +1,45 @@
+.custom-token-container {
+    width: 380px;
+    padding: 50px 30px 30px 30px;
+}
+
+.custom-token-container input {
+    border: 1px solid #BABABA;
+    width: 100%;
+    height: 38px;
+    color: #BABABA;
+    border-radius: 5px;
+}
+
+.custom-token-container .xeggo-button {
+    width: 100%;
+    height: 38px;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.error-container {
+    height: 10px;
+    margin: 15px 0;
+    width: 100%;
+}
+
+.error-container.visible {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    height: 20px;
+    margin: 15px 0;
+}
+
+
+.error-message{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    color: #FF0000;
+
+}

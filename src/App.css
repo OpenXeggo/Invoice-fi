@@ -136,6 +136,10 @@ input {
     flex-direction: column;
 }
 
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
 .items-center {
     align-items: center;
 }
@@ -264,7 +268,9 @@ input {
 .mb-30 {
     margin-bottom: 30px;
 }
-
+.mb-40 {
+    margin-bottom: 40px;
+}
 
 .display-flex-column{
 	display: flex;

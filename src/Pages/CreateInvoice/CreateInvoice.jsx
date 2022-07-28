@@ -10,21 +10,12 @@ import DateDetail from '../../Components/DateDetail';
 import { useEffect } from 'react';
 import moment from 'moment';
 import LinksModal from '../../Components/LinksModal/LinksModal';
+import PlusIcon from "../../assets/plus.svg";
+import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
 
 const CreateInvoice = ({contract,account}) => {
-    const [invoiceData, setinvoiceData] = useState({
-        tokenAddress:"",
-        tokenAmount:0,
-        receiverAddress:"",
-    });
-    const [invoiceId,setInvoiceId]=useState(null)
-
-    const onChangeHandler=(e)=>{
-        const {id,value} = e.target
-        setinvoiceData({...invoiceData,[id]:value})
-    }
-
-    const navigate = useNavigate();
+    // const [invoiceId,setInvoiceId]=useState(null);
+    const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
@@ -54,28 +45,38 @@ const CreateInvoice = ({contract,account}) => {
 
     const closeLinkModal = () => setLink("");
 
-    const Celo = [
-        {
-            name: "cEUR",
-            address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
-        },
-        {
-            name:"cUSD", 
-            address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
-        },
-        {
-            name: "Celo",
-            address: ""
-        }
-    ]
+    const Celo = [{
+        tokenName : "Celo",
+        currencies: [
+            {
+                name: "cEUR",
+                address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
+            },
+            {
+                name:"cUSD", 
+                address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+            },
+            {
+                name: "Celo",
+                address: ""
+            }
+        ]
+    }]
 
-    const [token, setToken] = useState({
-            name: "cEUR",
-            address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
-    })
+    const [assets, setAssets] = useState(Celo);
+    const [selectedToken, setSelectedToken] = useState(assets[0]);
+    const [token, setToken] = useState(selectedToken.currencies[0]);
 
     const date = moment();
     const dateString = date.format("Do-MMMM-yy");
+
+    const selectAsset = (item) => {
+        setSelectedToken({...item})
+    }
+
+    useEffect(()=>{
+        setToken({...selectedToken.currencies[0]})
+    },[selectedToken])
     
 
 
@@ -155,10 +156,9 @@ const CreateInvoice = ({contract,account}) => {
             let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            console.log(convertToWei);
             await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account})   
             const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
-            setInvoiceId(id-1);
+            // setInvoiceId(id-1);
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
             setLink(url);
 
@@ -314,14 +314,20 @@ const CreateInvoice = ({contract,account}) => {
                     <span>Payment Options</span>
                     <div className='flex gap-30 items-center'>
                         <span className="label">Asset:</span>
-                        <div className='flex'>
-                            <div className='select'><span>CELO</span><span><img src={TickIcon}/></span></div>
+                        <div className='flex gap-10 flex-wrap'>
+                            {assets.map(item=>(
+                                <div className='select' onClick={()=>selectAsset(item)}>
+                                    <span>{item.tokenName}</span>
+                                    {item.tokenName === selectedToken.tokenName && <span><img src={TickIcon}/></span>}
+                                </div>
+                            ))}
+                            <div className='select' onClick={()=>setCustomToken(true)} ><span><img src={PlusIcon} alt="" /></span><span>Add Custom Token</span></div>
                         </div>
                     </div>
                     <div className='flex gap-30 items-center'>
                         <span className='label'>Currency:</span>
-                        <div className='flex gap-10'>
-                            {Celo.map((celotoken, i)=>(
+                        <div className='flex gap-10 flex-wrap'>
+                            {selectedToken.currencies.map((celotoken, i)=>(
                                 <div key={i} className='select' onClick={()=>setToken({...celotoken})}>
                                     <span>{celotoken.name}</span>
                                     {celotoken.name === token.name && <span><img src={TickIcon}/></span>}
@@ -339,6 +345,7 @@ const CreateInvoice = ({contract,account}) => {
             </div>
             {link.length > 1 && <LinksModal link={link} closeModal={closeLinkModal} />}
         </div>
+        {customToken && <AddTokenModal setCustomToken={setCustomToken} setAssets={setAssets} assets={assets} setToken={setToken} setSelectedToken={setSelectedToken} />}
     </div>
     )
 }
