@@ -41,5 +41,12 @@
     line-height: 18px;
     /* identical to box height */
     color: #FF0000;
+}
 
+.modal-spinner {
+    height: 30px;
+    width: 30px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    
 }

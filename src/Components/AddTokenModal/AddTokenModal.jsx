@@ -3,15 +3,37 @@ import "./addcustomtoken.css";
 import { useState } from "react";
 import ErrorIcon from "../../assets/error.svg";
 import { initWeb3 } from "../../utils/init";
+import ERC20Mock from "../../utils/ERC20Mock.json";
+import { useEffect } from "react";
 
 const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelectedToken}) => {
 
     const [error, setError] = useState(false);
-
     const [tokenAddress, setTokenAddress] = useState("");
     const [tokenName, setTokenName] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const web3 = initWeb3();
+
+    const getTokenDetails = (address) => {
+        return new Promise(async (resolve, reject)=>{
+            try{
+                const tokenContract = new web3.eth.Contract(ERC20Mock.abi, address);
+                console.log({tokenContract});
+                const [name, symbol] = await Promise.all([
+                    tokenContract.methods.symbol().call(),
+                    tokenContract.methods.decimals().call(),
+                    tokenContract.methods.name().call(),
+                ]);
+                resolve({symbol, name})
+            }
+            catch(e){
+                reject("Error getting Token Details");
+            }
+        })
+    }
+
+    const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             setError(false);
@@ -21,10 +43,13 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
                 }
             }
 
-            const web3 = initWeb3();
-
             if (!web3.utils.isAddress(tokenAddress)) {
                 throw new Error("Invalid Address");
+            }
+
+            if (tokenName.length === 0) {
+                const {name} = await getTokenDetails(tokenAddress);
+                setTokenName(name);
             }
 
             let tokenObj = {
@@ -41,7 +66,7 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
             closeTokenModal();
             
         } catch (e) {
-            setError(e.message)
+            setError(e.message);
         }
     }
 
@@ -52,6 +77,23 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
     }
 
 
+    const setTokenSymbol = async () => {
+        try {
+            setIsLoading(true);
+            const { name } = await getTokenDetails(tokenAddress);
+            setTokenName(name);
+            setIsLoading(false)
+        } catch(e){
+            console.log(e.message);
+        }
+    }
+
+    useEffect(()=>{
+        if (tokenAddress.length === 42) {
+            setTokenSymbol();
+        }
+    },[tokenAddress])
+
     return ( 
         <Modal closeFunction={closeTokenModal}>
             <div className="custom-token-container">
@@ -59,9 +101,8 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
                 <form action="" onSubmit={handleSubmit}>
                     <div>
                         <input type="text" className="mb-20" placeholder="Token Address" value={tokenAddress} onChange={(e)=>setTokenAddress(e.target.value)} />
-                        <input type="text" placeholder="Token Name" value={tokenName} onChange={(e)=>setTokenName(e.target.value)} />
-                        {error.length > 0 ?
-                        (
+                        <input type="text" placeholder="Token Name" value={tokenName} disabled={tokenName.length === 0 ? true : false} onChange={(e)=>setTokenName(e.target.value)} />
+                        {error.length > 0 ? (
                             <div className="error-container visible">
                                 <img src={ErrorIcon} />
                                 <span className="error-message">{error}</span>
