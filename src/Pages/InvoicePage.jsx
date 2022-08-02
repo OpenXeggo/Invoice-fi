@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import InvoiceButton from "../Components/InvoiceButton";
 
 
-const InvoicePage = ({invoices, account, web3}) => {
+const InvoicePage = ({invoices, account, web3,contract}) => {
     const { id } = useParams();
     const [invoice, setInvoice] = useState(false)
 
@@ -42,7 +42,7 @@ const InvoicePage = ({invoices, account, web3}) => {
                         <li><b>Invoice Cancelled: </b><span>{invoice.isCancelled ? "Yes" : "No"}</span></li>
                         <li><b>Date Created: </b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
                         <li><b>Date Paid: </b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
-                        <li><InvoiceButton invoice={invoice} web3={web3} account={account} /></li>
+                        <li><InvoiceButton invoice={invoice} web3={web3} account={account} contract={contract} /></li>
                     </ul>
                     <button style={{marginLeft:"0.6rem"}} className="xeggo-button" onClick={()=>{
                         
