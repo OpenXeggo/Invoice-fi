@@ -9,16 +9,18 @@ import WelcomeHello from '../../Components/welcomeHello/WelcomeHello';
 import Overview from '../../Components/overview/Overview';
 import Notifications from '../../Components/notifications/Notifications';
 import './Dashboard.css'
+import { useSelector } from 'react-redux';
 
 
-const Dashboard = ({ invoices, account }) => {
+const Dashboard = ({ invoices }) => {
+    const {address} = useSelector(state=>state.user);
     const navigate = useNavigate();
     const web3 = initWeb3();
     const [accountInvoices, setAccountInvoices] = useState([]);
 
     const filterAccountInvoices = ()=>{
       return invoices.filter((invoice) => {
-        return invoice.receiver === account || invoice.invoiceCreator === account;
+        return invoice.receiver === address || invoice.invoiceCreator === address;
       });
     }
 
@@ -75,12 +77,12 @@ const Dashboard = ({ invoices, account }) => {
     
     return (
       <div className="body-container">
-        <WelcomeHello account={account}/>
+        <WelcomeHello address={address}/>
         <div className='display-flex-row gap'>
           <div className='width'>
-            <Overview account={account}/>
+            <Overview address={address}/>
             <span className="block">Recent Transactions</span>
-            {account ? (
+            {address ? (
               <div className="page-content content">
                 <div className="table-container w-h">
                   <table className='table'>
@@ -99,13 +101,13 @@ const Dashboard = ({ invoices, account }) => {
                             <tr key={invoice.invoiceID} onClick={()=>handleRedirect(invoice.invoiceID)}>
                               <td>{invoice.invoiceID}</td>
                               <td>
-                                {invoice.invoiceCreator === account
+                                {invoice.invoiceCreator === address
                                   ? invoice.receiver
                                   : invoice.invoiceCreator}
                               </td>
                               <td>{invoice.tokenSymbol}</td>
                               <td>{invoice.tokenAmountInWei}</td>
-                              <td> <InvoiceButton invoice={invoice} account={account} /> </td>
+                              <td> <InvoiceButton invoice={invoice} address={address} /> </td>
                             </tr>
                           </tbody>
                         );
@@ -116,7 +118,7 @@ const Dashboard = ({ invoices, account }) => {
               <DashboardErr />
             )}
           </div>
-          <Notifications account={account}/>
+          <Notifications address={address}/>
         </div>
       </div>
     );

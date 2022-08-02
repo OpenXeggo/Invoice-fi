@@ -12,9 +12,11 @@ import moment from 'moment';
 import LinksModal from '../../Components/LinksModal/LinksModal';
 import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
+import { useSelector } from 'react-redux';
 
-const CreateInvoice = ({contract,account}) => {
+const CreateInvoice = ({contract}) => {
     // const [invoiceId,setInvoiceId]=useState(null);
+    const {address} = useSelector(state=>state.user);
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
@@ -156,7 +158,7 @@ const CreateInvoice = ({contract,account}) => {
             let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account})   
+            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:address})   
             const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
             // setInvoiceId(id-1);
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;

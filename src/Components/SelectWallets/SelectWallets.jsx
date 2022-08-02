@@ -2,29 +2,29 @@ import Modal from "../Modal/modal";
 import MetaMaskIcon from "../../assets/metamask.png";
 import CoinbaseIcon from "../../assets/coinbase.svg";
 import WalletConnectIcon from "../../assets/walletconnect.png";
-
+import { useDispatch, useSelector } from "react-redux";
 import "./selectwallets.css"
 import WalletBox from "./WalletBox";
+import { useEffect } from "react";
+import { connectToMetaMask } from "../../utils/connectWallet";
 
-const SelectWallets = ({account, setAccount,  closeModal}) => {
+const SelectWallets = ({closeModal}) => {
+    const { address } = useSelector(state=>state.user);
 
-    const handleConnectWallet = async () => {
+    const handleConnectWallet = async (type) => {
         try{
-            if(account.length > 1) {
+            if(type === "metamask") {
+                await connectToMetaMask();
                 closeModal();
-                return;
             }
-            const { ethereum } = window;
-            if (!ethereum) {
-            return alert('Please install metamask');
-            }
-            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            setAccount(accounts[0]);
-            closeModal();
         } catch(e){
             console.log(e);
         }
     }
+
+    useEffect(()=>{
+        if(address.length > 1) closeModal();
+    },[address])
 
     return ( 
         <Modal>
@@ -33,9 +33,9 @@ const SelectWallets = ({account, setAccount,  closeModal}) => {
                     <span className=" font-24 line-36 ">Select your wallet</span>
                 </div>
                 <div className="wallet-body">
-                    <WalletBox connectWallet={handleConnectWallet} name={"MetaMask"} imgSrc={MetaMaskIcon}  />
-                    <WalletBox connectWallet={handleConnectWallet} name={"Coinase Wallet"} imgSrc={CoinbaseIcon} />
-                    <WalletBox connectWallet={handleConnectWallet} name={"Wallet Connect"} imgSrc={WalletConnectIcon} />
+                    <WalletBox connectWallet={()=>handleConnectWallet("metamask")} name={"MetaMask"} imgSrc={MetaMaskIcon}  />
+                    <WalletBox connectWallet={()=>handleConnectWallet("metamask")} name={"Coinase Wallet"} imgSrc={CoinbaseIcon} />
+                    <WalletBox connectWallet={()=>handleConnectWallet("metamask")} name={"Wallet Connect"} imgSrc={WalletConnectIcon} />
                 </div>
             </div>
         </Modal>

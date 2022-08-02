@@ -7,8 +7,10 @@ import BackButton from "../../assets/back.svg"
 
 import "./welcomecard.css";
 import SelectWallets from "../SelectWallets/SelectWallets";
+import { useSelector } from "react-redux";
 
-const WelcomeCard = ({closeModal, setAccount, account}) => {
+const WelcomeCard = ({closeModal}) => {
+    const {address} = useSelector(state=>state.user);
 
     const [card, setCard] = useState(1);
     const [profile, setProfile] = useState(false);
@@ -97,10 +99,10 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     return ( 
         <>
         {profile ? (
-            <ProfileDetails closeModal={()=>setProfile(false)} account={account} />
+            <ProfileDetails closeModal={()=>setProfile(false)} />
         ) 
         : openWallet ? (
-            <SelectWallets account={account} setAccount={setAccount} closeModal={handleCloseWallet} />
+            <SelectWallets closeModal={handleCloseWallet} />
         ) : (
             <Modal>
                 <div className="welcome-card-container flex flex-col items-center">

@@ -17,11 +17,12 @@ import Navbar from './Components/Navbar/Navbar.jsx';
 import WelcomeCard from './Components/WelcomeCard/WelcomeCard.jsx';
 import { checkIfUserExists, checkUserFirstTime } from './utils/checkUser.js';
 import SelectWallets from './Components/SelectWallets/SelectWallets.jsx';
+import { connectToMetaMask } from './utils/connectWallet.js';
 
 
 
 function App() {
-  const [account, setAccount] = useState('');
+  const {address} = useSelector(state=>state.user);
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
   const Client = new ApolloClient({
@@ -35,7 +36,20 @@ function App() {
       setContract(initContract());
       fetchQuery();
     }
-  }, [account]);
+  }, [address]);
+
+  const connectUser = async () => {
+    try{
+      let type = localStorage.getItem("wallet_type");
+      if (type === "metamask") await connectToMetaMask();
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  useEffect(()=>{
+    connectUser();
+  },[])
 
   const fetchQuery = async () => {
     const { data } = await Client.query({ query: gql(getInvoices) });
@@ -54,7 +68,7 @@ function App() {
       setWelcomeModal(true);
       return;
     }
-    if (account.length < 1) {
+    if (address.length < 1) {
       setWalletModal(true);
       return;
     }
@@ -66,7 +80,7 @@ function App() {
 
   useEffect(()=>{
     checkUser();
-  },[account]);
+  },[address]);
 
   const closeWelcomeModal  = () => setWelcomeModal(false);
   const closeProfileModal  = () => setProfileModal(false);
@@ -77,17 +91,17 @@ function App() {
 
   return (
     <div className='App'>
-      <Navbar account={account} />
+      <Navbar account={address} />
       <Sidebar />
       <Routes>
-        <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
-        <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
-        <Route path='/invoices' element={<ManageInvoice invoices={invoices} account={account}/>}/>
-        <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
+        <Route path="/" element={<Dashboard invoices={invoices} web3={web3} contract={contract} /> } />
+        <Route path='/create' element={<CreateInvoice contract={contract} />} />
+        <Route path='/invoices' element={<ManageInvoice invoices={invoices}/>}/>
+        <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} web3={web3} />} />
       </Routes>
-      {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} setAccount={setAccount} account={account} />}
-      {walletModal && <SelectWallets account={account} setAccount={setAccount} closeModal={closeWalletModal} />}
-      {profileModal && <ProfileDetails closeModal={closeProfileModal} account={account} /> }
+      {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} />}
+      {walletModal && <SelectWallets closeModal={closeWalletModal} />}
+      {profileModal && <ProfileDetails closeModal={closeProfileModal} /> }
     </div>
   );
 }
