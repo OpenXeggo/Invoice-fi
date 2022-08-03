@@ -11,8 +11,8 @@
           "rpcUrls": ["https://alfajores-forno.celo-testnet.org"],
           "blockExplorerUrls": ["https://docs.celo.org/"]
         },
-        "contractAddress": "0x38399AC5E7d8b75531AC676D649a6451C7a22599",
-        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/invoicetestn",
+        "contractAddress": "0x253c85B8398cCDd941F97D12009103967f159Cc2",
+        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/xeggo-invoice-alfajores",
         "tokens":[{
           "tokenName":"Celo",
           "currencies": [
@@ -43,18 +43,10 @@
           "rpcUrls": ["https://matic-mumbai.chainstacklabs.com"],
           "blockExplorerUrls": ["https://mumbai.polygonscan.com"]
         },
-        "contractAddress": "0x9EAb7C588Df479a689361e77129e72b6618446F7",
-        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/invoicemumbai",
+        "contractAddress": "0x5d7A78AA3f34F6D26AbCADbeBAf80b93db18e729",
+        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/xeggoinvoicemumbai",
         "tokens": [
-          {
-            "tokenName":"Matic",
-            "currencies":[
-              {
-                "name": "Matic",
-                "address": "0x0000000000000000000000000000000000001010"
-              }
-            ]
-          }
+         
         ]
       }
     }

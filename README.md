@@ -18,7 +18,10 @@ https://www.loom.com/share/9d3f53a9b25b45b0b5f3df4287804f03
 
 ## Dev Notes
 
-Celo Testnet deployed address: 0x38399AC5E7d8b75531AC676D649a6451C7a22599
+Celo Testnet deployed address: 0x253c85B8398cCDd941F97D12009103967f159Cc2
 
-GraphQL Deployed Link:  https://api.thegraph.com/subgraphs/name/aman-webdev/invoicetestn
+Celo Testnet GraphQL Deployed Link:  https://api.thegraph.com/subgraphs/name/aman-webdev/xeggo-invoice-alfajores
 
+Mumbai deployed address: 0x5d7A78AA3f34F6D26AbCADbeBAf80b93db18e729
+
+Mumbai GraphQL Deployed Link: https://api.thegraph.com/subgraphs/name/aman-webdev/xeggoinvoicemumbai

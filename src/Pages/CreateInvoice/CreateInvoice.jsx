@@ -326,24 +326,24 @@ const CreateInvoice = ({contract,account}) => {
                     <div className='flex gap-30 items-center'>
                         <span className="label">Asset:</span>
                         <div className='flex gap-10 flex-wrap'>
-                            {assets.length && assets.map(item=>(
+                            {assets.length ? assets.map(item=>(
                                 <div className='select' onClick={()=>selectAsset(item)}>
                                     <span>{item.tokenName}</span>
                                     {item.tokenName === selectedToken.tokenName && <span><img src={TickIcon}/></span>}
                                 </div>
-                            ))}
+                            )):null}
                             <div className='select' onClick={()=>setCustomToken(true)} ><span><img src={PlusIcon} alt="" /></span><span>Add Custom Token</span></div>
                         </div>
                     </div>
                     <div className='flex gap-30 items-center'>
-                        <span className='label'>Currency:</span>
+                        {assets.length ? <span className='label'>Currency:</span>:null}
                         <div className='flex gap-10 flex-wrap'>
-                            {assets.length && selectedToken.currencies.map((celotoken, i)=>(
+                            {assets.length ? selectedToken.currencies.map((celotoken, i)=>(
                                 <div key={i} className='select' onClick={()=>setToken({...celotoken})}>
                                     <span>{celotoken.name}</span>
                                     {celotoken.name === token.name && <span><img src={TickIcon}/></span>}
                                 </div>
-                            ))}
+                            )):null}
                         </div> 
                     </div>
                 </div>
