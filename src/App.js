@@ -20,11 +20,12 @@ import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
 import { checkIfUserExists, checkUserFirstTime } from "./utils/checkUser.js";
 import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
 import Invoice from "./Invoice.json";
+import { connectToMetaMask } from './utils/connectWallet.js';
 
 function App() {
-  const dispatch = useDispatch();
+  const {address} = useSelector(state=>state.user);
   const { chainId, isSupported } = useSelector((state) => state.network);
-  const [account, setAccount] = useState("");
+  const dispatch = useDispatch();
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
   const Client = new ApolloClient({
@@ -49,7 +50,20 @@ function App() {
       setContract(contract);
       fetchQuery();
     }
-  }, [account]);
+  }, [address]);
+
+  const connectUser = async () => {
+    try{
+      let type = localStorage.getItem("wallet_type");
+      if (type === "metamask") await connectToMetaMask();
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  useEffect(()=>{
+    connectUser();
+  },[])
 
   const fetchQuery = async () => {
     if (chainId && isSupported) {
@@ -69,7 +83,7 @@ function App() {
       setWelcomeModal(true);
       return;
     }
-    if (account.length < 1) {
+    if (address.length < 1) {
       setWalletModal(true);
       return;
     }
@@ -81,7 +95,7 @@ function App() {
 
   useEffect(() => {
     checkUser();
-  }, [account]);
+  },[address]);
 
   useEffect(() => {
     console.log(chainId, "CHAIN ID");
@@ -97,13 +111,14 @@ function App() {
   const closeWelcomeModal = () => setWelcomeModal(false);
   const closeProfileModal = () => setProfileModal(false);
 
+
   const closeWalletModal = () => {
     setWalletModal(false);
   };
 
   return (
     <div className="App">
-      <Navbar account={account} />
+      <Navbar account={address} />
       <Sidebar />
       <Routes>
         <Route
@@ -111,7 +126,7 @@ function App() {
           element={
             <Dashboard
               invoices={invoices}
-              account={account}
+              account={address}
               web3={web3}
               contract={contract}
             />
@@ -119,14 +134,13 @@ function App() {
         />
         <Route
           path="/create"
-          element={<CreateInvoice contract={contract} account={account} />}
+          element={<CreateInvoice contract={contract}/>}
         />
         <Route
           path="/invoices"
           element={
             <ManageInvoice
               invoices={invoices}
-              account={account}
               contract={contract}
             />
           }
@@ -136,7 +150,6 @@ function App() {
           element={
             <InvoicePage
               invoices={invoices}
-              account={account}
               web3={web3}
               contract={contract}
             />
@@ -146,19 +159,15 @@ function App() {
       {welcomeModal && (
         <WelcomeCard
           closeModal={closeWelcomeModal}
-          setAccount={setAccount}
-          account={account}
         />
       )}
       {walletModal && (
         <SelectWallets
-          account={account}
-          setAccount={setAccount}
           closeModal={closeWalletModal}
         />
       )}
       {profileModal && (
-        <ProfileDetails closeModal={closeProfileModal} account={account} />
+        <ProfileDetails closeModal={closeProfileModal} />
       )}
     </div>
   );

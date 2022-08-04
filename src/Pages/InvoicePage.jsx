@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import InvoiceButton from "../Components/InvoiceButton";
 
 
-const InvoicePage = ({invoices, account, web3,contract}) => {
+const InvoicePage = ({invoices, web3,contract}) => {
     const { id } = useParams();
+    const { address } = useSelector(state=>state.user);
     const [invoice, setInvoice] = useState(false)
 
     useEffect(()=>{
         const accountInvoice = invoices.find((invoice) => {
-            return (invoice.receiver === account || invoice.invoiceCreator === account) && (invoice.invoiceID === id);
+            return (invoice.receiver === address || invoice.invoiceCreator === address) && (invoice.invoiceID === id);
         });
         if (accountInvoice) setInvoice({...accountInvoice});
     }, [invoices]);
@@ -42,7 +44,7 @@ const InvoicePage = ({invoices, account, web3,contract}) => {
                         <li><b>Invoice Cancelled: </b><span>{invoice.isCancelled ? "Yes" : "No"}</span></li>
                         <li><b>Date Created: </b><span>{parseDate(invoice.createdAt * 1000)}</span></li>
                         <li><b>Date Paid: </b><span>{parseDate(invoice.PaidAt * 1000)}</span></li>
-                        <li><InvoiceButton invoice={invoice} web3={web3} account={account} contract={contract} /></li>
+                        <li><InvoiceButton invoice={invoice} web3={web3} account={address} contract={contract} /></li>
                     </ul>
                     <button style={{marginLeft:"0.6rem"}} className="xeggo-button" onClick={()=>{
                         

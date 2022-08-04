@@ -9,16 +9,18 @@ import WelcomeHello from '../../Components/welcomeHello/WelcomeHello';
 import Overview from '../../Components/overview/Overview';
 import Notifications from '../../Components/notifications/Notifications';
 import './Dashboard.css'
+import { useSelector } from 'react-redux';
 
 
-const Dashboard = ({ invoices, account, contract }) => {
+const Dashboard = ({ invoices, contract }) => {
   const navigate = useNavigate();
   const web3 = initWeb3();
   const [accountInvoices, setAccountInvoices] = useState([]);
+  const {address} = useSelector(state=>state.user);
 
   const filterAccountInvoices = () => {
     return invoices.filter((invoice) => {
-      return invoice.receiver === account || invoice.invoiceCreator === account;
+      return invoice.receiver === address || invoice.invoiceCreator === address;
     });
   };
 
@@ -73,12 +75,12 @@ const Dashboard = ({ invoices, account, contract }) => {
 
   return (
     <div className="body-container">
-      <WelcomeHello account={account} />
+      <WelcomeHello account={address} />
       <div className="display-flex-row gap">
         <div className="width">
-          <Overview account={account} />
+          <Overview account={address} />
           <span className="block">Recent Transactions</span>
-          {account ? (
+          {address ? (
             <div className="page-content content">
               <div className="table-container w-h">
                 <table className="table">
@@ -93,16 +95,16 @@ const Dashboard = ({ invoices, account, contract }) => {
                   </thead>
                   {accountInvoices &&
                     accountInvoices.length > 0 &&
-                    accountInvoices.map((invoice) => {
+                    accountInvoices.map((invoice, i) => {
                       return (
-                        <tbody>
+                        <tbody key={i}>
                           <tr
                             key={invoice.invoiceID}
                             onClick={() => handleRedirect(invoice.invoiceID)}
                           >
                             <td>{invoice.invoiceID}</td>
                             <td>
-                              {invoice.invoiceCreator === account
+                              {invoice.invoiceCreator === address
                                 ? invoice.receiver
                                 : invoice.invoiceCreator}
                             </td>
@@ -112,7 +114,7 @@ const Dashboard = ({ invoices, account, contract }) => {
                               {" "}
                               <InvoiceButton
                                 invoice={invoice}
-                                account={account}
+                                account={address}
                                 contract={contract}
                               />{" "}
                             </td>
@@ -127,7 +129,7 @@ const Dashboard = ({ invoices, account, contract }) => {
             <DashboardErr />
           )}
         </div>
-        <Notifications account={account} />
+        <Notifications account={address} />
       </div>
     </div>
   );

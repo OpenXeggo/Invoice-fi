@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import ProfileIcon from "../../assets/profile.svg";
 
 import SideIcon from "../../assets/side.svg";
@@ -6,7 +7,8 @@ import Modal from "../Modal/modal";
 
 import "./profiledetails.css";
 
-const ProfileDetails = ({closeModal, account }) => {
+const ProfileDetails = ({closeModal }) => {
+    const { address } = useSelector(state=>state.user);
 
     return ( 
         <Modal>
@@ -19,7 +21,7 @@ const ProfileDetails = ({closeModal, account }) => {
                     <img src={ProfileIcon} alt="" width="70px" height="70px" />
                     <div className="address-box flex gap-5 items-center">
                         <div className="green-button"></div>
-                        <span>{modifyAddress(account)}</span>
+                        <span>{modifyAddress(address)}</span>
                     </div>
                 </div>
                 <div>

@@ -11,7 +11,6 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
     const [error, setError] = useState(false);
     const [tokenAddress, setTokenAddress] = useState("");
     const [tokenName, setTokenName] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
 
     const web3 = initWeb3();
 
@@ -19,16 +18,15 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
         return new Promise(async (resolve, reject)=>{
             try{
                 const tokenContract = new web3.eth.Contract(ERC20Mock.abi, address);
-                console.log({tokenContract});
                 const [name, symbol] = await Promise.all([
                     tokenContract.methods.symbol().call(),
                     tokenContract.methods.decimals().call(),
                     tokenContract.methods.name().call(),
                 ]);
-                resolve({symbol, name})
+                resolve({symbol, name});
             }
             catch(e){
-                reject("Error getting Token Details");
+                reject({message:"Error getting Token details"});
             }
         })
     }
@@ -36,7 +34,7 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            setError(false);
+            setError("");
             for (let item of assets) {
                 if (item.tokenName === tokenName) {
                     throw new Error("Token Name Already Used");
@@ -79,12 +77,12 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
 
     const setTokenSymbol = async () => {
         try {
-            setIsLoading(true);
             const { name } = await getTokenDetails(tokenAddress);
             setTokenName(name);
-            setIsLoading(false)
+            setError("");
         } catch(e){
-            console.log(e.message);
+            setError(e.message);
+            setTokenName("");
         }
     }
 

@@ -10,16 +10,18 @@ import { ReactComponent as PreviewIcon } from '../../assets/preview-icon.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/download-icon.svg';
 import { ReactComponent as DelIcon } from '../../assets/delete-icon.svg';
 import './ManageInvoice.css'
+import { useSelector } from 'react-redux';
 
-const ManageInvoice = ({invoices, account,contract}) => {
 
+const ManageInvoice = ({invoices,contract}) => {
+    const {address} = useSelector(state=>state.user);
     const navigate = useNavigate();
     const web3 = initWeb3();
     const [accountInvoices, setAccountInvoices] = useState([]);
 
     const filterAccountInvoices = ()=>{
       return invoices.filter((invoice) => {
-        return invoice.receiver === account || invoice.invoiceCreator === account;
+        return invoice.receiver === address || invoice.invoiceCreator === address;
       });
     }
 
@@ -117,13 +119,13 @@ const ManageInvoice = ({invoices, account,contract}) => {
                             <tr key={invoice.invoiceID}>
                               <td>{invoice.invoiceID}</td>
                               <td>
-                                {invoice.invoiceCreator === account
+                                {invoice.invoiceCreator === address
                                   ? invoice.receiver
                                   : invoice.invoiceCreator}
                               </td>
                               <td>{invoice.tokenSymbol}</td>
                               <td>{invoice.tokenAmountInWei}</td>
-                              <td> <InvoiceButton invoice={invoice} account={account} contract={contract} /> </td>
+                              <td> <InvoiceButton invoice={invoice} account={address} contract={contract} /> </td>
                               <td>
                                 <CopyIcon className='action-icon' />
                                 <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>

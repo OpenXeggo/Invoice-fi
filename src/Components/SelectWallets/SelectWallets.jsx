@@ -10,67 +10,66 @@ import Modal from "../Modal/modal";
 import MetaMaskIcon from "../../assets/metamask.png";
 import CoinbaseIcon from "../../assets/coinbase.svg";
 import WalletConnectIcon from "../../assets/walletconnect.png";
-import "./selectwallets.css";
+import "./selectwallets.css"
 import WalletBox from "./WalletBox";
+import { useEffect } from "react";
+import { connectToMetaMask } from "../../utils/connectWallet";
 
-const SelectWallets = ({ account, setAccount, closeModal }) => {
+const SelectWallets = ({closeModal }) => {
   const dispatch = useDispatch();
   const { chainId } = useSelector((state) => state.network);
+  const { address } = useSelector(state=>state.user);
 
-  const handleConnectWallet = async () => {
+  const handleConnectWallet = async (type) => {
     try {
-      if (account.length > 1) {
+      if (address.length > 1) {
         closeModal();
         return;
       }
+      await connectToMetaMask();
       const { ethereum } = window;
-      if (!ethereum) {
-        return alert("Please install metamask");
-      }
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
       const chain = await ethereum.request({ method: "eth_chainId" });
       const chainId = Number(chain).toString();
       dispatch(addChainIdAction(chainId));
-      dispatch(addUserAddressAction(accounts[0]));
 
       const isNetworkSupported = isChainSupported(chainId);
       dispatch(addIsNetworkSupported(isNetworkSupported));
-
-      setAccount(accounts[0]);
       closeModal();
     } catch (e) {
       console.log(e);
     }
-  };
+  }
 
-  return (
+    useEffect(()=>{
+      if(address.length > 1) closeModal();
+    },[address])
+  
+  return ( 
     <Modal>
-      <div className="wallet-container">
-        <div className="wallet-header text-center">
-          <span className=" font-24 line-36 ">Select your wallet</span>
+        <div className="wallet-container">
+            <div className="wallet-header text-center">
+                <span className=" font-24 line-36 ">Select your wallet</span>
+            </div>
+            <div className="wallet-body">
+                <WalletBox 
+                  connectWallet={()=>handleConnectWallet("metamask")} 
+                  name={"MetaMask"} 
+                  imgSrc={MetaMaskIcon}  
+                />
+                <WalletBox 
+                  connectWallet={()=>handleConnectWallet("metamask")} 
+                  name={"Coinase Wallet"} 
+                  imgSrc={CoinbaseIcon} 
+                />
+                <WalletBox 
+                  connectWallet={()=>handleConnectWallet("metamask")} 
+                  name={"Wallet Connect"} 
+                  imgSrc={WalletConnectIcon} 
+                />
+            </div>
         </div>
-        <div className="wallet-body">
-          <WalletBox
-            connectWallet={handleConnectWallet}
-            name={"MetaMask"}
-            imgSrc={MetaMaskIcon}
-          />
-          <WalletBox
-            connectWallet={handleConnectWallet}
-            name={"Coinase Wallet"}
-            imgSrc={CoinbaseIcon}
-          />
-          <WalletBox
-            connectWallet={handleConnectWallet}
-            name={"Wallet Connect"}
-            imgSrc={WalletConnectIcon}
-          />
-        </div>
-      </div>
     </Modal>
   );
 };
-
+ 
 export default SelectWallets;

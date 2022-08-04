@@ -9,8 +9,6 @@ const InvoiceButton = ({ invoice, account, contract }) => {
   const { chainId, isSupported } = useSelector((state) => state.network);
   const web3 = initWeb3();
 
-  console.log(invoice)
-
   const payHandler = async (
     e,
     { tokenAddress, tokenAmountInWei, invoiceID }

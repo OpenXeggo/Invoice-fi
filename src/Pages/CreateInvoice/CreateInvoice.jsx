@@ -15,9 +15,10 @@ import LinksModal from '../../Components/LinksModal/LinksModal';
 import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
 
-const CreateInvoice = ({contract,account}) => {
+const CreateInvoice = ({contract}) => {
     // const [invoiceId,setInvoiceId]=useState(null);
     const { chainId, isSupported } = useSelector((state) => state.network);
+    const {address} = useSelector(state=>state.user);
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
@@ -167,7 +168,7 @@ const CreateInvoice = ({contract,account}) => {
             let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
+            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:address,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
             const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
             // setInvoiceId(id-1);
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
