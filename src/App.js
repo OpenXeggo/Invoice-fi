@@ -7,47 +7,62 @@ import { getInvoices } from './utils/queries';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import ManageInvoice from './Pages/ManageInvoice/ManageInvoice.jsx';
 import { Routes, Route } from 'react-router-dom';
-import InvoicePage from './Pages/InvoicePage';
-import Sidebar from './Components/Sidebar/Sidebar.jsx';
-import ProfileDetails from './Components/ProfileDetails/ProfileDetails.jsx';
-import { useSelector } from 'react-redux';
-
+import { ethers } from "ethers";
+import InvoicePage from "./Pages/InvoicePage";
+import Sidebar from "./Components/Sidebar/Sidebar.jsx";
+import ProfileDetails from "./Components/ProfileDetails/ProfileDetails.jsx";
+import { useSelector, useDispatch } from "react-redux";
+import convertChainInHexToString from "./utils/convertHexChainToString.js";
+import { networks } from "./network.config.json";
 import "./App.css";
-import Navbar from './Components/Navbar/Navbar.jsx';
-import WelcomeCard from './Components/WelcomeCard/WelcomeCard.jsx';
-import { checkIfUserExists, checkUserFirstTime } from './utils/checkUser.js';
-import SelectWallets from './Components/SelectWallets/SelectWallets.jsx';
-
-
+import Navbar from "./Components/Navbar/Navbar.jsx";
+import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
+import { checkIfUserExists, checkUserFirstTime } from "./utils/checkUser.js";
+import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
+import Invoice from "./Invoice.json";
 
 function App() {
-  const [account, setAccount] = useState('');
+  const dispatch = useDispatch();
+  const { chainId, isSupported } = useSelector((state) => state.network);
+  const [account, setAccount] = useState("");
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
   const Client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/name/aman-webdev/invoicetestn',
+    uri: isSupported ? networks[chainId]?.graphAPI : "",
     cache: new InMemoryCache(),
   });
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    if (window.ethereum) {
-      setContract(initContract());
+    const { ethereum } = window;
+    if (ethereum) {
+      const web3 = initWeb3();
+      if (!web3) {
+        return;
+      }
+      const contract = new web3.eth.Contract(
+        Invoice,
+        isSupported
+          ? networks[chainId]?.contractAddress
+          : ethers.constants.AddressZero
+      );
+      setContract(contract);
       fetchQuery();
     }
   }, [account]);
 
   const fetchQuery = async () => {
-    const { data } = await Client.query({ query: gql(getInvoices) });
-    const { invoices } = data;
-    console.log({invoices}, "This is the result gotten from graphql");
-    setInvoices(invoices);
+    if (chainId && isSupported) {
+      const { data } = await Client.query({ query: gql(getInvoices) });
+      const { invoices } = data;
+      console.log({ invoices }, "This is the result gotten from graphql");
+      setInvoices(invoices);
+    }
   };
-
 
   const [welcomeModal, setWelcomeModal] = useState(false);
   const [profileModal, setProfileModal] = useState(false);
-  const [walletModal, setWalletModal] = useState(false)
+  const [walletModal, setWalletModal] = useState(false);
 
   const checkUser = () => {
     if (!checkUserFirstTime()) {
@@ -62,32 +77,89 @@ function App() {
       setProfileModal(true);
       return;
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     checkUser();
-  },[account]);
+  }, [account]);
 
-  const closeWelcomeModal  = () => setWelcomeModal(false);
-  const closeProfileModal  = () => setProfileModal(false);
-  
+  useEffect(() => {
+    console.log(chainId, "CHAIN ID");
+    const { ethereum } = window;
+
+    if (ethereum && !chainId) {
+      ethereum.on("chainChanged", (chain) => {
+        window.location.reload();
+      });
+    }
+  }, [chainId, dispatch]);
+
+  const closeWelcomeModal = () => setWelcomeModal(false);
+  const closeProfileModal = () => setProfileModal(false);
+
   const closeWalletModal = () => {
     setWalletModal(false);
-  }
+  };
 
   return (
-    <div className='App'>
+    <div className="App">
       <Navbar account={account} />
       <Sidebar />
       <Routes>
-        <Route path="/" element={<Dashboard invoices={invoices} account={account} web3={web3} contract={contract} /> } />
-        <Route path='/create' element={<CreateInvoice contract={contract} account={account} />} />
-        <Route path='/invoices' element={<ManageInvoice invoices={invoices} account={account}/>}/>
-        <Route path='/invoices/:id' element={<InvoicePage invoices={invoices} account={account} web3={web3} />} />
+        <Route
+          path="/"
+          element={
+            <Dashboard
+              invoices={invoices}
+              account={account}
+              web3={web3}
+              contract={contract}
+            />
+          }
+        />
+        <Route
+          path="/create"
+          element={<CreateInvoice contract={contract} account={account} />}
+        />
+        <Route
+          path="/invoices"
+          element={
+            <ManageInvoice
+              invoices={invoices}
+              account={account}
+              contract={contract}
+            />
+          }
+        />
+        <Route
+          path="/invoices/:id"
+          element={
+            <InvoicePage
+              invoices={invoices}
+              account={account}
+              web3={web3}
+              contract={contract}
+            />
+          }
+        />
       </Routes>
-      {welcomeModal && <WelcomeCard closeModal={closeWelcomeModal} setAccount={setAccount} account={account} />}
-      {walletModal && <SelectWallets account={account} setAccount={setAccount} closeModal={closeWalletModal} />}
-      {profileModal && <ProfileDetails closeModal={closeProfileModal} account={account} /> }
+      {welcomeModal && (
+        <WelcomeCard
+          closeModal={closeWelcomeModal}
+          setAccount={setAccount}
+          account={account}
+        />
+      )}
+      {walletModal && (
+        <SelectWallets
+          account={account}
+          setAccount={setAccount}
+          closeModal={closeWalletModal}
+        />
+      )}
+      {profileModal && (
+        <ProfileDetails closeModal={closeProfileModal} account={account} />
+      )}
     </div>
   );
 }

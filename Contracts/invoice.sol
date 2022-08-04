@@ -662,7 +662,7 @@ contract Billing is Pausable,Owner {
             require(canIPayTheInvoice(invoiceID), "You cannot pay for the invoice");
             
             // Transfer token from Invoice payer to receiver
-            require (IERC20(invoices[invoiceID]._tokenAddress).transferFrom(_msgSender(), invoices[invoiceID]._receiver, invoices[invoiceID]._tokenAmountInWei));
+            require (IERC20(invoices[invoiceID]._tokenAddress).transferFrom(_msgSender(), invoices[invoiceID]._invoiceCreator, invoices[invoiceID]._tokenAmountInWei));
             invoices[invoiceID]._isPaidBy = _msgSender();
 
             // Emit event

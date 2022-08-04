@@ -1,0 +1,53 @@
+{
+    "networks": {
+      "44787": {
+        "networkInfo": {
+          "chainName": "Celo Testnet",
+          "nativeCurrency": {
+            "name": "Alfajores Celo",
+            "symbol": "CELO",
+            "decimals": 18
+          },
+          "rpcUrls": ["https://alfajores-forno.celo-testnet.org"],
+          "blockExplorerUrls": ["https://docs.celo.org/"]
+        },
+        "contractAddress": "0x253c85B8398cCDd941F97D12009103967f159Cc2",
+        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/xeggo-invoice-alfajores",
+        "tokens":[{
+          "tokenName":"Celo",
+          "currencies": [
+            {
+              "name": "cEUR",
+              "address": "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F"
+            },
+            {
+              "name": "cUSD",
+              "address": "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
+            },
+            {
+              "name": "Celo",
+              "address": "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9"
+            }
+          ]
+        }]
+        
+      },
+      "80001": {
+        "networkInfo": {
+          "chainName": "Polygon Testnet",
+          "nativeCurrency": {
+            "name": "Matic",
+            "symbol": "MATIC",
+            "decimals": 18
+          },
+          "rpcUrls": ["https://matic-mumbai.chainstacklabs.com"],
+          "blockExplorerUrls": ["https://mumbai.polygonscan.com"]
+        },
+        "contractAddress": "0x5d7A78AA3f34F6D26AbCADbeBAf80b93db18e729",
+        "graphAPI": "https://api.thegraph.com/subgraphs/name/aman-webdev/xeggoinvoicemumbai",
+        "tokens": [
+         
+        ]
+      }
+    }
+  }

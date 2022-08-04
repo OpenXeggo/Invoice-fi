@@ -1,6 +1,8 @@
 import React,{useState, useRef, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
 import { useNavigate } from 'react-router-dom';
+import { networks } from "../../network.config.json";
+import { useSelector } from "react-redux";  
 import './createinvoice.css';
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
@@ -15,6 +17,7 @@ import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
 
 const CreateInvoice = ({contract,account}) => {
     // const [invoiceId,setInvoiceId]=useState(null);
+    const { chainId, isSupported } = useSelector((state) => state.network);
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
@@ -63,9 +66,9 @@ const CreateInvoice = ({contract,account}) => {
         ]
     }]
 
-    const [assets, setAssets] = useState(Celo);
-    const [selectedToken, setSelectedToken] = useState(assets[0]);
-    const [token, setToken] = useState(selectedToken.currencies[0]);
+    const [assets, setAssets] = useState([]);
+    const [selectedToken, setSelectedToken] = useState({});
+    const [token, setToken] = useState([]);
 
     const date = moment();
     const dateString = date.format("Do-MMMM-yy");
@@ -75,9 +78,17 @@ const CreateInvoice = ({contract,account}) => {
     }
 
     useEffect(()=>{
+        if(assets.length)
         setToken({...selectedToken.currencies[0]})
     },[selectedToken])
     
+    useEffect(()=>{
+        if(isSupported && networks[chainId]?.tokens.length){
+            setAssets(networks[chainId].tokens)
+            setSelectedToken(networks[chainId].tokens[0])
+            setToken(networks[chainId].tokens[0].currencies[0])
+        }
+    },[chainId,isSupported])
 
 
     const handleRow = (e, index, field) => {
@@ -156,7 +167,7 @@ const CreateInvoice = ({contract,account}) => {
             let str = total.gross_amount.toString()
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
-            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account})   
+            await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
             const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
             // setInvoiceId(id-1);
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
@@ -315,24 +326,24 @@ const CreateInvoice = ({contract,account}) => {
                     <div className='flex gap-30 items-center'>
                         <span className="label">Asset:</span>
                         <div className='flex gap-10 flex-wrap'>
-                            {assets.map(item=>(
+                            {assets.length ? assets.map(item=>(
                                 <div className='select' onClick={()=>selectAsset(item)}>
                                     <span>{item.tokenName}</span>
                                     {item.tokenName === selectedToken.tokenName && <span><img src={TickIcon}/></span>}
                                 </div>
-                            ))}
+                            )):null}
                             <div className='select' onClick={()=>setCustomToken(true)} ><span><img src={PlusIcon} alt="" /></span><span>Add Custom Token</span></div>
                         </div>
                     </div>
                     <div className='flex gap-30 items-center'>
-                        <span className='label'>Currency:</span>
+                        {assets.length ? <span className='label'>Currency:</span>:null}
                         <div className='flex gap-10 flex-wrap'>
-                            {selectedToken.currencies.map((celotoken, i)=>(
+                            {assets.length ? selectedToken.currencies.map((celotoken, i)=>(
                                 <div key={i} className='select' onClick={()=>setToken({...celotoken})}>
                                     <span>{celotoken.name}</span>
                                     {celotoken.name === token.name && <span><img src={TickIcon}/></span>}
                                 </div>
-                            ))}
+                            )):null}
                         </div> 
                     </div>
                 </div>

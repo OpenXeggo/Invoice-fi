@@ -11,7 +11,7 @@ import { ReactComponent as DownloadIcon } from '../../assets/download-icon.svg';
 import { ReactComponent as DelIcon } from '../../assets/delete-icon.svg';
 import './ManageInvoice.css'
 
-const ManageInvoice = ({invoices, account}) => {
+const ManageInvoice = ({invoices, account,contract}) => {
 
     const navigate = useNavigate();
     const web3 = initWeb3();
@@ -123,7 +123,7 @@ const ManageInvoice = ({invoices, account}) => {
                               </td>
                               <td>{invoice.tokenSymbol}</td>
                               <td>{invoice.tokenAmountInWei}</td>
-                              <td> <InvoiceButton invoice={invoice} account={account} /> </td>
+                              <td> <InvoiceButton invoice={invoice} account={account} contract={contract} /> </td>
                               <td>
                                 <CopyIcon className='action-icon' />
                                 <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>
