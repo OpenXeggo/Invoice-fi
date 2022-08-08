@@ -17,9 +17,11 @@ import { networks } from "./network.config.json";
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
-import { checkIfUserExists, checkUserFirstTime } from "./utils/checkUser.js";
+import { checkUserFirstTime } from "./utils/checkUser.js";
 import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
 import Invoice from "./Invoice.json";
+import { useMoralis } from 'react-moralis';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +34,23 @@ function App() {
     cache: new InMemoryCache(),
   });
   const [invoices, setInvoices] = useState([]);
+  const { Moralis, isAuthenticated, user } = useMoralis();
+
+  useEffect(()=>{
+    if(isAuthenticated){
+      Moralis.onAccountChanged( async (account) => {
+        try{
+          console.log("account changed");
+          const confirmed = window.confirm("Link this address to your account?");
+          if (confirmed) {
+            await Moralis.link(account);
+          }
+        } catch(e){
+          console.log(e);
+        }
+      })
+    }
+  },[isAuthenticated, user])
 
   useEffect(() => {
     const { ethereum } = window;
@@ -65,23 +84,23 @@ function App() {
   const [walletModal, setWalletModal] = useState(false);
 
   const checkUser = () => {
+    // if user has not visited site before start welcome cards
     if (!checkUserFirstTime()) {
       setWelcomeModal(true);
       return;
     }
+    // if there is no account add open wallet modal
     if (account.length < 1) {
       setWalletModal(true);
       return;
     }
-    if (!checkIfUserExists()) {
-      setProfileModal(true);
-      return;
-    }
+    setProfileModal(true);
   };
 
   useEffect(() => {
     checkUser();
   }, [account]);
+
 
   useEffect(() => {
     console.log(chainId, "CHAIN ID");
@@ -94,12 +113,10 @@ function App() {
     }
   }, [chainId, dispatch]);
 
+  // functions to close Modals
   const closeWelcomeModal = () => setWelcomeModal(false);
   const closeProfileModal = () => setProfileModal(false);
-
-  const closeWalletModal = () => {
-    setWalletModal(false);
-  };
+  const closeWalletModal = () => setWalletModal(false);
 
   return (
     <div className="App">
@@ -158,7 +175,9 @@ function App() {
         />
       )}
       {profileModal && (
-        <ProfileDetails closeModal={closeProfileModal} account={account} />
+        <ProfileDetails 
+          closeModal={closeProfileModal} 
+          account={account} />
       )}
     </div>
   );

@@ -16,8 +16,8 @@ import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
 
 const CreateInvoice = ({contract,account}) => {
-    // const [invoiceId,setInvoiceId]=useState(null);
     const { chainId, isSupported } = useSelector((state) => state.network);
+    const { firstname, lastname, email } = useSelector(state=>state.user.userData);
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
@@ -225,13 +225,13 @@ const CreateInvoice = ({contract,account}) => {
                     <div className="left-top flex flex-col gap-10">
                         <span className='title'>From:</span>                      
                         <div>
-                            <span>Ayomide Odusanya</span> 
+                            <span>{`${firstname} ${lastname}`}</span> 
                         </div>
                         <div>
-                            <span>Odusanyamd@gmail.com</span>
+                            <span>{email}</span>
                         </div>
                         <div>
-                            <span>0x80191032fB4d309501d2EBc09a1A7d7F2941C8C1</span>
+                            <span>{account}</span>
                         </div>
                     </div>
                     <div className="left-bottom flex flex-col gap-10">
