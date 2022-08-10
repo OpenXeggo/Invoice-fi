@@ -1,8 +1,7 @@
-import React,{useState, useRef, useMemo} from 'react'
+import React,{useState, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
-import { useNavigate } from 'react-router-dom';
 import { networks } from "../../network.config.json";
-import { useSelector } from "react-redux";  
+import { useDispatch, useSelector } from "react-redux";  
 import './createinvoice.css';
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
@@ -14,16 +13,23 @@ import moment from 'moment';
 import LinksModal from '../../Components/LinksModal/LinksModal';
 import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
+import { useMoralis } from 'react-moralis';
+import { addInvoice } from '../../utils/dbQueries'
 
-const CreateInvoice = ({contract,account}) => {
+const CreateInvoice = ({contract, account}) => {
     const { chainId, isSupported } = useSelector((state) => state.network);
-    const { firstname, lastname, email } = useSelector(state=>state.user.userData);
+    const { firstname, lastname, email, user_id } = useSelector(state=>state.user.userData);
+    const dispatch = useDispatch();
+
+    const { user } = useMoralis();
+
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
     const [dueDate, setDueDate] = useState("");
+    const [notes, setNotes] = useState("");
     
     const [rows, setRows] = useState([{
         item: "",
@@ -45,26 +51,7 @@ const CreateInvoice = ({contract,account}) => {
     })
 
     const [link, setLink] = useState("");
-
     const closeLinkModal = () => setLink("");
-
-    const Celo = [{
-        tokenName : "Celo",
-        currencies: [
-            {
-                name: "cEUR",
-                address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
-            },
-            {
-                name:"cUSD", 
-                address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
-            },
-            {
-                name: "Celo",
-                address: ""
-            }
-        ]
-    }]
 
     const [assets, setAssets] = useState([]);
     const [selectedToken, setSelectedToken] = useState({});
@@ -130,11 +117,45 @@ const CreateInvoice = ({contract,account}) => {
         })
     }
 
+    const saveInvoiceToUser = (id) => {
+        return new Promise( async (resolve, reject)=>{
+            try{
+                user.addUnique("invoices", id);
+                await user.save()
+                resolve({ok: true, message: "completed"})
+            } catch (e) {
+                reject({ok: false, message: "Could not add Invoice"});
+            }
+        })
+    }
+
+    
+
     const onSubmitHandler=async(e)=>{
         try{
             e.preventDefault();
     
             let tokAddress = initWeb3().utils.isAddress(token.address);
+
+            if(customerName.length === 0){
+                alert('Please enter Customer name!')
+                return;
+            }
+
+            if(customerAddress.length === 0){
+                alert('Please enter Customer Address!')
+                return;
+            }
+
+            if(customerEmail.length === 0){
+                alert('Please enter Customer Email!')
+                return;
+            }
+
+            if(dueDate.length === 0){
+                alert('Please enter due Date!')
+                return;
+            }
 
             if(!tokAddress){
                 alert('Please enter valid token Address!')
@@ -168,8 +189,31 @@ const CreateInvoice = ({contract,account}) => {
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
             await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
-            const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
+            const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call();
             // setInvoiceId(id-1);
+
+            const invoiceData = {
+                sender_address: account,
+                sender_id: user_id,
+                receiver_name: customerName,
+                receiver_email: customerEmail,
+                receiver_address: customerAddress,
+                date_created: dateString,
+                date_due: dueDate,
+                invoice_id: id,
+                net_amount: total.net_amount,
+                gross_amount: total.gross_amount,
+                vat_amount: total.vat_amount,
+                notes: notes,
+                items: [...rows],
+                token_details: {...selectedToken},
+                status: "pending"
+            }
+
+            await addInvoice(invoiceData);
+            await saveInvoiceToUser(id);
+            dispatch({type: "ADD_INVOICE_ID", payload: id});
+
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
             setLink(url);
 
@@ -300,7 +344,11 @@ const CreateInvoice = ({contract,account}) => {
             <div className='invoice-summary flex space-between'>
                 <div className="notes-container flex flex-col">
                     <span>Notes: </span>
-                    <textarea name="notes" id="notes" cols="30" rows="10" placeholder='Thank you for your business' className='notes-text'></textarea>
+                    <textarea name="notes" id="notes" cols="30" rows="10" 
+                        placeholder='Thank you for your business' 
+                        className='notes-text' value={notes} 
+                        onChange={(e)=>setNotes(e.target.value)}
+                    ></textarea>
                 </div>
                 <div className="invoice-total">
                     <div className="invoice-total-item">

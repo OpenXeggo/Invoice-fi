@@ -65,10 +65,16 @@ export const getInvoices = async (user) => {
   return invoice;
 };
 
-export const addInvoice = async (user, invoiceData) => {
-  const invoices = await getInvoices(user);
-  const [Invoice] = initObject("Invoice");
-  const invoice = new Invoice();
-  await invoice.save(invoiceData);
-  await user.save("invoices", [...invoices, invoice]);
+export const addInvoice = async (invoiceData) => {
+  return new Promise(async (resolve, reject)=>{
+    try{
+      const { Object: Invoice } = initObject("Invoice");
+      const invoice = new Invoice();
+      await invoice.save(invoiceData);
+      resolve({ok: true, message: "completed"})
+    }
+    catch(e){
+      reject({ok: false, message: "Could not add Invoice"});
+    }
+  })
 };

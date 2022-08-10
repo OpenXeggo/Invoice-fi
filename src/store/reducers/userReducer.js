@@ -20,6 +20,8 @@ export const userReducer = (state = user, action) => {
         return { ...state, balance: action.payload };
       case "ADD_USER_DATA":
         return { ...state, userData: {...action.payload} }
+      case "ADD_INVOICE_ID":
+        return {...state, userData: { invoices: [action.payload, ...state.userData.invoices] }}
       default:
         return state;
     }

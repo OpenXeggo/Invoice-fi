@@ -5,12 +5,12 @@ import Modal from "../Modal/modal";
 import { useMoralis, useMoralisQuery } from "react-moralis";
 import "./profiledetails.css";
 import { useEffect, useState } from "react";
-import { addUser, checkIfUserExists } from "../../utils/dbQueries";
 import { useDispatch } from "react-redux";
+import GifImage from "../../assets/loader.png"
 
 const ProfileDetails = ({closeModal, account}) => {
 
-    const { authenticate, isAuthenticated, user } = useMoralis();
+    const { authenticate, isAuthenticated, user, setUserData } = useMoralis();
 
     const dispatch  = useDispatch();
 
@@ -21,19 +21,35 @@ const ProfileDetails = ({closeModal, account}) => {
     const [email, setEmail] = useState("");
 
     const addUserData = (result) => {
-        const { user_id, username, firstname, email, lastname, invoices } = result.attributes;
-        const profileData = {  user_id, username, firstname, lastname, email, invoices };
+        const { username, firstname, email, lastname, invoices } = result;
+        const profileData = { username, firstname, lastname, email, invoices };
         dispatch({type:"ADD_USER_DATA", payload: profileData});
+    }
+
+    const checkIfUserExists = async () => {
+        return new Promise( async (resolve, reject)=>{
+            try{
+                if (!isAuthenticated) throw new Error("User not Authenticated");
+                if (!user.attributes.firstname && !user.attributes.lastname) {
+                    resolve(false);
+                    return
+                }
+                console.log({user})
+                resolve (user.attributes);
+            } catch (e){
+              reject (e);
+            }
+          })
     }
 
     const checkUser = async () =>{
         try{
             const result = await checkIfUserExists(account);
-            if (result.length === 0) {
+            if (!result) {
                 setConnecting(false);
             }
             else{
-                addUserData(result[0]);
+                addUserData(result);
                 closeModal();
             }
         } catch (e) {
@@ -93,9 +109,8 @@ const ProfileDetails = ({closeModal, account}) => {
                 walletAddress: account,
                 invoices:[]
             }
-            const result = await addUser(profileData);
-            console.log(result);
-            addUserData(result);
+            const result = await setUserData(profileData);
+            addUserData(profileData);
             closeModal();
         } catch(e){
             console.log(e);
@@ -135,8 +150,10 @@ const ProfileDetails = ({closeModal, account}) => {
         </Modal> 
         ) : (
         <Modal>
-            <div>
-                <h1>Please Sign Moralis Connection</h1>     
+            <div className="moralis-modal">
+                <div className="text-center mb-5"><img src={GifImage} alt={"Gif Loader"} /></div>
+                <div><span className="weight-600 font-20 line-30" >Connecting To Moralis...</span></div>
+                <div className="text-center"><span className="font-12 ">(Please Sign Transaction)</span></div>   
             </div>
         </Modal>
         )}

@@ -32,6 +32,7 @@ function App() {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
+
   const Client = new ApolloClient({
     uri: isSupported ? networks[chainId]?.graphAPI : "",
     cache: new InMemoryCache(),
@@ -112,7 +113,7 @@ function App() {
     if (chainId && isSupported) {
       const { data } = await Client.query({ query: gql(getInvoices) });
       const { invoices } = data;
-      console.log({ invoices }, "This is the result gotten from graphql");
+      console.log ({ invoices }, "This is the result gotten from graphql");
       setInvoices(invoices);
     }
   };

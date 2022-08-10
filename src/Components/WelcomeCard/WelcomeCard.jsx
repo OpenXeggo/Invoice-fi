@@ -17,11 +17,17 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     const changeCard = (direction) => {
         if (direction === "prev") {
             if (card === 1) return;
-            setCard(card => card - 1);
+            setCard(card =>{
+                if (card === 1) return 1;
+                return card - 1;
+            });
         }
         if (direction === "next") {
             if (card === 3) return;
-            setCard (card => card + 1);
+            setCard (card => {
+                if (card === 3) return 3;
+                return card + 1;
+            });
         }
     } 
 
