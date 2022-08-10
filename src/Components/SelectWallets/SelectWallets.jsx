@@ -12,6 +12,7 @@ import CoinbaseIcon from "../../assets/coinbase.svg";
 import WalletConnectIcon from "../../assets/walletconnect.png";
 import "./selectwallets.css";
 import WalletBox from "./WalletBox";
+import { useEffect } from "react";
 
 const SelectWallets = ({ account, setAccount, closeModal }) => {
   const dispatch = useDispatch();
@@ -39,11 +40,16 @@ const SelectWallets = ({ account, setAccount, closeModal }) => {
       dispatch(addIsNetworkSupported(isNetworkSupported));
 
       setAccount(accounts[0]);
+      localStorage.setItem("wallet_type", "metamask");
       closeModal();
     } catch (e) {
       console.log(e);
     }
   };
+
+  useEffect(()=>{
+    if(account.length > 0 ) closeModal();
+  }, [account])
 
   return (
     <Modal>

@@ -21,6 +21,9 @@ import { checkUserFirstTime } from "./utils/checkUser.js";
 import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
 import Invoice from "./Invoice.json";
 import { useMoralis } from 'react-moralis';
+import { addChainIdAction, addIsNetworkSupported,  } from './store/actions/networkActions';
+import isChainSupported from './utils/isChainSupported.js';
+import { addUserAddressAction } from './store/actions/userActions.js';
 
 
 function App() {
@@ -70,6 +73,41 @@ function App() {
     }
   }, [account]);
 
+  const connectToMetaMask = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        return alert("Please install metamask");
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const chain = await ethereum.request({ method: "eth_chainId" });
+      const chainId = Number(chain).toString();
+      dispatch(addChainIdAction(chainId));
+      dispatch(addUserAddressAction(accounts[0]));
+
+      const isNetworkSupported = isChainSupported(chainId);
+      dispatch(addIsNetworkSupported(isNetworkSupported));
+      setAccount(accounts[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const connectUser = async () => {
+    try{
+      let type = localStorage.getItem("wallet_type");
+      if (type === "metamask") await connectToMetaMask();
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  useEffect(()=>{
+    connectUser();
+  },[])
+
   const fetchQuery = async () => {
     if (chainId && isSupported) {
       const { data } = await Client.query({ query: gql(getInvoices) });
@@ -91,6 +129,8 @@ function App() {
     }
     // if there is no account add open wallet modal
     if (account.length < 1) {
+      // if there is a method to connect to wallet already skip wallet page
+      if( localStorage.getItem("wallet_type").length > 0 ) return;
       setWalletModal(true);
       return;
     }
