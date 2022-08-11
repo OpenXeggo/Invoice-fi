@@ -130,8 +130,6 @@ function App() {
     }
     // if there is no account add open wallet modal
     if (account.length < 1) {
-      // if there is a method to connect to wallet already skip wallet page
-      if( localStorage.getItem("wallet_type").length > 0 ) return;
       setWalletModal(true);
       return;
     }
