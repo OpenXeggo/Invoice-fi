@@ -271,6 +271,9 @@ input {
 .mb-40 {
     margin-bottom: 40px;
 }
+.mb-50 {
+    margin-bottom: 50px;
+}
 
 .mx-auto {
     margin: 0 auto;

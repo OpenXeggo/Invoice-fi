@@ -20,6 +20,7 @@ import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
 import { checkIfUserExists, checkUserFirstTime } from "./utils/checkUser.js";
 import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
 import Invoice from "./Invoice.json";
+import Settings from './Pages/Settings/Settings.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -135,6 +136,17 @@ function App() {
           path="/invoices/:id"
           element={
             <InvoicePage
+              invoices={invoices}
+              account={account}
+              web3={web3}
+              contract={contract}
+            />
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <Settings
               invoices={invoices}
               account={account}
               web3={web3}
