@@ -96,4 +96,20 @@
     border: 1px solid #BABABA;
     display: inline-block;
     border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle-left, .toggle-right{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(137.85deg, #FF512F 2.66%, #DD2476 100%);
+    transition: .3s;
+    left:0;
+    border-radius: 5px;
+}
+
+.toggle-right{
+    left: 50%;
 }

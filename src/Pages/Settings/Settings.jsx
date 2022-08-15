@@ -5,7 +5,10 @@ import UploadIcon from "../../assets/upload.svg";
 
 const Settings = () => {
 
-    const [page, setPage] = useState("profile")
+    const [page, setPage] = useState("profile");
+    const [toggle, setToggle] = useState(false);
+
+    const handleClick = () => setToggle(toggle=>!toggle);
 
     return ( 
         <div className="body-container create-container">
@@ -68,7 +71,9 @@ const Settings = () => {
                         </div>
                         <div className="flex items-center gap-20">
                             <span className="weight-500 ">Use Company Information for Invoices</span>
-                            <div className="toggle"></div>
+                            <div className="toggle" onClick={handleClick} >
+                                <div className={toggle ? "toggle-right" : "toggle-left" } ></div>
+                            </div>
                         </div>
                         <div className="account-form-container">
                             <div className="account-input">
