@@ -55,7 +55,7 @@ const CreateInvoice = ({contract, account}) => {
 
     const [assets, setAssets] = useState([]);
     const [selectedToken, setSelectedToken] = useState({});
-    const [token, setToken] = useState([]);
+    const [token, setToken] = useState({});
 
     const date = moment();
     const dateString = date.format("Do-MMMM-yy");
@@ -200,13 +200,13 @@ const CreateInvoice = ({contract, account}) => {
                 receiver_address: customerAddress,
                 date_created: dateString,
                 date_due: dueDate,
-                invoice_id: id,
+                invoice_id: id - 1 ,
                 net_amount: total.net_amount,
                 gross_amount: total.gross_amount,
                 vat_amount: total.vat_amount,
                 notes: notes,
                 items: [...rows],
-                token_details: {...selectedToken},
+                token_details: {...token},
                 status: "pending"
             }
 

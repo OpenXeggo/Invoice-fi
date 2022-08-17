@@ -15,8 +15,8 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <MoralisProvider 
-        appId="gtpOH4xJMcjZtlOLmQCbrzMz0PEK8xsFuYaBFHJv" 
-        serverUrl="https://cb2qc0wxp6wd.usemoralis.com:2053/server"
+        appId="Up9lSCWXULDInXnCfBcZcsGztpqL2G6hhcZ9X1ct" 
+        serverUrl="https://y6m8j4zkqzyd.usemoralis.com:2053/server"
       >
         <BrowserRouter>
           <App />

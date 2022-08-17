@@ -10,10 +10,12 @@ import { ReactComponent as PreviewIcon } from '../../assets/preview-icon.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/download-icon.svg';
 import { ReactComponent as DelIcon } from '../../assets/delete-icon.svg';
 import './ManageInvoice.css'
+import StatusIcon from '../../Components/StatusIcon/StatusIcon';
+import InvoiceRow from '../../Components/InvoiceRow/InvoiceRow';
+
 
 const ManageInvoice = ({invoices, account,contract}) => {
 
-    const navigate = useNavigate();
     const web3 = initWeb3();
     const [accountInvoices, setAccountInvoices] = useState([]);
 
@@ -32,22 +34,6 @@ const ManageInvoice = ({invoices, account,contract}) => {
       catch (err) {
         return {tokenSymbol: "invalid"}
       }
-    }
-
-    const deleteInvoice = () => {
-        
-    }
-
-    const copyInvoice = () => {
-      
-    }
-
-    const downloadInvoice = () => {
-      
-    }
-
-    const handleRedirect = (id) => {
-        navigate(`/invoices/${id}`);
     }
 
     const checkAddress = (address) => {
@@ -103,37 +89,19 @@ const ManageInvoice = ({invoices, account,contract}) => {
                   <table className='table '>
                     <thead>
                       <tr>
-                        <th>Invoice #</th>
-                        <th>Invoice Creator / Recevier</th>
-                        <th>Token Symbol</th>
-                        <th>Token Amount</th>
-                        <th>Pay / Cancel</th>
+                        <th>Client</th>
+                        <th>Invoice No</th>
+                        <th>Issue Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                       </thead>
-                      {accountInvoices && accountInvoices.length > 0 && accountInvoices.map((invoice) => {
-                        return (
-                          <tbody>
-                            <tr key={invoice.invoiceID}>
-                              <td>{invoice.invoiceID}</td>
-                              <td>
-                                {invoice.invoiceCreator === account
-                                  ? invoice.receiver
-                                  : invoice.invoiceCreator}
-                              </td>
-                              <td>{invoice.tokenSymbol}</td>
-                              <td>{invoice.tokenAmountInWei}</td>
-                              <td> <InvoiceButton invoice={invoice} account={account} contract={contract} /> </td>
-                              <td>
-                                <CopyIcon className='action-icon' />
-                                <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>
-                                <DownloadIcon className='action-icon' />
-                                <DelIcon className='action-icon' />
-                              </td>
-                            </tr>
-                          </tbody>
-                        );
-                      })}
+                      <tbody>
+                      {accountInvoices && accountInvoices.length > 0 && accountInvoices.map((invoice) => (
+                        <InvoiceRow invoice={invoice} contract={contract} account={account} key={invoice.invoiceID} />
+                      ))}
+                      </tbody>
                   </table>
                 </div>
               </div>
