@@ -10,7 +10,7 @@ import ReportIcon from "../../assets/icons/ReportIcon";
 import SettingsIcon from "../../assets/icons/SettingsIcon";
 import InventoryIcon from "../../assets/icons/InventoryIcon";
 import FaqIcon from "../../assets/icons/FaqIcon";
-import LogoutIcon from "../../assets/icons/LogoutIcon";
+import LogoutIcon from "../../assets/log_out_dark.svg";
 import DownIcon from "../../assets/icons/DownIcon";
 
 import "./sidebar.css";
@@ -65,16 +65,6 @@ const Sidebar = () => {
                         </div>
                     </div>
 
-                    {/* <NavLink to={'/reports'} className="nav-link">     
-                        <ReportIcon />
-                        <span className="nav-link-text">Reports</span>
-                    </NavLink>
-
-                    <NavLink to={'/inventory'} className="nav-link">     
-                        <InventoryIcon />
-                        <span className="nav-link-text">Inventory</span>
-                    </NavLink> */}
-
                     <NavLink to={'/settings'} className="nav-link">     
                         <SettingsIcon />
                         <span className="nav-link-text">Settings</span>
@@ -87,7 +77,7 @@ const Sidebar = () => {
                         <span className="nav-link-text">FAQs</span>
                     </NavLink>
                     <span to={'/faq'} className="nav-link">     
-                        <LogoutIcon />
+                        <img src={LogoutIcon}/>
                         <span className="nav-link-text">Log-Out</span>
                     </span>
                 </div>
