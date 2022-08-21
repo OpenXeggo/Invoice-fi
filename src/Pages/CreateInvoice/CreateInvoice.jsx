@@ -195,6 +195,8 @@ const CreateInvoice = ({contract, account}) => {
             const invoiceData = {
                 sender_address: account,
                 sender_id: user_id,
+                sender_name: `${firstname} ${lastname}`,
+                sender_email: email,
                 receiver_name: customerName,
                 receiver_email: customerEmail,
                 receiver_address: customerAddress,
@@ -206,7 +208,7 @@ const CreateInvoice = ({contract, account}) => {
                 vat_amount: total.vat_amount,
                 notes: notes,
                 items: [...rows],
-                token_details: {...token},
+                token_details: {...token, asset_name: selectedToken.tokenName},
                 status: "pending"
             }
 

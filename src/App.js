@@ -24,7 +24,7 @@ import { useMoralis } from 'react-moralis';
 import { addChainIdAction, addIsNetworkSupported,  } from './store/actions/networkActions';
 import isChainSupported from './utils/isChainSupported.js';
 import { addUserAddressAction } from './store/actions/userActions.js';
-
+import Settings from './Pages/Settings/Settings.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -191,6 +191,17 @@ function App() {
           path="/invoices/:id"
           element={
             <InvoicePage
+              invoices={invoices}
+              account={account}
+              web3={web3}
+              contract={contract}
+            />
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <Settings
               invoices={invoices}
               account={account}
               web3={web3}

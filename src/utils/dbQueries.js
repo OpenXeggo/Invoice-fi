@@ -52,13 +52,29 @@ export const getCompanyInfo = async (user) => {
   return data.attributes;
 };
 
-export const getParticularInvoice = async (user) => {
-  const invoice = user.get("invoices");
-  console.log(invoice);
-  const data = await invoice[0].fetch();
-  console.log(data);
-  return data.attributes;
-};
+// export const getParticularInvoice = async (user) => {
+//   const invoice = user.get("invoices");
+//   console.log(invoice);
+//   const data = await invoice[0].fetch();
+//   console.log(data);
+//   return data.attributes;
+// };
+
+export const getParticularInvoice = (id) => {
+  return new Promise( async (resolve, reject)=>{
+      try{
+          const Invoice = Moralis.Object.extend("Invoice");
+          const query = new Moralis.Query(Invoice);
+          query.equalTo("invoice_id", id);
+          const results = await query.find()
+          console.log(results);
+          resolve(results[0]);
+      }
+      catch(e){
+          reject({...e})
+      }
+  })
+}
 
 export const getInvoices = async (user) => {
   const invoice = user.get("invoices");
