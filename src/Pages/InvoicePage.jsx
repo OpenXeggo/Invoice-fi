@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import InvoiceButton from "../Components/InvoiceButton";
 import "./CreateInvoice/createinvoice.css";
@@ -7,56 +7,10 @@ import TickIcon from "../assets/tick.svg";
 import { getParticularInvoice } from "../utils/dbQueries";
 
 
-const InvoicePage = ({invoices, account, web3, contract}) => {
+const InvoicePage = ({invoices, account}) => {
     const { id } = useParams();
     const [invoice, setInvoice] = useState(false);
-    const [invoiceData, setInvoiceData] = useState(false)
-    const [dueDate, setDueDate] = useState("");
-
-    const [amounts, setAmounts] = useState([{
-        net_amount: 0,
-        vat_amount: 0,
-        gross_amount: 0
-    }])
-
-    const [total, setTotal] = useState({
-        net_amount: 0,
-        vat_amount: 0,
-        gross_amount:0
-    })
-
-    // useEffect(()=>{
-    //     let total_net = 0, total_vat = 0, total_gross = 0;
-    //     // amounts.forEach(amount=>{
-    //     //     total_net += amount.net_amount;
-    //     //     total_vat += amount.vat_amount;
-    //     //     total_gross += amount.gross_amount
-    //     // })
-    //     // setTotal({
-    //     //     net_amount: total_net,
-    //     //     vat_amount: total_vat,
-    //     //     gross_amount:total_gross
-    //     // })
-    // },[amounts])
-
-    useEffect(()=>{
-        if (invoiceData) {
-
-            let d = new Date(invoiceData.date_due);
-            d = moment(d);
-            setDueDate(d.format("Do-MMMM-yy"));
-
-            setAmounts(()=>{
-                return invoiceData.items?.map((row)=>{
-                    let net_amount = row.quantity * row.price;
-                    let vat_amount = 0;
-                    if (row.vat_rate > 0) vat_amount = net_amount * row.vat_rate / 100;
-                    let gross_amount = vat_amount + net_amount;
-                    return {net_amount, vat_amount, gross_amount};
-                })
-            })
-        }
-    },[invoiceData]);
+    const [invoiceData, setInvoiceData] = useState(false);
 
     useEffect(()=>{
         const accountInvoice = invoices.find((invoice) => {
@@ -65,24 +19,50 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
         if (accountInvoice) setInvoice({...accountInvoice});
     }, [invoices]);
 
+    useEffect(()=>{
+        handleInvoiceData(invoice.invoiceID);
+    },[invoice])
+
     const handleInvoiceData = async (invoice_id) => {
         try{
             const data = await getParticularInvoice(invoice_id);
+
             if (data) {
                 const {  attributes , id  } = data;
-                setInvoiceData({id, ...attributes});
+
+                const d = new Date (attributes.date_due)
+                const dueDate = moment(d).format("Do-MMMM-yy");
+
+                const total_items = attributes.items.map(row=>{
+                    let net_amount = row.quantity * row.price;
+                    let vat_amount = 0;
+                    if (row.vat_rate > 0) vat_amount = net_amount * row.vat_rate / 100;
+                    let gross_amount = vat_amount + net_amount;
+                    return {net_amount, vat_amount, gross_amount, ...row};
+                })
+
+                const totals = total_items.reduce((total, current)=>{
+                    return {
+                        vat_amount: current.vat_amount + total.vat_amount,
+                        net_amount: current.net_amount + total.net_amount,
+                        gross_amount: current.gross_amount + total.gross_amount                    }
+                }, {
+                    vat_amount: 0,
+                    net_amount: 0,
+                    gross_amount: 0
+                })
+
+                setInvoiceData({id, ...attributes, dueDate, total_items, totals });
             }
             
         } catch (e){
             console.log(e)
         }
     }
-
-    useEffect(()=>{
-        handleInvoiceData(invoice.invoiceID);
-    },[invoice])
   
     return (
+        <>
+        { invoiceData ? (
         <div className="body-container create-container">
             <span className="page-title">Invoice Details</span>
             <span className='page-subtitle'>Invoices/Invoice-Details/INV-{id}</span>
@@ -99,7 +79,7 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                             <span>Sender Email</span>
                         </div>
                         <div>
-                            <span>{account}</span>
+                            <span>{invoiceData.sender_address}</span>
                         </div>
                     </div>
                     <div className="left-bottom flex flex-col gap-10">
@@ -123,7 +103,7 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                         <span>Issued date: {invoiceData.date_created} </span>
                     </div>
                     <div>
-                        <span>Payment Date: {dueDate}</span>
+                        <span>Payment Date: {invoiceData.dueDate}</span>
                     </div>
                 </div>
             </div>
@@ -139,9 +119,9 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                             <th>Gross Amount</th>
                         </tr>
                     </thead>
-                    {invoiceData.items?.map((row,i) => (
-                        <tbody key={i}>
-                            <tr>
+                    <tbody>
+                    {invoiceData.total_items?.map((row,i) => (
+                            <tr key={i}>
                                 <td><input value={row.item}  type="text" placeholder='Enter Item Description' /></td>
                                 <td><input value={row.quantity}  type="number" placeholder='-' className='center-input' /></td>
                                 <td><input value={row.price}  type="number" placeholder='-' className='center-input' /></td>
@@ -149,11 +129,11 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                                     <input type="text" value={row.vat_rate}  placeholder='-' className='center-input pr-10' />
                                     <span className='vat' >%</span>
                                 </td>
-                                <td><input type="number" value={0}  placeholder='-' className='center-input' /></td>
-                                <td><input type="number" value={0}  placeholder='-' className='center-input' /></td>
+                                <td><input type="number" value={row.vat_amount}  placeholder='-' className='center-input' /></td>
+                                <td><input type="number" value={row.gross_amount}  placeholder='-' className='center-input' /></td>
                             </tr>
-                        </tbody>
                     ))}
+                    </tbody>
                 </table>
             </div>
             <div className='invoice-summary flex space-between'>
@@ -168,17 +148,17 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                     <div className="invoice-total-item">
                         <span className='label'>Total Net Amount</span>
                         <span>=</span>
-                        <span>{total.net_amount}</span>
+                        <span>{invoiceData.totals.net_amount}</span>
                     </div>
                     <div className="invoice-total-item">
                         <span className='label'>Total VAT Amount</span>
                         <span>=</span>
-                        <span>{total.vat_amount}</span>
+                        <span>{invoiceData.totals.vat_amount}</span>
                     </div>
                     <div className="invoice-total-item">
                         <span className='label'>Total Gross Amount</span>
                         <span>=</span>
-                        <span>{total.gross_amount}</span>
+                        <span>{invoiceData.totals.gross_amount}</span>
                     </div>
                 </div>
             </div>
@@ -207,12 +187,20 @@ const InvoicePage = ({invoices, account, web3, contract}) => {
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline'>Download as PDF</button>
-                        <button className='xeggo-btn' >Cancel Invoice</button>
+                        {invoice.receiver === account ? (
+                            <button className='xeggo-btn' >Pay Invoice</button>
+                        ) : (
+                            <button className='xeggo-btn' >Cancel Invoice</button>
+                        )}
                     </div>
                 </div>
             </div>
             </div>
         </div>
+        ) : (
+            <h1>Loading...</h1>
+        )}
+        </>
     )
 }
  
