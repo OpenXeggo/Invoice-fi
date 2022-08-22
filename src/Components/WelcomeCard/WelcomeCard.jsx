@@ -2,7 +2,9 @@ import { useState } from "react";
 import Modal from "../Modal/modal";
 import ProfileIcon from "../../assets/profile.svg";
 import ProfileDetails from "../ProfileDetails/ProfileDetails";
-
+import FirstIcon from "../../assets/first.png";
+import SecondIcon from "../../assets/second.png";
+import ThirdIcon from "../../assets/third.png";
 import BackButton from "../../assets/back.svg"
 
 import "./welcomecard.css";
@@ -14,14 +16,22 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
     const [profile, setProfile] = useState(false);
     const [openWallet, setOpenWallet] = useState(false);
 
+    const pics = [FirstIcon, SecondIcon, ThirdIcon];
+
     const changeCard = (direction) => {
         if (direction === "prev") {
             if (card === 1) return;
-            setCard(card => card - 1);
+            setCard(card =>{
+                if (card === 1) return 1;
+                return card - 1;
+            });
         }
         if (direction === "next") {
             if (card === 3) return;
-            setCard (card => card + 1);
+            setCard (card => {
+                if (card === 3) return 3;
+                return card + 1;
+            });
         }
     } 
 
@@ -105,7 +115,7 @@ const WelcomeCard = ({closeModal, setAccount, account}) => {
             <Modal>
                 <div className="welcome-card-container flex flex-col items-center">
                     <div className="mb-20">
-                        <img src={ProfileIcon} alt="" width={"70px"} height="70px" />
+                        <img src={pics[card - 1]} alt="" width={"70px"} height="70px" />
                     </div>
                     <span className="font-14 line-21 weight-600 faint-color mb-10" >{card} of 3</span> 
                     {returnCard(card)}

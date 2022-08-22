@@ -28,7 +28,7 @@ const AddTokenModal = ({setCustomToken, setAssets, assets, setToken, setSelected
                 resolve({symbol, name})
             }
             catch(e){
-                reject("Error getting Token Details");
+                reject({message: "Error getting Token Details"});
             }
         })
     }

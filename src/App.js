@@ -17,9 +17,14 @@ import { networks } from "./network.config.json";
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import WelcomeCard from "./Components/WelcomeCard/WelcomeCard.jsx";
-import { checkIfUserExists, checkUserFirstTime } from "./utils/checkUser.js";
+import { checkUserFirstTime } from "./utils/checkUser.js";
 import SelectWallets from "./Components/SelectWallets/SelectWallets.jsx";
 import Invoice from "./Invoice.json";
+import { useMoralis } from 'react-moralis';
+import { addChainIdAction, addIsNetworkSupported,  } from './store/actions/networkActions';
+import isChainSupported from './utils/isChainSupported.js';
+import { addUserAddressAction } from './store/actions/userActions.js';
+import Settings from './Pages/Settings/Settings.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,11 +32,29 @@ function App() {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
+
   const Client = new ApolloClient({
     uri: isSupported ? networks[chainId]?.graphAPI : "",
     cache: new InMemoryCache(),
   });
   const [invoices, setInvoices] = useState([]);
+  const { Moralis, isAuthenticated, user } = useMoralis();
+
+  useEffect(()=>{
+    if(isAuthenticated){
+      Moralis.onAccountChanged( async (account) => {
+        try{
+          console.log("account changed");
+          const confirmed = window.confirm("Link this address to your account?");
+          if (confirmed) {
+            await Moralis.link(account);
+          }
+        } catch(e){
+          console.log(e);
+        }
+      })
+    }
+  },[isAuthenticated, user])
 
   useEffect(() => {
     const { ethereum } = window;
@@ -51,11 +74,46 @@ function App() {
     }
   }, [account]);
 
+  const connectToMetaMask = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        return alert("Please install metamask");
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const chain = await ethereum.request({ method: "eth_chainId" });
+      const chainId = Number(chain).toString();
+      dispatch(addChainIdAction(chainId));
+      dispatch(addUserAddressAction(accounts[0]));
+
+      const isNetworkSupported = isChainSupported(chainId);
+      dispatch(addIsNetworkSupported(isNetworkSupported));
+      setAccount(accounts[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const connectUser = async () => {
+    try{
+      let type = localStorage.getItem("wallet_type");
+      if (type === "metamask") await connectToMetaMask();
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  useEffect(()=>{
+    connectUser();
+  },[])
+
   const fetchQuery = async () => {
     if (chainId && isSupported) {
       const { data } = await Client.query({ query: gql(getInvoices) });
       const { invoices } = data;
-      console.log({ invoices }, "This is the result gotten from graphql");
+      console.log ({ invoices }, "This is the result gotten from graphql");
       setInvoices(invoices);
     }
   };
@@ -65,23 +123,23 @@ function App() {
   const [walletModal, setWalletModal] = useState(false);
 
   const checkUser = () => {
+    // if user has not visited site before start welcome cards
     if (!checkUserFirstTime()) {
       setWelcomeModal(true);
       return;
     }
+    // if there is no account add open wallet modal
     if (account.length < 1) {
       setWalletModal(true);
       return;
     }
-    if (!checkIfUserExists()) {
-      setProfileModal(true);
-      return;
-    }
+    setProfileModal(true);
   };
 
   useEffect(() => {
     checkUser();
   }, [account]);
+
 
   useEffect(() => {
     console.log(chainId, "CHAIN ID");
@@ -94,12 +152,10 @@ function App() {
     }
   }, [chainId, dispatch]);
 
+  // functions to close Modals
   const closeWelcomeModal = () => setWelcomeModal(false);
   const closeProfileModal = () => setProfileModal(false);
-
-  const closeWalletModal = () => {
-    setWalletModal(false);
-  };
+  const closeWalletModal = () => setWalletModal(false);
 
   return (
     <div className="App">
@@ -142,6 +198,17 @@ function App() {
             />
           }
         />
+        <Route
+          path="/settings"
+          element={
+            <Settings
+              invoices={invoices}
+              account={account}
+              web3={web3}
+              contract={contract}
+            />
+          }
+        />
       </Routes>
       {welcomeModal && (
         <WelcomeCard
@@ -158,7 +225,9 @@ function App() {
         />
       )}
       {profileModal && (
-        <ProfileDetails closeModal={closeProfileModal} account={account} />
+        <ProfileDetails 
+          closeModal={closeProfileModal} 
+          account={account} />
       )}
     </div>
   );

@@ -7,8 +7,11 @@ import SunIcon from "../../assets/icons/SunIcon";
 import SearchIcon from "../../assets/search.svg";
 import "./navbar.css";
 import { modifyAddress } from '../../utils/modifyAddress';
+import { useSelector } from 'react-redux';
 
 const Navbar = ({account}) => {
+
+    const { username } = useSelector(state=>state.user.userData);
 
     return ( 
         <div className="navbar">
@@ -27,7 +30,7 @@ const Navbar = ({account}) => {
                         <div className="flex gap-10">
                             <img src={ProfileIcon} />
                             <div className="profile flex flex-col justify-center">
-                                <b>Xeggo</b>
+                                <b>{ username }</b>
                                 <span>{modifyAddress(account)}</span>
                             </div>
                         </div>

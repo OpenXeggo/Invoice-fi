@@ -9,6 +9,7 @@ import WelcomeHello from '../../Components/welcomeHello/WelcomeHello';
 import Overview from '../../Components/overview/Overview';
 import Notifications from '../../Components/notifications/Notifications';
 import './Dashboard.css'
+import InvoiceRow from '../../Components/InvoiceRow/InvoiceRow';
 
 
 const Dashboard = ({ invoices, account, contract }) => {
@@ -32,9 +33,7 @@ const Dashboard = ({ invoices, account, contract }) => {
     }
   };
 
-  const handleRedirect = (id) => {
-    navigate(`/invoices/${id}`);
-  };
+
 
   const checkAddress = (address) => {
     const isAddress = web3.utils.isAddress(address);
@@ -84,42 +83,22 @@ const Dashboard = ({ invoices, account, contract }) => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Invoice #</th>
-                      <th>Invoice Creator / Recevier</th>
-                      <th>Token Symbol</th>
+                      <th>Client</th>
+                      <th>Invoice No.</th>
+                      <th>Issue Date</th>
                       <th>Token Amount</th>
-                      <th>Pay / Cancel</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
+                  <tbody>
                   {accountInvoices &&
                     accountInvoices.length > 0 &&
                     accountInvoices.map((invoice) => {
                       return (
-                        <tbody>
-                          <tr
-                            key={invoice.invoiceID}
-                            onClick={() => handleRedirect(invoice.invoiceID)}
-                          >
-                            <td>{invoice.invoiceID}</td>
-                            <td>
-                              {invoice.invoiceCreator === account
-                                ? invoice.receiver
-                                : invoice.invoiceCreator}
-                            </td>
-                            <td>{invoice.tokenSymbol}</td>
-                            <td>{invoice.tokenAmountInWei}</td>
-                            <td>
-                              {" "}
-                              <InvoiceButton
-                                invoice={invoice}
-                                account={account}
-                                contract={contract}
-                              />{" "}
-                            </td>
-                          </tr>
-                        </tbody>
+                        <InvoiceRow invoice={invoice} account={account} contract={contract} page="dashboard" />
                       );
                     })}
+                  </tbody>
                 </table>
               </div>
             </div>

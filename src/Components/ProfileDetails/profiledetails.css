@@ -69,3 +69,8 @@
     font-weight: 600;
     line-height: 24px;
 }
+
+.moralis-modal{
+    width: 418px;
+    padding: 39px 85px;
+}

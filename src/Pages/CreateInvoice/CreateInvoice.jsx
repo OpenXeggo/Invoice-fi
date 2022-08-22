@@ -1,8 +1,7 @@
-import React,{useState, useRef, useMemo} from 'react'
+import React,{useState, useMemo} from 'react'
 import { initWeb3 } from '../../utils/init'
-import { useNavigate } from 'react-router-dom';
 import { networks } from "../../network.config.json";
-import { useSelector } from "react-redux";  
+import { useDispatch, useSelector } from "react-redux";  
 import './createinvoice.css';
 import AddIcon from "../../assets/add.svg";
 import TickIcon from "../../assets/tick.svg";
@@ -14,16 +13,23 @@ import moment from 'moment';
 import LinksModal from '../../Components/LinksModal/LinksModal';
 import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
+import { useMoralis } from 'react-moralis';
+import { addInvoice } from '../../utils/dbQueries'
 
-const CreateInvoice = ({contract,account}) => {
-    // const [invoiceId,setInvoiceId]=useState(null);
+const CreateInvoice = ({contract, account}) => {
     const { chainId, isSupported } = useSelector((state) => state.network);
+    const { firstname, lastname, email, user_id } = useSelector(state=>state.user.userData);
+    const dispatch = useDispatch();
+
+    const { user } = useMoralis();
+
     const [customToken, setCustomToken] = useState(false);
 
     const [customerName, setCustomerName] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
     const [dueDate, setDueDate] = useState("");
+    const [notes, setNotes] = useState("");
     
     const [rows, setRows] = useState([{
         item: "",
@@ -45,30 +51,11 @@ const CreateInvoice = ({contract,account}) => {
     })
 
     const [link, setLink] = useState("");
-
     const closeLinkModal = () => setLink("");
-
-    const Celo = [{
-        tokenName : "Celo",
-        currencies: [
-            {
-                name: "cEUR",
-                address: "0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F",
-            },
-            {
-                name:"cUSD", 
-                address: "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"
-            },
-            {
-                name: "Celo",
-                address: ""
-            }
-        ]
-    }]
 
     const [assets, setAssets] = useState([]);
     const [selectedToken, setSelectedToken] = useState({});
-    const [token, setToken] = useState([]);
+    const [token, setToken] = useState({});
 
     const date = moment();
     const dateString = date.format("Do-MMMM-yy");
@@ -130,11 +117,45 @@ const CreateInvoice = ({contract,account}) => {
         })
     }
 
+    const saveInvoiceToUser = (id) => {
+        return new Promise( async (resolve, reject)=>{
+            try{
+                user.addUnique("invoices", id);
+                await user.save()
+                resolve({ok: true, message: "completed"})
+            } catch (e) {
+                reject({ok: false, message: "Could not add Invoice"});
+            }
+        })
+    }
+
+    
+
     const onSubmitHandler=async(e)=>{
         try{
             e.preventDefault();
     
             let tokAddress = initWeb3().utils.isAddress(token.address);
+
+            if(customerName.length === 0){
+                alert('Please enter Customer name!')
+                return;
+            }
+
+            if(customerAddress.length === 0){
+                alert('Please enter Customer Address!')
+                return;
+            }
+
+            if(customerEmail.length === 0){
+                alert('Please enter Customer Email!')
+                return;
+            }
+
+            if(dueDate.length === 0){
+                alert('Please enter due Date!')
+                return;
+            }
 
             if(!tokAddress){
                 alert('Please enter valid token Address!')
@@ -168,8 +189,38 @@ const CreateInvoice = ({contract,account}) => {
 
             let convertToWei = initWeb3().utils.toWei(str, "ether");
             await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
-            const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call()
+            const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call();
+            const invoice_id = id - 1;
             // setInvoiceId(id-1);
+
+            const invoiceData = {
+                sender_address: account,
+                sender_id: user_id,
+                sender_name: `${firstname} ${lastname}`,
+                sender_email: email,
+                receiver_name: customerName,
+                receiver_email: customerEmail,
+                receiver_address: customerAddress,
+                date_created: dateString,
+                date_due: dueDate,
+                invoice_id,
+                net_amount: total.net_amount,
+                gross_amount: total.gross_amount,
+                vat_amount: total.vat_amount,
+                notes: notes,
+                items: [...rows],
+                token_details: {...token, asset_name: selectedToken.tokenName},
+                native_currency:{
+                    name: "",
+                    token_address: ""
+                },
+                status: "pending"
+            }
+
+            await addInvoice(invoiceData);
+            await saveInvoiceToUser(id);
+            dispatch({type: "ADD_INVOICE_ID", payload: id});
+
             let url = `https://invoice-fi.vercel.app/invoices/${id-1}`;
             setLink(url);
 
@@ -225,13 +276,13 @@ const CreateInvoice = ({contract,account}) => {
                     <div className="left-top flex flex-col gap-10">
                         <span className='title'>From:</span>                      
                         <div>
-                            <span>Ayomide Odusanya</span> 
+                            <span>{`${firstname} ${lastname}`}</span> 
                         </div>
                         <div>
-                            <span>Odusanyamd@gmail.com</span>
+                            <span>{email}</span>
                         </div>
                         <div>
-                            <span>0x80191032fB4d309501d2EBc09a1A7d7F2941C8C1</span>
+                            <span>{account}</span>
                         </div>
                     </div>
                     <div className="left-bottom flex flex-col gap-10">
@@ -300,7 +351,11 @@ const CreateInvoice = ({contract,account}) => {
             <div className='invoice-summary flex space-between'>
                 <div className="notes-container flex flex-col">
                     <span>Notes: </span>
-                    <textarea name="notes" id="notes" cols="30" rows="10" placeholder='Thank you for your business' className='notes-text'></textarea>
+                    <textarea name="notes" id="notes" cols="30" rows="10" 
+                        placeholder='Thank you for your business' 
+                        className='notes-text' value={notes} 
+                        onChange={(e)=>setNotes(e.target.value)}
+                    ></textarea>
                 </div>
                 <div className="invoice-total">
                     <div className="invoice-total-item">

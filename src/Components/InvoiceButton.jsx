@@ -70,30 +70,38 @@ const InvoiceButton = ({ invoice, account, contract }) => {
       {invoice.invoiceCreator === account ? (
         <div onClick={(e) => e.stopPropagation()}>
           {invoice.isCancelled ? (
-            "Cancelled"
+            <button className='xeggo-button'>
+              Cancelled
+            </button>
           ) : invoice.isPaid ? (
-            "Paid"
+            <button className='xeggo-button'>
+              Paid
+            </button>
           ) : (
             <button
               className="xeggo-button"
               onClick={(e) => cancelHandler(e, invoice)}
             >
-              Cancel
+              Cancel Invoice
             </button>
           )}
         </div>
       ) : (
         <div onClick={(e) => e.stopPropagation()}>
           {invoice.isPaid ? (
-            "Paid"
+            <button className='xeggo-button'>
+              Paid
+            </button>
           ) : invoice.isCancelled ? (
-            "Cancelled"
+              <button className='xeggo-button'>
+                Cancelled
+              </button>
           ) : (
             <button
               className="xeggo-button"
               onClick={(e) => payHandler(e, invoice)}
             >
-              Pay
+              Pay Invoice
             </button>
           )}
         </div>

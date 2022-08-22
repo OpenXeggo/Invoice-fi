@@ -1,0 +1,40 @@
+.status-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 8px 0;
+    width: 80px;
+    margin: 0 auto;
+}
+
+.status-text{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    text-transform: uppercase;
+}
+
+.status-box.pending{
+    background: rgba(255, 212, 61, 0.22);
+}
+
+.status-text.pending{
+    color: #FAC407;
+}
+
+.status-box.paid{
+    background: #01926733;
+}
+
+.status-text.paid{
+    color: #019267;
+}
+
+.status-box.overdue{
+    background: #E10C0C38;
+}
+
+.status-text.overdue{
+    color: #E10C0C;
+}
