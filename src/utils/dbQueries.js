@@ -28,7 +28,7 @@ export const addUser = (userData) => {
       const { Object: User } = initObject("user");
       const user = new User();
       const result = await user.save(userData);
-      resolve (result) ;
+      resolve (result);
     } catch (e){
       reject(e);
     }
@@ -65,7 +65,7 @@ export const getParticularInvoice = (id) => {
       try{
           const Invoice = Moralis.Object.extend("Invoice");
           const query = new Moralis.Query(Invoice);
-          query.equalTo("invoice_id", id);
+          query.equalTo("invoice_id", Number(id));
           const results = await query.find()
           console.log(results);
           resolve(results[0]);

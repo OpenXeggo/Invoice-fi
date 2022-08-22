@@ -188,11 +188,6 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline'>Download as PDF</button>
                         <InvoiceButton invoice={invoice} contract={contract} account={account} />
-                        {/* {invoice.receiver === account ? (
-                            <button className='xeggo-btn' >Pay Invoice</button>
-                        ) : (
-                            <button className='xeggo-btn' >Cancel Invoice</button>
-                        )} */}
                     </div>
                 </div>
             </div>

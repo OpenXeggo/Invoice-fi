@@ -99,7 +99,7 @@ const ManageInvoice = ({invoices, account,contract}) => {
                       </thead>
                       <tbody>
                       {accountInvoices && accountInvoices.length > 0 && accountInvoices.map((invoice) => (
-                        <InvoiceRow invoice={invoice} contract={contract} account={account} key={invoice.invoiceID} />
+                        <InvoiceRow invoice={invoice} contract={contract} account={account} key={invoice.invoiceID} page="manage" />
                       ))}
                       </tbody>
                   </table>

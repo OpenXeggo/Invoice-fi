@@ -190,6 +190,7 @@ const CreateInvoice = ({contract, account}) => {
             let convertToWei = initWeb3().utils.toWei(str, "ether");
             await contract.methods.createInvoice(token.address,convertToWei,customerAddress).send({from:account,  gasPrice: initWeb3().utils.toWei("40", "gwei")})   
             const id =  await contract.methods.createInvoice(token.address,convertToWei,customerAddress).call();
+            const invoice_id = id - 1;
             // setInvoiceId(id-1);
 
             const invoiceData = {
@@ -202,13 +203,17 @@ const CreateInvoice = ({contract, account}) => {
                 receiver_address: customerAddress,
                 date_created: dateString,
                 date_due: dueDate,
-                invoice_id: id - 1 ,
+                invoice_id,
                 net_amount: total.net_amount,
                 gross_amount: total.gross_amount,
                 vat_amount: total.vat_amount,
                 notes: notes,
                 items: [...rows],
                 token_details: {...token, asset_name: selectedToken.tokenName},
+                native_currency:{
+                    name: "",
+                    token_address: ""
+                },
                 status: "pending"
             }
 

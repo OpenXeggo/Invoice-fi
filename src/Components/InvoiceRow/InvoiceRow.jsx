@@ -12,7 +12,7 @@ import StatusIcon from '../StatusIcon/StatusIcon';
 import { getParticularInvoice } from '../../utils/dbQueries';
 
 
-const InvoiceRow = ({invoice, account, contract}) => {
+const InvoiceRow = ({invoice, account, contract, page}) => {
 
     const { Moralis } = useMoralis();
     const navigate = useNavigate();
@@ -62,19 +62,36 @@ const InvoiceRow = ({invoice, account, contract}) => {
     },[invoiceData])
 
     return ( 
-    <tr>
-        <td>{invoiceData.receiver_name}</td>
-        <td>INV-{invoice.invoiceID}</td>
-        <td>{date}</td>
-        <td>{`${invoiceData?.gross_amount ?? "No name"} ${invoiceData?.token_details?.name ?? "no symbol"}`}</td>
-        <td><StatusIcon type={invoiceData.status}/></td>
-        <td>
-          <CopyIcon className='action-icon' />
-          <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>
-          <DownloadIcon className='action-icon' />
-          <DelIcon className='action-icon' />
-        </td>
-    </tr>
+        <>
+        {page === "manage" ? (
+            <tr>
+                <td>{invoiceData.receiver_name}</td>
+                <td>INV-{invoice.invoiceID}</td>
+                <td>{date}</td>
+                <td>{`${invoiceData?.gross_amount ?? "No name"} ${invoiceData?.token_details?.name ?? "no symbol"}`}</td>
+                <td><StatusIcon type={invoiceData.status}/></td>
+                <td>
+                  <CopyIcon className='action-icon' />
+                  <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>
+                  <DownloadIcon className='action-icon' />
+                  <DelIcon className='action-icon' />
+                </td>
+            </tr>
+        ) : (
+            <tr>
+                <td>{invoiceData.receiver_name}</td>
+                <td>
+                    <div className='weight-400 font-12 line-18 gradient-text pointer' 
+                    onClick={()=>handleRedirect(invoice.invoiceID)}
+                    >View Invoice</div>
+                    <div>INV-{invoice.invoiceID}</div>
+                </td>
+                <td>{date}</td>
+                <td>{`${invoiceData?.gross_amount ?? "No name"} ${invoiceData?.token_details?.name ?? "no symbol"}`}</td>
+                <td><StatusIcon type={invoiceData.status}/></td>
+            </tr>
+        )}
+        </>
     );
 }
  

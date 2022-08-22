@@ -6,11 +6,12 @@ import { useMoralis, useMoralisQuery } from "react-moralis";
 import "./profiledetails.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import GifImage from "../../assets/loader.png"
+import GifImage from "../../assets/loader.png";
+import { addUser, checkIfUserExists } from "../../utils/dbQueries";
 
 const ProfileDetails = ({closeModal, account}) => {
 
-    const { authenticate, isAuthenticated, user, setUserData } = useMoralis();
+    const { authenticate, isAuthenticated, user } = useMoralis();
 
     const dispatch  = useDispatch();
 
@@ -26,30 +27,14 @@ const ProfileDetails = ({closeModal, account}) => {
         dispatch({type:"ADD_USER_DATA", payload: profileData});
     }
 
-    const checkIfUserExists = async () => {
-        return new Promise( async (resolve, reject)=>{
-            try{
-                if (!isAuthenticated) throw new Error("User not Authenticated");
-                if (!user.attributes.firstname && !user.attributes.lastname) {
-                    resolve(false);
-                    return
-                }
-                console.log({user})
-                resolve (user.attributes);
-            } catch (e){
-              reject (e);
-            }
-          })
-    }
-
     const checkUser = async () =>{
         try{
             const result = await checkIfUserExists(account);
-            if (!result) {
+            if (result.length === 0 ) {
                 setConnecting(false);
             }
             else{
-                addUserData(result);
+                addUserData(result[0].attributes);
                 closeModal();
             }
         } catch (e) {
@@ -109,7 +94,8 @@ const ProfileDetails = ({closeModal, account}) => {
                 walletAddress: account,
                 invoices:[]
             }
-            const result = await setUserData(profileData);
+            const result = await addUser(profileData);
+            console.log({result});
             addUserData(profileData);
             closeModal();
         } catch(e){

@@ -312,3 +312,9 @@ input {
 .underline {
     text-decoration: underline;
 }
+
+.gradient-text{
+    background: -webkit-linear-gradient(#FF512F, #DD2476);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
