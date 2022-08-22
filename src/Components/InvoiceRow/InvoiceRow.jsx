@@ -69,7 +69,7 @@ const InvoiceRow = ({invoice, account, contract, page}) => {
                 <td>INV-{invoice.invoiceID}</td>
                 <td>{date}</td>
                 <td>{`${invoiceData?.gross_amount ?? "No name"} ${invoiceData?.token_details?.name ?? "no symbol"}`}</td>
-                <td><StatusIcon type={invoiceData.status}/></td>
+                <td><StatusIcon invoice={invoice}/></td>
                 <td>
                   <CopyIcon className='action-icon' />
                   <PreviewIcon className='action-icon' onClick={()=>handleRedirect(invoice.invoiceID)}/>
@@ -88,7 +88,7 @@ const InvoiceRow = ({invoice, account, contract, page}) => {
                 </td>
                 <td>{date}</td>
                 <td>{`${invoiceData?.gross_amount ?? "No name"} ${invoiceData?.token_details?.name ?? "no symbol"}`}</td>
-                <td><StatusIcon type={invoiceData.status}/></td>
+                <td><StatusIcon invoice={invoice} /></td>
             </tr>
         )}
         </>

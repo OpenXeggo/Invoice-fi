@@ -73,10 +73,10 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                     <div className="left-top flex flex-col gap-10">
                         <span className='title'>From:</span>                      
                         <div>
-                            <span>Sender Name</span> 
+                            <span>{invoiceData.sender_name}</span> 
                         </div>
                         <div>
-                            <span>Sender Email</span>
+                            <span>{invoiceData.sender_email}</span>
                         </div>
                         <div>
                             <span>{invoiceData.sender_address}</span>
