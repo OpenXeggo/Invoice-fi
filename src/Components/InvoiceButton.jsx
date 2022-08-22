@@ -78,7 +78,7 @@ const InvoiceButton = ({ invoice, account, contract }) => {
               className="xeggo-button"
               onClick={(e) => cancelHandler(e, invoice)}
             >
-              Cancel
+              Cancel Invoice
             </button>
           )}
         </div>
@@ -93,7 +93,7 @@ const InvoiceButton = ({ invoice, account, contract }) => {
               className="xeggo-button"
               onClick={(e) => payHandler(e, invoice)}
             >
-              Pay
+              Pay Invoice
             </button>
           )}
         </div>

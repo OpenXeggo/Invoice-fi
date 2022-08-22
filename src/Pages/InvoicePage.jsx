@@ -7,7 +7,7 @@ import TickIcon from "../assets/tick.svg";
 import { getParticularInvoice } from "../utils/dbQueries";
 
 
-const InvoicePage = ({invoices, account}) => {
+const InvoicePage = ({invoices, account, contract, web3}) => {
     const { id } = useParams();
     const [invoice, setInvoice] = useState(false);
     const [invoiceData, setInvoiceData] = useState(false);
@@ -187,11 +187,12 @@ const InvoicePage = ({invoices, account}) => {
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline'>Download as PDF</button>
-                        {invoice.receiver === account ? (
+                        <InvoiceButton invoice={invoice} contract={contract} account={account} />
+                        {/* {invoice.receiver === account ? (
                             <button className='xeggo-btn' >Pay Invoice</button>
                         ) : (
                             <button className='xeggo-btn' >Cancel Invoice</button>
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>
