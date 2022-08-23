@@ -173,7 +173,7 @@ input, textarea {
 .vat {
     position: absolute;
     bottom: 15px;
-    right: 15px;
+    right: 40px;
     font-size: 16px;
     line-height: 24px;
 }
@@ -198,7 +198,7 @@ input, textarea {
 
 .items-table {
     width: 100%;
-    border-spacing: 15px;
+    /* border-spacing: 15px; */
 }
 
 .items-table th {
@@ -207,10 +207,16 @@ input, textarea {
     line-height: 21px;
 }
 
+.items-table tbody tr td{
+    /* line-height: 100px; */
+    padding-top: 20px;
+    padding-left: 0px;
+}
+
 .items-table input {
     height: 50px;
     font-size: 16px;
-    width: 100%;
+    width: 85%;
 }
 
 .items-table td{
