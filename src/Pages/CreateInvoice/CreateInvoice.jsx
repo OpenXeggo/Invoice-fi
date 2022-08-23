@@ -15,6 +15,7 @@ import PlusIcon from "../../assets/plus.svg";
 import AddTokenModal from '../../Components/AddTokenModal/AddTokenModal';
 import { useMoralis } from 'react-moralis';
 import { addInvoice } from '../../utils/dbQueries'
+import { ethers } from 'ethers';
 
 const CreateInvoice = ({contract, account}) => {
     const { chainId, isSupported } = useSelector((state) => state.network);
@@ -30,6 +31,7 @@ const CreateInvoice = ({contract, account}) => {
     const [customerAddress, setCustomerAddress] = useState("");
     const [dueDate, setDueDate] = useState("");
     const [notes, setNotes] = useState("");
+    const [nextInvoiceID,setNextInvoiceID] = useState("1");
     
     const [rows, setRows] = useState([{
         item: "",
@@ -63,6 +65,17 @@ const CreateInvoice = ({contract, account}) => {
     const selectAsset = (item) => {
         setSelectedToken({...item})
     }
+
+    useEffect(()=>{
+        const getNextInvoiceId=async()=>{
+            const nextInvoiceId = await contract.methods.getNextInvoiceID().call()
+            
+            setNextInvoiceID(nextInvoiceId)
+        }
+        if(isSupported && contract._address!==ethers.constants.AddressZero ){
+           getNextInvoiceId()
+        }
+    },[isSupported,contract])
 
     useEffect(()=>{
         if(assets.length)
@@ -306,7 +319,7 @@ const CreateInvoice = ({contract, account}) => {
                 </div>
                 <div className="right-details flex flex-col gap-10">
                     <div>
-                        <span>issue #1</span>
+                        <span>issue #{nextInvoiceID}</span>
                     </div>
                     <div>
                         <span>Issued date: {dateString}</span>
