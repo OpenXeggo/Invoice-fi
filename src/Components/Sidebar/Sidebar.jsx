@@ -55,7 +55,7 @@ const Sidebar = () => {
                             <span className="nav-link-text">Invoices</span>
                             <span className="nav-link-icon"> <DownIcon /> </span>
                         </div>
-                        <div className="nav-link-items">
+                        <div className="nav-link-items drop-items ">
                             <NavLink className="drop-down-link" to={'/create'} ref={createButton}>
                                 New Invoice
                             </NavLink>
