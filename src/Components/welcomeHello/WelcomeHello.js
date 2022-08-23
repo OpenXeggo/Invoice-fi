@@ -15,12 +15,12 @@ const WelcomeHello = ({account}) => {
     }
 
     return (
-        <div className='hello-welcome-wrapper'>
+        <div className='hello-welcome-wrapper mb-40'>
             <div className='greeting'>
                 {account?(
-                    <h1>Welcome Back, { username }</h1>
+                    <h1 className='mb-10'>Welcome Back, { username }</h1>
                 ) : (
-                    <h1>Hello there!!</h1>
+                    <h1 className='mb-10'>Hello there!!</h1>
                 )}
                 <p>Create Invoices Seamlessly</p>
             </div>

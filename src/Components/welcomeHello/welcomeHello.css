@@ -5,7 +5,7 @@
 .hello-welcome-wrapper{
     width: 100%;
     height: auto;
-    padding: 30px 0px;
+    padding: 0px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

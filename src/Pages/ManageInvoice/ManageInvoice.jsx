@@ -74,10 +74,10 @@ const ManageInvoice = ({invoices, account,contract}) => {
 
     return (
         <div className='body-container'>
-            <div className='display-flex-row pt'>
+            <div className='display-flex-row'>
                 <div className=''>
-                    <h2>Manage Invoices</h2>
-                    <p>Invoices/Manage-Invoices</p>
+                    <span className='page-title'>Manage Invoices</span>
+                    <span className='page-subtitle'>Invoices/Manage-Invoices</span>
                 </div>
                 <Button 
                     Icon={PlusIcon} 
