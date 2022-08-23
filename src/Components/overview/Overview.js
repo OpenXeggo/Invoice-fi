@@ -4,7 +4,8 @@ import DocsIcon from '../../assets/docs.svg'
 import Metrics from './metrics/Metrics'
 import './overview.css'
 
-const Overview = ({account}) =>{
+const Overview = ({account,invoiceStats}) =>{
+    console.log("inv stats",invoiceStats)
 
     return(
         <div className='w-h'>
@@ -17,10 +18,10 @@ const Overview = ({account}) =>{
                 </div>
             </div>
             <div className='metrics-container display-flex-row'>
-                <Metrics docsIcon={DocsIcon} text={'Clients'} qty={account}/>
-                <Metrics docsIcon={DocsIcon} text={'INVOICES'} qty={account}/>
-                <Metrics docsIcon={DocsIcon} text={'INVOICES'} qty={account}/>
-                <Metrics docsIcon={DocsIcon} text={'INVOICES'} qty={account}/>
+                <Metrics docsIcon={DocsIcon} text={'Clients'} qty={invoiceStats.clients}/>
+                <Metrics docsIcon={DocsIcon} text={'INVOICES'} qty={invoiceStats.invoices}/>
+                <Metrics docsIcon={DocsIcon} text={'PAID'} qty={invoiceStats.paid}/>
+                <Metrics docsIcon={DocsIcon} text={'PENDING'} qty={invoiceStats.pending}/>
             </div>
         </div>
     )
