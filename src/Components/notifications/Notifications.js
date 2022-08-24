@@ -1,36 +1,39 @@
-import ArrowUp from '../../assets/arrow-up.svg';
-import EmailIcon from '../../assets/email.svg'
 import NotiErrImg from '../../assets/notification-error.png'
-import './Notifications.css'
+import './Notifications.css';
+import NotificationTile from './NotificationTile';
+import { getParticularInvoice } from '../../utils/dbQueries';
+import { useState , useEffect } from 'react';
 
-const Notifications = ({account}) =>{
 
-    const notifications = [
-        {
-            arrIcon: ArrowUp,
-            name: "Aman Nabi",
-            hours: "3 hours ago",
-            emailIcon: EmailIcon
-        },
-        {
-            arrIcon: ArrowUp,
-            name: "Aman Nabi",
-            hours: "3 hours ago",
-            emailIcon: EmailIcon
-        },
-        {
-            arrIcon: ArrowUp,
-            name: "Aman Nabi",
-            hours: "3 hours ago",
-            emailIcon: EmailIcon
-        },
-        {
-            arrIcon: ArrowUp,
-            name: "Aman Nabi",
-            hours: "3 hours ago",
-            emailIcon: EmailIcon
-        },
-    ];
+const Notifications = ({account, invoices}) =>{
+
+    const [notifications, setNotifications] = useState([]);
+
+    const handleInvoiceData = async (invoice) => {
+        try{
+            const data = await getParticularInvoice(invoice.invoiceID);
+            if (data) {
+                const {  attributes , id  } = data;
+                setNotifications(notifications=>{
+                    return [...notifications, { id, ...attributes, ...invoice }]
+                });
+            }
+            
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+    useEffect(()=>{
+        setNotifications([])
+        if(notifications.length === 0) {
+            invoices.forEach(invoice=>{
+                handleInvoiceData(invoice);
+            })
+        }
+    },[invoices])
+
+
 
     return(
         <div className='notifications-wrapper'>
@@ -40,27 +43,20 @@ const Notifications = ({account}) =>{
                     <p className='black'>Notifications</p>
                     <p className='gray'>Mark all as read</p>
                 </div>
-                {account? (
-                    notifications.map(({arrIcon,name,hours,emailIcon}, index) =>(
-                        <div className='display-flex-row m-15' key={index}>
-                            <div className='display-flex-column'>
-                                <img src={arrIcon} alt='arrow up icon'/>
-                            </div>
-                            <div className='noti-text'>
-                                <p>You sent an Invoice to <span style={{textDecoration:"underline",color:"#FAFAFA"}}>{name}</span></p>
-                                <p className='hours'>{hours}</p>
-                            </div>
-                            <div className='display-flex-column'>
-                                <img src={emailIcon} alt='email icon'/>
-                            </div>
+                <div className='notifications-list'>
+                    {notifications.length > 0 ? (
+                        notifications.map((invoice, i) =>(
+                            <>
+                                <NotificationTile invoice={invoice} key={i} account={account} />
+                            </>
+                        ))
+                    ):(
+                        <div className='noti-err display-flex-column'>
+                            <img src={NotiErrImg} alt=''/>
+                            <p>Nothing to see here!!</p>
                         </div>
-                    ))
-                ):(
-                    <div className='noti-err display-flex-column'>
-                        <img src={NotiErrImg} alt=''/>
-                        <p>Nothing to see here!!</p>
-                    </div>
-                )}  
+                    )} 
+                </div> 
             </div>
         </div>
     )

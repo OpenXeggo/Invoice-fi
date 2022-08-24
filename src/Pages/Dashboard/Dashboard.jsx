@@ -1,7 +1,4 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import InvoiceButton from '../../Components/InvoiceButton';
+import { useEffect, useState } from 'react';
 import Token from '../../Token.json';
 import { initWeb3 } from '../../utils/init';
 import DashboardErr from '../../Components/DashboardErr/DashboardErr';
@@ -13,7 +10,6 @@ import InvoiceRow from '../../Components/InvoiceRow/InvoiceRow';
 
 
 const Dashboard = ({ invoices, account, contract }) => {
-  const navigate = useNavigate();
   const web3 = initWeb3();
   const [accountInvoices, setAccountInvoices] = useState([]);
   const [invoiceStats,setInvoiceStats] = useState({clients:0,invoices:0,paid:0,pending:0});
@@ -33,8 +29,6 @@ const Dashboard = ({ invoices, account, contract }) => {
       return { tokenSymbol: "invalid" };
     }
   };
-
-
 
   const checkAddress = (address) => {
     const isAddress = web3.utils.isAddress(address);
@@ -130,7 +124,7 @@ const Dashboard = ({ invoices, account, contract }) => {
             <DashboardErr />
           )}
         </div>
-        <Notifications account={account} />
+        <Notifications account={account} invoices={accountInvoices} />
       </div>
     </div>
   );
