@@ -318,3 +318,11 @@ input {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.flex-end{
+    justify-self: flex-end;
+}
+
+.ml-auto{
+    margin-left: auto;
+}

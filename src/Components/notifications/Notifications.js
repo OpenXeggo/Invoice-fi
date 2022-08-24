@@ -26,9 +26,11 @@ const Notifications = ({account, invoices}) =>{
 
     useEffect(()=>{
         setNotifications([])
-        invoices.forEach(invoice=>{
-            handleInvoiceData(invoice);
-        })
+        if(notifications.length === 0) {
+            invoices.forEach(invoice=>{
+                handleInvoiceData(invoice);
+            })
+        }
     },[invoices])
 
 
@@ -41,16 +43,20 @@ const Notifications = ({account, invoices}) =>{
                     <p className='black'>Notifications</p>
                     <p className='gray'>Mark all as read</p>
                 </div>
-                {notifications.length > 0 ? (
-                    notifications.map((invoice, i) =>(
-                        <NotificationTile invoice={invoice} key={i} account={account} />
-                    ))
-                ):(
-                    <div className='noti-err display-flex-column'>
-                        <img src={NotiErrImg} alt=''/>
-                        <p>Nothing to see here!!</p>
-                    </div>
-                )}  
+                <div className='notifications-list'>
+                    {notifications.length > 0 ? (
+                        notifications.map((invoice, i) =>(
+                            <>
+                                <NotificationTile invoice={invoice} key={i} account={account} />
+                            </>
+                        ))
+                    ):(
+                        <div className='noti-err display-flex-column'>
+                            <img src={NotiErrImg} alt=''/>
+                            <p>Nothing to see here!!</p>
+                        </div>
+                    )} 
+                </div> 
             </div>
         </div>
     )

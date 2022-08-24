@@ -5,12 +5,14 @@ import "./CreateInvoice/createinvoice.css";
 import moment from 'moment';
 import TickIcon from "../assets/tick.svg";
 import { getParticularInvoice } from "../utils/dbQueries";
+import LinksModal from "../Components/LinksModal/LinksModal";
 
 
 const InvoicePage = ({invoices, account, contract, web3}) => {
     const { id } = useParams();
     const [invoice, setInvoice] = useState(false);
     const [invoiceData, setInvoiceData] = useState(false);
+    const [link, setLink] = useState("");
 
     useEffect(()=>{
         const accountInvoice = invoices.find((invoice) => {
@@ -58,6 +60,11 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
         } catch (e){
             console.log(e)
         }
+    }
+
+    const openLinksModal = () => {
+        let url = `https://invoice-fi.vercel.app/invoices/${invoice.invoiceID}`;
+        setLink(url);
     }
   
     return (
@@ -186,7 +193,7 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                 </div>
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
-                        <button className='xeggo-btn-outline'>Download as PDF</button>
+                        <button className='xeggo-btn-outline' onClick={openLinksModal}>Generate Payment Link</button>
                         <InvoiceButton invoice={invoice} contract={contract} account={account} />
                     </div>
                 </div>
@@ -196,6 +203,7 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
         ) : (
             <h1>Loading...</h1>
         )}
+        {link.length > 0 && <LinksModal closeModal={()=>setLink(false)} link={link} />}
         </>
     )
 }
