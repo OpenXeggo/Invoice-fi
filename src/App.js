@@ -29,6 +29,7 @@ import Settings from './Pages/Settings/Settings.jsx';
 function App() {
   const dispatch = useDispatch();
   const { chainId, isSupported } = useSelector((state) => state.network);
+  const { theme } = useSelector(state=>state.ui);
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState({});
   const web3 = initWeb3();
@@ -38,23 +39,16 @@ function App() {
     cache: new InMemoryCache(),
   });
   const [invoices, setInvoices] = useState([]);
-  const { Moralis, isAuthenticated, user } = useMoralis();
+
 
   useEffect(()=>{
-    if(isAuthenticated){
-      Moralis.onAccountChanged( async (account) => {
-        try{
-          console.log("account changed");
-          const confirmed = window.confirm("Link this address to your account?");
-          if (confirmed) {
-            await Moralis.link(account);
-          }
-        } catch(e){
-          console.log(e);
-        }
-      })
+    if (theme === "light"){
+      document.body.classList.add("light-mode")
     }
-  },[isAuthenticated, user])
+    if (theme === "dark"){
+      document.body.classList.remove("light-mode");
+    }
+  },[theme])
 
   useEffect(() => {
     const { ethereum } = window;

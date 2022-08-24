@@ -4,7 +4,7 @@
 }
 
 .faint-color {
-    color: #4D4D4D;
+    color: var(--nav-font);
 }
 
 .xeggo-button.start-button{

@@ -1,8 +1,3 @@
-:root {
-    --content-background: #24292E;
-    --text-color:  #FFFFFF;
-}
-
 .metric{
     width: 166px;
     height: 141px;
@@ -21,7 +16,7 @@
     line-height: 15px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--text-color);
+    color: var(--default-text);
 }
 
 .metric .text{
@@ -32,12 +27,12 @@
     font-weight: 500;
     font-size: 26px;
     line-height: 39px;
-    color:  var(--text-color);
+    color:  var(--default-text);
 }
 
 .doc-icon-wrapper{
     width: 40px;
     height: 40px;
-    background: #50312e;
+    background: var(--metric-background);
     border-radius: 50px;
 }

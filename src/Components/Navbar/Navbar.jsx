@@ -7,11 +7,19 @@ import SunIcon from "../../assets/icons/SunIcon";
 import SearchIcon from "../../assets/search.svg";
 import "./navbar.css";
 import { modifyAddress } from '../../utils/modifyAddress';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Navbar = ({account}) => {
 
     const { username } = useSelector(state=>state.user.userData);
+    const { theme } = useSelector(state=> state.ui)
+
+    const dispatch = useDispatch();
+
+    const handleThemeChange = () => {
+        const newTheme = theme === "dark" ? "light" : "dark";
+        dispatch({type:"CHANGE_USER_THEME", payload: newTheme}) 
+    }
 
     return ( 
         <div className="navbar">
@@ -35,13 +43,15 @@ const Navbar = ({account}) => {
                             </div>
                         </div>
                         <span className="navbar-gap">|</span>
-                        <div className="switch">
-                            <div className="active">
-                                <SunIcon />
-                            </div>
-                            <div className="">
-                                <MoonIcon />
-                            </div>
+                        <div className="switch pointer" onClick={handleThemeChange}>
+                            <>
+                                <div className={theme === "light" ? "active" : ""}>
+                                    <SunIcon />
+                                </div>
+                                <div className={theme === "dark" ? "active" : ""}>
+                                    <MoonIcon />
+                                </div>
+                            </>
                         </div>
                     </div>
                 </div>

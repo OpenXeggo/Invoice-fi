@@ -19,8 +19,8 @@
 
 .address-box {
     padding: 5px 7px;
-    background: #222222;
-    border: 1px solid #4D4D4D;
+    background: var(--content-background);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     max-width: 100px;
     margin: auto;
@@ -52,7 +52,7 @@
     font-size: 14px;
     font-weight: 600;
     line-height: 21px;
-    color: #4D4D4D;
+    color: var(--border-color);
 }
 
 .basis-45 {
@@ -62,8 +62,8 @@
 .modal-button button {
     width: 100%;
     height: 60px;
-    background: #222222;
-    border: 1px solid #4D4D4D;
+    background: var(--content-background);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 16px;
     font-weight: 600;

@@ -2,13 +2,79 @@ import { useState } from "react";
 import "./settings.css";
 import DiskIcon from "../../assets/disk.svg";
 import UploadIcon from "../../assets/upload.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useMoralis } from "react-moralis";
+import { initObject } from "../../utils/dbQueries";
+
 
 const Settings = () => {
+
+    const { address } = useSelector(state=>state.user)
+    const { username, firstname, lastname, email } = useSelector(state=>state.user.userData);
+    const { Moralis } = useMoralis();
+    const dispatch = useDispatch();
+
+    const [saved, setSaved] = useState(false)
+
+    const editUserData = (data) => {
+        return new Promise(async (resolve, reject)=>{
+            try{
+              const { query } = initObject("user");
+              const user = await query.equalTo("walletAddress", address).first();
+              const result = await user.set(data).save()
+              console.log(result); 
+              resolve (result);
+            } catch (e){
+              reject(e);
+            }
+          })
+    }
+
+    const handleUserEdit = async () => {
+        try{
+            const user = editUserData(userData);
+            console.log(user);
+            dispatch({type: "EDIT_USER_DATA", payload: userData});
+            setSaved(true);
+            setTimeout(()=>{
+                setSaved(false)
+            }, 5000)
+        } catch(e){
+            console.log(e);
+            setSaved(false);
+        }
+    }
+
+    const [userData, setUserData] = useState({
+        username: "",
+        firstname: "", 
+        lastname: "", 
+        email: ""
+    })
+
+    useEffect(()=>{
+        setUserData({
+                username,
+                firstname, 
+                lastname, 
+                email
+        })
+    },[username])
 
     const [page, setPage] = useState("profile");
     const [toggle, setToggle] = useState(false);
 
     const handleClick = () => setToggle(toggle=>!toggle);
+
+    const handleChange = (e, type) =>{
+        setUserData(userData=>{
+            return {
+                ...userData, 
+                [type]: e.target.value
+            }
+        })
+    }
 
     return ( 
         <div className="body-container create-container">
@@ -29,26 +95,41 @@ const Settings = () => {
                         <div className="account-form-container">
                             <div className="account-input">
                                 <label htmlFor="firstname">First Name (Required)</label>
-                                <input type="text" id="firstname" name="firstname" />
+                                <input type="text" id="firstname" name="firstname"
+                                value={userData.firstname}
+                                onChange={(e)=>{handleChange(e, "firstname")}}
+                                 />
                             </div>
                             <div className="account-input">
                                 <label htmlFor="lastname">Last Name (Required)</label>
-                                <input type="text" id="lastname" name="lastname" />
+                                <input type="text" id="lastname" name="lastname"
+                                value={userData.lastname}
+                                onChange={(e)=>{handleChange(e, "lastname")}}
+                                />
                             </div>
                             <div className="account-input">
                                 <label htmlFor="username">Username (Required)</label>
-                                <input type="text" id="username" name="username" />
+                                <input type="text" id="username" name="username"
+                                value={userData.username}
+                                onChange={(e)=>{handleChange(e, "username")}}
+                                />
                             </div>
                             <div className="account-input">
                                 <label htmlFor="email">Email Address (Required)</label>
-                                <input type="text" id="email" name="email" />
+                                <input type="text" id="email" name="email" 
+                                value={userData.email}
+                                onChange={(e)=>{handleChange(e, "email")}}
+                                />
                             </div>
                             <div className="account-input full">
                                 <label htmlFor="address">Wallet Address (Required)</label>
-                                <input type="text" id="address" name="address" />
+                                <input type="text" id="address" name="address"
+                                value={address}
+                                />
                             </div>
-                            <div className="w-full">
-                                <button className='primary-btn mx-right'>
+                            <div className="w-full flex items-center justify-end mb-150 gap-20">
+                                {saved && <span className="saved-info">Changes Saved!!!</span>}
+                                <button className='primary-btn' onClick={handleUserEdit}>
                                     <img src={DiskIcon} alt='small icon'/>
                                     <span>Save Changes</span>
                                 </button>

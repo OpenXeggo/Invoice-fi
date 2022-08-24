@@ -5,7 +5,7 @@
 }
 
 .account-navbar{
-    border-bottom: 1px solid #BABABA;
+    border-bottom: 1px solid var(--light-dark)
 }
 
 .account-nav-link {
@@ -13,7 +13,7 @@
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
-    color: #858585;
+    color: var(--nav-link-text);
     margin-right: 30px;
     cursor: pointer;
     padding: 32px 25px 25px 25px;
@@ -21,7 +21,7 @@
 
 .account-nav-link.active{
     font-weight: 500;
-    color: #FAFAFA;
+    color: var(--default-text);
     position: relative;
     cursor: default;
 }
@@ -82,7 +82,7 @@
 }
 
 .upload-button{
-    border: 1px solid white;
+    border: 1px solid var(--default-text);
     border-radius: 5px;
     padding: 8px 15px;
     display: inline-flex;
@@ -93,7 +93,7 @@
 .toggle{
     height: 31px;
     width: 63px;
-    border: 1px solid #BABABA;
+    border: 1px solid var(--light-dark);
     display: inline-block;
     border-radius: 5px;
     position: relative;
@@ -112,4 +112,27 @@
 
 .toggle-right{
     left: 50%;
+}
+
+.saved-info{
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #019267;
+    transition: 1s;
+}
+
+.justify-end{
+    justify-content: flex-end;
+}
+
+.mb-150{
+    margin-bottom: 150px
+}
+
+.primary-btn span{
+    color: #FFFFFF;
 }

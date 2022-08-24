@@ -156,6 +156,7 @@ input, textarea {
     border-radius: 10px;
     background: var(--xeggo-gradient);
     cursor: pointer;
+    color: #FFFFFF;
 }
 
 .xeggo-btn-outline{

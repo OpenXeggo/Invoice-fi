@@ -11,7 +11,7 @@
 }
 
 .modal-nav{
-    border-bottom: 1px solid #BABABA;
+    border-bottom: 1px solid var(--light-dark);
     margin-bottom: 30px;
 }
 
@@ -21,14 +21,14 @@
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
-    color: #858585;
+    color: var(--nav-link-text);
     margin-right: 30px;
     cursor: pointer;
 }
 
 .modal-nav-link.active{
     font-weight: 500;
-    color: #FAFAFA;
+    color: var(--secondary-text);
     position: relative;
     cursor: default;
 }
@@ -53,8 +53,8 @@
     flex-grow: 1;
     height: 38px;
     border-radius: 0;
-    border: 1px solid #BABABA;
-    color: #BABABA;
+    border: 1px solid var(--light-dark);
+    color: var(--light-dark);
 }
 
 .links-container .xeggo-button {

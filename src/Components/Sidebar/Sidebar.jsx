@@ -1,16 +1,15 @@
 import {  NavLink  } from "react-router-dom";
 import { useRef } from "react";
 import {  useLocation  } from "react-router-dom";
+import { useMoralis } from "react-moralis";
 
 
 import InvoiceIcon from "../../assets/icons/InvoiceIcon";
 import { useEffect } from "react";
-import HomeIcon from "../../assets/icons/HomeIcon";
-import ReportIcon from "../../assets/icons/ReportIcon";
+import HomeIcon from "../../assets/icons/HomeIcon"
 import SettingsIcon from "../../assets/icons/SettingsIcon";
-import InventoryIcon from "../../assets/icons/InventoryIcon";
 import FaqIcon from "../../assets/icons/FaqIcon";
-import LogoutIcon from "../../assets/log_out_dark.svg";
+import LogoutIcon from "../../assets/icons/LogoutIcon";
 import DownIcon from "../../assets/icons/DownIcon";
 
 import "./sidebar.css";
@@ -21,11 +20,12 @@ const Sidebar = () => {
     const createButton = useRef();
     const manageButton = useRef();
 
+    const { Moralis } = useMoralis();
+
     useEffect(()=>{
         const invoiceBtns = [createButton, manageButton];
 
         const active = invoiceBtns.some(e=>e.current.classList.contains("active"));
-        console.log(active);
         if (active) {
             createButton.current.parentElement.previousElementSibling.classList.add("active");
         }
@@ -37,6 +37,12 @@ const Sidebar = () => {
     const handleDropDown = (e) => {
         const dropdown = e.currentTarget.nextElementSibling;
         dropdown.classList.toggle("show");
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem("wallet_type")
+        Moralis.User.logOut();
+        window.location.reload();
     }
 
 
@@ -76,8 +82,8 @@ const Sidebar = () => {
                         <FaqIcon />
                         <span className="nav-link-text">FAQs</span>
                     </NavLink>
-                    <span to={'/faq'} className="nav-link">     
-                        <img src={LogoutIcon}/>
+                    <span to={'/faq'} className="nav-link" onClick={handleLogout}>     
+                        <LogoutIcon />
                         <span className="nav-link-text">Log-Out</span>
                     </span>
                 </div>
