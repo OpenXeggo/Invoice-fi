@@ -16,6 +16,8 @@ import InvoiceRow from '../../Components/InvoiceRow/InvoiceRow';
 
 const ManageInvoice = ({invoices, account,contract}) => {
 
+  const navigate = useNavigate();
+
     const web3 = initWeb3();
     const [accountInvoices, setAccountInvoices] = useState([]);
 
@@ -81,7 +83,7 @@ const ManageInvoice = ({invoices, account,contract}) => {
                 </div>
                 <Button 
                     Icon={PlusIcon} 
-                    text={"Create Invoice"} 
+                    text={"Create Invoice"} clickHandler={()=>navigate("/create")}
                 />
             </div>
             <div className="page-content content m-t-b">

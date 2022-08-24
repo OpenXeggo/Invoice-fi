@@ -16,6 +16,7 @@ const Dashboard = ({ invoices, account, contract }) => {
   const navigate = useNavigate();
   const web3 = initWeb3();
   const [accountInvoices, setAccountInvoices] = useState([]);
+  const [invoiceStats,setInvoiceStats] = useState({clients:0,invoices:0,paid:0,pending:0});
 
   const filterAccountInvoices = () => {
     return invoices.filter((invoice) => {
@@ -61,8 +62,31 @@ const Dashboard = ({ invoices, account, contract }) => {
         }
       };
 
+      const getClients=(invoices)=>{
+        const res=[]
+        invoices.map(invoice=>{
+          res.push(invoice.receiver)
+        })
+
+        return [...new Set(res)]
+        
+      }
+
+      const getPaidInvoices=(invoices)=>{
+        return invoices.filter(invoice=>invoice.isPaid===true)
+      }
+      const getPendingInvoices=(invoices)=>{
+        return invoices.filter(invoice=>invoice.isPaid===false && invoice.isCancelled===false)
+      }
+
       const setInvoices = async () => {
         const parsedInvoice = await parseInvoices(filteredInvoices);
+        console.log(parsedInvoice,"parsed")
+        const clients = getClients(parsedInvoice).length
+        const invoices = parsedInvoice.length
+        const paid = getPaidInvoices(parsedInvoice).length;
+        const pending = getPendingInvoices(parsedInvoice).length;
+        setInvoiceStats({clients,invoices,paid,pending});
         setAccountInvoices(parsedInvoice);
       };
 
@@ -75,7 +99,7 @@ const Dashboard = ({ invoices, account, contract }) => {
       <WelcomeHello account={account} />
       <div className="display-flex-row gap">
         <div className="width">
-          <Overview account={account} />
+          <Overview account={account} invoiceStats={invoiceStats} />
           <span className="block">Recent Transactions</span>
           {account ? (
             <div className="page-content content">

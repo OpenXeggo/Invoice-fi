@@ -7,7 +7,7 @@ const Metrics = ({docsIcon, text, qty}) =>{
                 <img src={docsIcon} alt='document icon'/>
             </div>
             <p className='text'>{text}</p>
-            <p className='qty'>{qty ? 12 : 0}</p>
+            <p className='qty'>{qty ? qty : 0}</p>
         </div>
     )
 }

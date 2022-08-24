@@ -6,7 +6,7 @@ import { useMoralis, useMoralisQuery } from "react-moralis";
 import "./profiledetails.css";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import GifImage from "../../assets/loader.png";
+import GifImage from "../../assets/moralis.gif";
 import { addUser, checkIfUserExists } from "../../utils/dbQueries";
 
 const ProfileDetails = ({closeModal, account}) => {
@@ -137,7 +137,7 @@ const ProfileDetails = ({closeModal, account}) => {
         ) : (
         <Modal>
             <div className="moralis-modal">
-                <div className="text-center mb-5"><img src={GifImage} alt={"Gif Loader"} /></div>
+                <div className="text-center mb-5 "><img className="moralis-gif" src={GifImage} alt={"Gif Loader"} /></div>
                 <div><span className="weight-600 font-20 line-30" >Connecting To Moralis...</span></div>
                 <div className="text-center"><span className="font-12 ">(Please Sign Transaction)</span></div>   
             </div>
