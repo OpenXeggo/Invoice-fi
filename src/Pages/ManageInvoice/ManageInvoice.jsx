@@ -88,7 +88,7 @@ const ManageInvoice = ({invoices, account,contract}) => {
             </div>
             <div className="page-content content m-t-b">
                 <div className="table-container w-h">
-                  <table className='table '>
+                  <table className='table'>
                     <thead>
                       <tr>
                         <th>Client</th>

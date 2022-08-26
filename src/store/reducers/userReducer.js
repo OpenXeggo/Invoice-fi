@@ -22,6 +22,8 @@ export const userReducer = (state = user, action) => {
         return { ...state, userData: {...action.payload} }
       case "ADD_INVOICE_ID":
         return {...state, userData: { invoices: [action.payload, ...state.userData.invoices] }}
+      case "EDIT_USER_DATA": 
+        return {...state, userData: {...state.userData, ...action.payload}}  
       default:
         return state;
     }

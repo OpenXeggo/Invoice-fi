@@ -4,6 +4,7 @@ import { networks } from "../../network.config.json";
 import { useDispatch, useSelector } from "react-redux";  
 import './createinvoice.css';
 import AddIcon from "../../assets/add.svg";
+import DarkAddIcon from "../../assets/dark_plus_icon.svg";
 import TickIcon from "../../assets/tick.svg";
 import InvoiceDetail from '../../Components/InvoiceDetail';
 import BinIcon from '../../assets/bin.svg';
@@ -20,6 +21,8 @@ import { ethers } from 'ethers';
 const CreateInvoice = ({contract, account}) => {
     const { chainId, isSupported } = useSelector((state) => state.network);
     const { firstname, lastname, email, user_id } = useSelector(state=>state.user.userData);
+    const {theme} = useSelector(state=>state.ui);
+
     const dispatch = useDispatch();
 
     const { user } = useMoralis();
@@ -400,7 +403,10 @@ const CreateInvoice = ({contract, account}) => {
                                     {item.tokenName === selectedToken.tokenName && <span><img src={TickIcon}/></span>}
                                 </div>
                             )):null}
-                            <div className='select' onClick={()=>setCustomToken(true)} ><span><img src={PlusIcon} alt="" /></span><span>Add Custom Token</span></div>
+                            <div className='select' onClick={()=>setCustomToken(true)} >
+                                <span><img src={theme === "light" ? DarkAddIcon : PlusIcon } alt="" /></span>
+                                <span>Add Custom Token</span>
+                            </div>
                         </div>
                     </div>
                     <div className='flex gap-30 items-center'>

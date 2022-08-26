@@ -52,14 +52,6 @@ export const getCompanyInfo = async (user) => {
   return data.attributes;
 };
 
-// export const getParticularInvoice = async (user) => {
-//   const invoice = user.get("invoices");
-//   console.log(invoice);
-//   const data = await invoice[0].fetch();
-//   console.log(data);
-//   return data.attributes;
-// };
-
 export const getParticularInvoice = (id) => {
   return new Promise( async (resolve, reject)=>{
       try{

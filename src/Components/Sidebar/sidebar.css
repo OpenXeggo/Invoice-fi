@@ -92,7 +92,7 @@
     font-size: 12px;
     line-height: 18px;
     /* identical to box height */
-    color: #4D4D4D;
+    color: var(--nav-font);
     text-decoration: none;
    
 }
@@ -106,7 +106,7 @@
     font-size: 12px;
     line-height: 18px;
     /* identical to box height */
-    color: #FAFAFA;
+    color: var(--secondary-text);
 }
 
 svg .stroke{
