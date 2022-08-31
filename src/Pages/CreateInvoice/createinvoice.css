@@ -124,8 +124,11 @@ input, textarea {
     display:flex;
 }
 
-.payment-container > div {
-    flex-basis: 50%;
+.basis-60{
+    flex-basis: 60%;
+}
+.basis-40{
+    flex-basis: 40%;
 }
 
 .payment-container .label{

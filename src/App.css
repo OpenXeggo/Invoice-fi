@@ -89,7 +89,7 @@ input {
     width: calc(100% - var(--sidebar-width));
     margin-top:var(--navbar-height);
     margin-left: var(--sidebar-width);
-    padding: 30px 20px 30px 40px;
+    padding: 30px 30px 30px 40px;
 }
 
 .xeggo-button{

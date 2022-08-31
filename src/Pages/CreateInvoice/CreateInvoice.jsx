@@ -392,7 +392,7 @@ const CreateInvoice = ({contract, account}) => {
                 </div>
             </div>
             <div className="payment-container">
-                <div className='flex flex-col gap-30'>
+                <div className='flex flex-col gap-30 basis-60'>
                     <span>Payment Options</span>
                     <div className='flex gap-30 items-center'>
                         <span className="label">Asset:</span>
@@ -421,7 +421,7 @@ const CreateInvoice = ({contract, account}) => {
                         </div> 
                     </div>
                 </div>
-                <div className="invoice-buttons">
+                <div className="invoice-buttons basis-40">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline'>Download as PDF</button>
                         <button className='xeggo-btn' onClick={onSubmitHandler}>Generate Payment Link</button>
