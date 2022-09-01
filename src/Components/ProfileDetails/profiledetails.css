@@ -62,7 +62,7 @@
 .modal-button button {
     width: 100%;
     height: 60px;
-    background: var(--content-background);
+    background: var(--xeggo-gradient);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 16px;

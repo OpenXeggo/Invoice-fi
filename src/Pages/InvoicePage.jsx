@@ -6,6 +6,7 @@ import moment from 'moment';
 import TickIcon from "../assets/tick.svg";
 import { getParticularInvoice } from "../utils/dbQueries";
 import LinksModal from "../Components/LinksModal/LinksModal";
+import CannotViewModal from "../Components/CannotViewModal/CannotView";
 
 
 const InvoicePage = ({invoices, account, contract, web3}) => {
@@ -13,6 +14,7 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
     const [invoice, setInvoice] = useState(false);
     const [invoiceData, setInvoiceData] = useState(false);
     const [link, setLink] = useState("");
+    const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
         const accountInvoice = invoices.find((invoice) => {
@@ -22,7 +24,12 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
     }, [invoices]);
 
     useEffect(()=>{
-        handleInvoiceData(invoice.invoiceID);
+        (async ()=>{
+            if(invoice){
+                await handleInvoiceData(invoice.invoiceID);
+                await setLoading(false)
+            }
+        })()
     },[invoice])
 
     const handleInvoiceData = async (invoice_id) => {
@@ -194,14 +201,16 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline' onClick={openLinksModal}>Generate Payment Link</button>
-                        <InvoiceButton invoice={invoice} contract={contract} account={account} />
+                        <InvoiceButton invoice={invoice} invoiceData={invoiceData} contract={contract} account={account} />
                     </div>
                 </div>
             </div>
             </div>
         </div>
-        ) : (
-            <h1>Loading...</h1>
+        ) : !loading && (
+            <div className="body-container">
+                <CannotViewModal />
+            </div>
         )}
         {link.length > 0 && <LinksModal closeModal={()=>setLink(false)} link={link} />}
         </>

@@ -10,7 +10,6 @@ const LinksModal = ({closeModal, link}) => {
                 </div>
                 <div className="modal-nav">
                     <span className="modal-nav-link active">Share Link</span>
-                    <span className="modal-nav-link ">Download</span>
                 </div>
                 <div className="mb-20">
                     <span className="font-12 line-18 width-230 inline-block">Share the payment link by copying the web address below</span>
