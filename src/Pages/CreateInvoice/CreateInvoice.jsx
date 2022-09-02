@@ -348,11 +348,11 @@ const CreateInvoice = ({contract, account}) => {
                     {rows.map((row,i) => (
                         <tbody key={i}>
                             <tr>
-                                <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' readOnly /></td>
-                                <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' readOnly /></td>
-                                <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' readOnly /></td>
+                                <td><input value={row.item} onChange={(e)=>handleRow(e,i,"item")} type="text" placeholder='Enter Item Description' /></td>
+                                <td><input value={row.quantity} onChange={(e)=>handleRow(e,i,"quantity")} type="number" placeholder='-' className='center-input' /></td>
+                                <td><input value={row.price} onChange={(e)=>handleRow(e,i,"price")} type="number" placeholder='-' className='center-input' /></td>
                                 <td className='relative'>
-                                    <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' readOnly />
+                                    <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
                                     <span className='vat' >%</span>
                                 </td>
                                 <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' readOnly /></td>
@@ -371,7 +371,6 @@ const CreateInvoice = ({contract, account}) => {
                         placeholder='Thank you for your business' 
                         className='notes-text' value={notes} 
                         onChange={(e)=>setNotes(e.target.value)}
-                        readOnly
                     ></textarea>
                 </div>
                 <div className="invoice-total">
