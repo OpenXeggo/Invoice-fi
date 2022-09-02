@@ -1,0 +1,47 @@
+.receipt-modal{
+    width: 380px;
+    padding: 45px 25px 25px 25px; 
+}
+
+.receipt-modal .text{
+    width: 250px;
+}
+
+.modal-nav{
+    border-bottom: 1px solid var(--light-dark);
+    margin-bottom: 30px;
+}
+
+
+.modal-nav-link {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--nav-link-text);
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.modal-nav-link.active{
+    font-weight: 500;
+    color: var(--secondary-text);
+    position: relative;
+    cursor: default;
+}
+
+.modal-nav-link.active::after {
+    position: absolute;
+    bottom: -3.5px;
+    left:0;
+    display: block;
+    content: "";
+    width: 100%;
+    height: 3px;
+    background: var(--xeggo-gradient);
+    border-radius: 10px;
+}
+
+.faded{
+    color: #BABABA;
+}

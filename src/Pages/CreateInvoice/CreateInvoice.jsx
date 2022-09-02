@@ -355,8 +355,8 @@ const CreateInvoice = ({contract, account}) => {
                                     <input type="text" value={row.vat_rate} onChange={(e)=>handleRow(e,i,"vat_rate")} placeholder='-' className='center-input pr-10' />
                                     <span className='vat' >%</span>
                                 </td>
-                                <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' /></td>
-                                <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' /></td>
+                                <td><input type="number" value={amounts[i].vat_amount} onChange={(e)=>handleRow(e,i,"vat_amount")} placeholder='-' className='center-input' readOnly /></td>
+                                <td><input type="number" value={amounts[i].gross_amount} onChange={(e)=>handleRow(e,i,"gross_amount")} placeholder='-' className='center-input' readOnly /></td>
                                 {i > 0 && <td><span className='pointer' onClick={()=>removeRow(i)}><img src={BinIcon} alt="Delete" /></span></td>}
                             </tr>
                         </tbody>

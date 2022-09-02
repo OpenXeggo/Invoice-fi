@@ -6,6 +6,7 @@ import moment from 'moment';
 import TickIcon from "../assets/tick.svg";
 import { getParticularInvoice } from "../utils/dbQueries";
 import LinksModal from "../Components/LinksModal/LinksModal";
+import CannotViewModal from "../Components/CannotViewModal/CannotView";
 
 
 const InvoicePage = ({invoices, account, contract, web3}) => {
@@ -13,6 +14,7 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
     const [invoice, setInvoice] = useState(false);
     const [invoiceData, setInvoiceData] = useState(false);
     const [link, setLink] = useState("");
+    const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
         const accountInvoice = invoices.find((invoice) => {
@@ -22,7 +24,12 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
     }, [invoices]);
 
     useEffect(()=>{
-        handleInvoiceData(invoice.invoiceID);
+        (async ()=>{
+            if(invoice){
+                await handleInvoiceData(invoice.invoiceID);
+                await setLoading(false)
+            }
+        })()
     },[invoice])
 
     const handleInvoiceData = async (invoice_id) => {
@@ -130,14 +137,14 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                     {invoiceData.total_items?.map((row,i) => (
                             <tr key={i}>
                                 <td><input value={row.item}  type="text" placeholder='Enter Item Description' /></td>
-                                <td><input value={row.quantity}  type="number" placeholder='-' className='center-input' /></td>
-                                <td><input value={row.price}  type="number" placeholder='-' className='center-input' /></td>
+                                <td><input value={row.quantity}  type="number" placeholder='-' className='center-input' readOnly /></td>
+                                <td><input value={row.price}  type="number" placeholder='-' className='center-input' readOnly /></td>
                                 <td className='relative'>
-                                    <input type="text" value={row.vat_rate}  placeholder='-' className='center-input pr-10' />
+                                    <input type="text" value={row.vat_rate}  placeholder='-' className='center-input pr-10' readOnly />
                                     <span className='vat' >%</span>
                                 </td>
-                                <td><input type="number" value={row.vat_amount}  placeholder='-' className='center-input' /></td>
-                                <td><input type="number" value={row.gross_amount}  placeholder='-' className='center-input' /></td>
+                                <td><input type="number" value={row.vat_amount}  placeholder='-' className='center-input' readOnly /></td>
+                                <td><input type="number" value={row.gross_amount}  placeholder='-' className='center-input' readOnly /></td>
                             </tr>
                     ))}
                     </tbody>
@@ -194,14 +201,16 @@ const InvoicePage = ({invoices, account, contract, web3}) => {
                 <div className="invoice-buttons">
                     <div className="flex gap-20">
                         <button className='xeggo-btn-outline' onClick={openLinksModal}>Generate Payment Link</button>
-                        <InvoiceButton invoice={invoice} contract={contract} account={account} />
+                        <InvoiceButton invoice={invoice} invoiceData={invoiceData} contract={contract} account={account} />
                     </div>
                 </div>
             </div>
             </div>
         </div>
-        ) : (
-            <h1>Loading...</h1>
+        ) : !loading && (
+            <div className="body-container">
+                <CannotViewModal />
+            </div>
         )}
         {link.length > 0 && <LinksModal closeModal={()=>setLink(false)} link={link} />}
         </>

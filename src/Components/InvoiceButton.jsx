@@ -4,12 +4,14 @@ import { ethers } from "ethers";
 import { networks } from "../network.config.json";
 import { useSelector } from "react-redux/es/exports";
 import { initWeb3 } from "../utils/init";
+import { useState } from 'react';
+import ReceiptModal from './ReceiptModal/ReceiptModal';
 
-const InvoiceButton = ({ invoice, account, contract }) => {
+const InvoiceButton = ({ invoice, invoiceData, account, contract }) => {
   const { chainId, isSupported } = useSelector((state) => state.network);
   const web3 = initWeb3();
 
-  console.log(invoice)
+  const [modal, setModal] = useState(false);
 
   const payHandler = async (
     e,
@@ -65,16 +67,21 @@ const InvoiceButton = ({ invoice, account, contract }) => {
     }
   };
 
+  const openDownloadModal = () => {
+    setModal(true);
+  }
+
   return (
+    <>
     <div>
       {invoice.invoiceCreator === account ? (
         <div onClick={(e) => e.stopPropagation()}>
           {invoice.isCancelled ? (
-            <button className='xeggo-button'>
+            <button className='xeggo-button' onClick={openDownloadModal}>
               Cancelled
             </button>
           ) : invoice.isPaid ? (
-            <button className='xeggo-button'>
+            <button className='xeggo-button' onClick={openDownloadModal}>
               Paid
             </button>
           ) : (
@@ -89,11 +96,11 @@ const InvoiceButton = ({ invoice, account, contract }) => {
       ) : (
         <div onClick={(e) => e.stopPropagation()}>
           {invoice.isPaid ? (
-            <button className='xeggo-button'>
+            <button className='xeggo-button' onClick={openDownloadModal}>
               Paid
             </button>
           ) : invoice.isCancelled ? (
-              <button className='xeggo-button'>
+              <button className='xeggo-button' onClick={openDownloadModal}>
                 Cancelled
               </button>
           ) : (
@@ -107,6 +114,8 @@ const InvoiceButton = ({ invoice, account, contract }) => {
         </div>
       )}
     </div>
+    {modal && <ReceiptModal invoice={invoice} invoiceData={invoiceData} closeModal={()=>setModal(false)} />}
+    </>
   );
 };
  
